@@ -21,16 +21,16 @@
             <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#statement" :value="id">Statement</button>
         </li>
         <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#submit">Submit</button>
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#submit" :value="id">Submit</button>
         </li>
         <li class="nav-item" v-if="problem.has_sample">
-            <a class="nav-link" :href="download_path">File Download</a>
+            <a class="nav-link" :href="download_path" :value="id">File Download</a>
         </li>
         <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tutorial" v-if="problem.tutorial_zh">Tutorial</button>
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tutorial" v-if="problem.tutorial_zh" :value="id">Tutorial</button>
         </li>
         <li class="nav-item" v-if="can_edit">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#manage">Manage</button>
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#manage" :value="id">Manage</button>
         </li>
     </ul>
     <div class="tab-content">
