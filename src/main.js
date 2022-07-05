@@ -3,7 +3,6 @@ import router from './Router.js'
 import App from './App.vue'
 import { callRPC } from './utils.js'
 
-console.log(process.env)
 callRPC("Init", {}, function(response) {
     const app = createApp(App)
     app.config.compilerOptions.isCustomElement = tag => tag.startsWith('ion-')
