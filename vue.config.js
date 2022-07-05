@@ -17,6 +17,9 @@ module.exports = {
     configureWebpack: {
       plugins: [
         new MonacoWebpackPlugin()
-      ]
+      ],
+      optimization: {
+        splitChunks: false
+      },
     }
   }
