@@ -84,7 +84,9 @@ function callAPI(name, method, data, success, failed) {
         } else failed(message.response)
     })
 }
+
 function callRPC(name, data, success, failed) {
+    console.log(BASE_URL)
     // data["_token"] = token
     request({
         withCredentials: true,

@@ -35,64 +35,66 @@
                     <input class="form-control" type="file" id="formFile" accept=".zip" ref="dataFile">
                 </div>
                 <button class="btn btn-primary col-2 me-2" style="min-width: 80px;" @click="uploadData">Submit</button>
-                <a class="btn btn-info col-2" style="min-width: 80px;" :href="downloadPath">Download</a>
+                <a class="btn btn-info col-2" style="min-width: 80px;" :href="downloadPath" v-if="problem.data.Subtasks">Download</a>
             </div>
-            <div class="mt-5"><strong>View Data</strong></div>
-            <div class="accordion mt-1" id="subtasks" v-if="problem.data.IsSubtask">
-                <div class="accordion-item" v-for="sub in problem.data.Subtasks">
-                    <div class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse' + sub.Id">
-                        <div class="row" style="width:100%">
-                            <div class="col"><strong>Subtask #{{sub.Id}}: {{sub.Fullscore}}pts</strong></div>
-                            <template v-for="(field, index) in sub.Field">
-                                <div class="col" v-if="index[0] != '_'">
-                                    {{index}}: {{field}}
-                                </div>
-                            </template>
+            <template v-if="problem.data.Subtasks">
+                <div class="mt-5"><strong>View Data</strong></div>
+                <div class="accordion mt-1" id="subtasks" v-if="problem.data.IsSubtask">
+                    <div class="accordion-item" v-for="sub in problem.data.Subtasks">
+                        <div class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse' + sub.Id">
+                            <div class="row" style="width:100%">
+                                <div class="col"><strong>Subtask #{{sub.Id}}: {{sub.Fullscore}}pts</strong></div>
+                                <template v-for="(field, index) in sub.Field">
+                                    <div class="col" v-if="index[0] != '_'">
+                                        {{index}}: {{field}}
+                                    </div>
+                                </template>
+                            </div>
+                        </button>
                         </div>
-                    </button>
-                    </div>
-                    <div :id="'collapse' + sub.Id" class="accordion-collapse collapse" data-bs-parent="#subtasks">
-                        <div class="accordion-body">
-                            <TestInfoTable :subtask="sub.Tests"></TestInfoTable>
+                        <div :id="'collapse' + sub.Id" class="accordion-collapse collapse" data-bs-parent="#subtasks">
+                            <div class="accordion-body">
+                                <TestInfoTable :subtask="sub.Tests"></TestInfoTable>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div v-else>
-                <TestInfoTable :subtask="problem.data.Subtasks[0].Tests"></TestInfoTable>
-            </div>
-            <div class="text-center mt-2" style="width:100%;color:gray">
-                Score Calc Method: {{['MIN', 'MAX', 'SUM'][problem.data.CalcMethod]}}<br>
-                Full Score: {{problem.data.Fullscore}}
-            </div>
-            <div class="mt-3 mb-1"><strong>Static Files</strong></div>
-            <table class="table table-bordered">
-                <tbody>
-                    <tr v-for="(item, index) in problem.data.Static">
-                        <td><strong>{{index}}</strong></td><td>{{item}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="mt-5 mb-1"><strong>Submission Config</strong></div>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <td><strong>File Name</strong></td>
-                        <td><strong>Accept File Type</strong></td>
-                        <td><strong>Accept Languages</strong></td>
-                        <td><strong>Max Length</strong></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(item, index) in problem.subm_config">
-                        <td>{{index + (item.Accepted == 2 ? '(.lang)' : '')}}</td>
-                        <td>{{['Text', 'Binary File', 'Source Code'][item.Accepted]}}</td>
-                        <td>{{item.Accepted == 2 ? acceptLangs(item.Langs) : '/'}}</td>
-                        <td>{{item.Length}}B</td>
-                    </tr>
-                </tbody>
-            </table>
+                <div v-else>
+                    <TestInfoTable :subtask="problem.data.Subtasks[0].Tests"></TestInfoTable>
+                </div>
+                <div class="text-center mt-2" style="width:100%;color:gray">
+                    Score Calc Method: {{['MIN', 'MAX', 'SUM'][problem.data.CalcMethod]}}<br>
+                    Full Score: {{problem.data.Fullscore}}
+                </div>
+                <div class="mt-3 mb-1"><strong>Static Files</strong></div>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr v-for="(item, index) in problem.data.Static">
+                            <td><strong>{{index}}</strong></td><td>{{item}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="mt-5 mb-1"><strong>Submission Config</strong></div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td><strong>File Name</strong></td>
+                            <td><strong>Accept File Type</strong></td>
+                            <td><strong>Accept Languages</strong></td>
+                            <td><strong>Max Length</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, index) in problem.subm_config">
+                            <td>{{index + (item.Accepted == 2 ? '(.lang)' : '')}}</td>
+                            <td>{{['Text', 'Binary File', 'Source Code'][item.Accepted]}}</td>
+                            <td>{{item.Accepted == 2 ? acceptLangs(item.Langs) : '/'}}</td>
+                            <td>{{item.Length}}B</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </template>
         </div>
     </div>
 </div>

@@ -6,7 +6,7 @@ export {
     SubmStatus,
 }
 
-const BASE_URL = "http://www.wzyhome.work:8081/"
+const BASE_URL = process.env.VUE_APP_BACKEND_URL
 
 const FileType = { Text: 0, Binary: 1, Code: 2 }
     
