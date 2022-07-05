@@ -7,26 +7,26 @@ import '@kangc/v-md-editor/lib/theme/style/github.css';
 import hljs from 'highlight.js';
 
 // codemirror 编辑器的相关资源
-import Codemirror from '@kangc/v-md-editor/node_modules/codemirror';
+import Codemirror from 'codemirror';
 // mode
-import '@kangc/v-md-editor/node_modules/codemirror/mode/markdown/markdown';
-import '@kangc/v-md-editor/node_modules/codemirror/mode/javascript/javascript';
-import '@kangc/v-md-editor/node_modules/codemirror/mode/css/css';
-import '@kangc/v-md-editor/node_modules/codemirror/mode/htmlmixed/htmlmixed';
-import '@kangc/v-md-editor/node_modules/codemirror/mode/vue/vue';
+import 'codemirror/mode/markdown/markdown';
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/css/css';
+import 'codemirror/mode/htmlmixed/htmlmixed';
+import 'codemirror/mode/vue/vue';
 // // edit
-import '@kangc/v-md-editor/node_modules/codemirror/addon/edit/closebrackets';
-import '@kangc/v-md-editor/node_modules/codemirror/addon/edit/closetag';
-import '@kangc/v-md-editor/node_modules/codemirror/addon/edit/matchbrackets';
+import 'codemirror/addon/edit/closebrackets';
+import 'codemirror/addon/edit/closetag';
+import 'codemirror/addon/edit/matchbrackets';
 // placeholder
-import '@kangc/v-md-editor/node_modules/codemirror/addon/display/placeholder';
+import 'codemirror/addon/display/placeholder';
 // active-line
-import '@kangc/v-md-editor/node_modules/codemirror/addon/selection/active-line';
+import 'codemirror/addon/selection/active-line';
 // // scrollbar
-import '@kangc/v-md-editor/node_modules/codemirror/addon/scroll/simplescrollbars';
-import '@kangc/v-md-editor/node_modules/codemirror/addon/scroll/simplescrollbars.css';
+import 'codemirror/addon/scroll/simplescrollbars';
+import 'codemirror/addon/scroll/simplescrollbars.css';
 // // style
-import '@kangc/v-md-editor/node_modules/codemirror/lib/codemirror.css';
+import 'codemirror/lib/codemirror.css';
 
 import createKatexPlugin from '@kangc/v-md-editor/lib/plugins/katex/cdn';
 
