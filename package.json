@@ -18,7 +18,9 @@
     "util": "^0.12.4",
     "vue": "^3.2.13",
     "vue-codemirror": "^6.0.0",
-    "vue-router": "^4.0.16"
+    "vue-router": "^4.0.16",
+    "yarm": "^0.4.0",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

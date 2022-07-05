@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkyaoj"]=self["webpackChunkyaoj"]||[]).push([[2876],{2876:function(n,o,u){function e(n,o,u,e,t,r){return null}u.r(o),u.d(o,{default:function(){return i}});var t=u(58661),r=u(49199),c={setup(){(0,r.onBeforeMount)((()=>(0,t.mY)("UserLogout",{},(function(n){window.location.href="/"}),(function(n){}))))}},f=u(40089);const a=(0,f.Z)(c,[["render",e]]);var i=a}}]);
+//# sourceMappingURL=2876.2f9e7618.js.map
