@@ -18,7 +18,7 @@
     </div>
     <ul class="nav nav-tabs mt-3">
         <li class="nav-item">
-            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#statement">Statement</button>
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#statement" :value="id">Statement</button>
         </li>
         <li class="nav-item">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#submit">Submit</button>
