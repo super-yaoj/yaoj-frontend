@@ -21,7 +21,7 @@
             <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#statement" :value="id">Statement</button>
         </li>
         <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#submit" :value="id">Submit</button>
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#submit" :value="id" @click="refreshCodemirror = true">Submit</button>
         </li>
         <li class="nav-item" v-if="problem.has_sample">
             <a class="nav-link" :href="download_path" :value="id">File Download</a>
@@ -38,7 +38,7 @@
             <v-md-preview :text="problem.statement_zh"></v-md-preview>
         </div>
         <div class="tab-pane fade" id="submit">
-            <ProblemSubmit :submission="problem.subm_config"></ProblemSubmit>
+            <ProblemSubmit :submission="problem.subm_config" :refresh="refreshCodemirror"></ProblemSubmit>
         </div>
         <div class="tab-pane fade" id="tutorial" v-if="problem.tutorial_zh">
             <v-md-preview :text="problem.tutorial_zh"></v-md-preview>
@@ -75,7 +75,8 @@ export default {
                 data: {},
             },
             can_edit: false,
-            download_path: BASE_URL + 'problem_data?type=sample&problem_id=' + this.$route.params.id + (this.$route.query.contest_id ? '&contest_id=' + this.$route.query.contest_id : '')
+            download_path: BASE_URL + 'problem_data?type=sample&problem_id=' + this.$route.params.id + (this.$route.query.contest_id ? '&contest_id=' + this.$route.query.contest_id : ''),
+            refreshCodemirror: false,
         }
     },
     created() {

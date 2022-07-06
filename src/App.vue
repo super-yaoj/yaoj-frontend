@@ -38,7 +38,6 @@
                 <div id="userForm" class="row mt-2">
                     <ul class="nav flex-column">
                         <nav-item icon="newspaper-outline" title="Personal Information" :href="'#/user/' + $user.user_id"></nav-item>
-                        <nav-item icon="chatbox-outline" title="Custom Test" href="#"></nav-item>
                         <nav-item icon="build-outline" title="System Manage" href="#/manage" v-if="$user.user_group <= 1"></nav-item>
                         <nav-item icon="keypad-outline" title="Permission List" href="#/permissions" v-if="$user.user_group <= 1"></nav-item>
                         <nav-item icon="exit-outline" title="Log Out" href="#/logout"></nav-item>

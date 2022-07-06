@@ -14,8 +14,8 @@ const PageItem = defineComponent({
 const PageSize = defineComponent({
     props: ['f', 'sizes', 'defaultsize'],
     template: `
-    <select class="form-select" @change="f($event.srcElement.value)">
-        <option v-for="size in sizes" :value="size" :selected="defaultsize == size">{{size}} per page</option>
+    <select class="form-select" @change="f($event.srcElement.value)" v-if="sizes.length>1">
+        <option v-for="size in sizes" :value="size" :selected="defaultsize == size" :key="size">{{size}} per page</option>
     </select>
     `,
 })

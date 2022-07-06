@@ -186,3 +186,7 @@ a {
 tbody {
     border-top: 1px solid #CCC!important
 }
+.accordion-button {
+    padding: 12px 20px 12px 20px;
+    box-shadow: none!important;
+}

@@ -1,5 +1,3 @@
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
-
 module.exports = {
     lintOnSave: false,
     runtimeCompiler: true,
@@ -14,12 +12,4 @@ module.exports = {
             return args
         })
     },
-    configureWebpack: {
-      plugins: [
-        new MonacoWebpackPlugin()
-      ],
-      optimization: {
-        splitChunks: false
-      },
-    }
   }

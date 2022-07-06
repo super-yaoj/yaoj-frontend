@@ -15,7 +15,7 @@
             <table class="table table-bordered">
                 <thead><tr><td><strong>File Name</strong></td><td><strong>Path</strong></td><td class="text-center"><input type="checkbox" class="form-check-input" v-model="downs_all"></td></tr></thead>
                 <tbody>
-                    <template v-for="(item, id) in problem.statements">
+                    <template v-for="(item, id) in problem.statements" :key="id">
                         <tr><td>{{item.name}}</td><td>{{item.path}}</td><td class="text-center"><input type="checkbox" class="form-check-input" v-model="downs[id]"></td></tr>
                     </template>
                 </tbody>
@@ -40,12 +40,12 @@
             <template v-if="problem.data.Subtasks">
                 <div class="mt-5"><strong>View Data</strong></div>
                 <div class="accordion mt-1" id="subtasks" v-if="problem.data.IsSubtask">
-                    <div class="accordion-item" v-for="sub in problem.data.Subtasks">
+                    <div class="accordion-item" v-for="sub in problem.data.Subtasks" :key="sub.Id">
                         <div class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse' + sub.Id">
                             <div class="row" style="width:100%">
                                 <div class="col"><strong>Subtask #{{sub.Id}}: {{sub.Fullscore}}pts</strong></div>
-                                <template v-for="(field, index) in sub.Field">
+                                <template v-for="(field, index) in sub.Field" :key="index">
                                     <div class="col" v-if="index[0] != '_'">
                                         {{index}}: {{field}}
                                     </div>
@@ -64,13 +64,13 @@
                     <TestInfoTable :subtask="problem.data.Subtasks[0].Tests"></TestInfoTable>
                 </div>
                 <div class="text-center mt-2" style="width:100%;color:gray">
-                    Score Calc Method: {{['MIN', 'MAX', 'SUM'][problem.data.CalcMethod]}}<br>
+                    Score Calc Method: {{CalcMethod[problem.data.CalcMethod]}}<br>
                     Full Score: {{problem.data.Fullscore}}
                 </div>
                 <div class="mt-3 mb-1"><strong>Static Files</strong></div>
                 <table class="table table-bordered">
                     <tbody>
-                        <tr v-for="(item, index) in problem.data.Static">
+                        <tr v-for="(item, index) in problem.data.Static" :key="index">
                             <td><strong>{{index}}</strong></td><td>{{item}}</td>
                         </tr>
                     </tbody>
@@ -86,9 +86,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in problem.subm_config">
+                        <tr v-for="(item, index) in problem.subm_config" :key="index">
                             <td>{{index + (item.Accepted == 2 ? '(.lang)' : '')}}</td>
-                            <td>{{['Text', 'Binary File', 'Source Code'][item.Accepted]}}</td>
+                            <td>{{FileTypeName[item.Accepted]}}</td>
                             <td>{{item.Accepted == 2 ? acceptLangs(item.Langs) : '/'}}</td>
                             <td>{{item.Length}}B</td>
                         </tr>
@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { BASE_URL, Language } from '@/config'
+import { BASE_URL, Language, CalcMethod, FileTypeName } from '@/config'
 import ManageTable from '@/models/ManageTable.vue'
 import { callAPI, upload } from '@/utils'
 import { defineComponent } from 'vue'
@@ -110,9 +110,9 @@ var TestInfoTable = defineComponent({
     template:   
 `<table class="table table-bordered">
     <tbody>
-        <tr v-for="test in subtask">
+        <tr v-for="test in subtask" :key="test.Id">
             <td>Test #{{test.Id}}</td>
-            <template v-for="(field, index) in test.Field">
+            <template v-for="(field, index) in test.Field" :key="index">
                 <td v-if="index[0] != '_'">
                     {{index}}: {{field}}
                 </td>
@@ -133,7 +133,13 @@ export default {
             downs.push(cur)
             downs_all = downs_all && cur
         }
-        return { downs_all: downs_all, downs: downs, title: this.problem.title }
+        return {
+            downs_all: downs_all,
+            downs: downs,
+            title: this.problem.title,
+            CalcMethod: CalcMethod,
+            FileTypeName: FileTypeName,
+        }
     },
     components: {
         ManageTable,

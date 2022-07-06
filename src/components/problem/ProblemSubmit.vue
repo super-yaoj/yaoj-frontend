@@ -9,13 +9,13 @@
         <hr>
         or upload them one by one:
     </div>
-    <div class="mt-3" v-for="(val, index) in submission">
+    <div class="mt-3" v-for="(val, index) in submission" :key="index">
         <template v-if="val.Accepted != filetype.Binary">
             <div class="row mb-1 align-items-center">
                 <label class="col"><strong>{{(val.Accepted == filetype.Text ? 'Text file: ' : 'Source code: ') + index}}</strong></label>
                 <div class="col-3" v-if="val.Accepted == filetype.Code">
-                    <select class="form-select" v-model="selectLang[index]" @change="changeLang(index)">
-                        <option v-for="(val, index) in acceptLangs(val.Langs)" :value="index">{{val}}</option>
+                    <select class="form-select" v-model="selectLang[index]" @change="changeLang(index)" :id="'selectLang_' + index">
+                        <option v-for="(val, index) in acceptLangs(val.Langs)" :value="index" :key="index">{{val}}</option>
                     </select>
                 </div>
                 <div class="form-check col" style="text-align:right">
@@ -25,9 +25,8 @@
                     </label>
                 </div>
             </div>
-            <textarea class="form-control" style="height:400px" :hidden="checkboxes[index]" v-if="!advancedEditor" v-model="editors[index]"></textarea>
-            <div :id="'codeEdit_' + index" style="height:400px" :hidden="checkboxes[index]" v-else></div>
-            <input type="file" class="form-control" :hidden="!checkboxes[index]" :ref="'file_' + index">
+            <textarea class="form-control" style="height:400px" :hidden="checkboxes[index]" v-model="editors[index]"></textarea>
+            <input type="file" class="form-control" :hidden="!checkboxes[index]" :id="'file_' + index">
         </template>
         <template v-else>
             <label class="col mb-1"><strong>Binary file: {{index}}</strong></label>
@@ -63,40 +62,9 @@ export default {
             text: text,
             editors: editors,
             selectLang: selectLang,
-            advancedEditor: localStorage.getItem("advanced_editor"),
             monaco: null,
             filetype: FileType,
         }
-    },
-    mounted() {
-        setTimeout(async () => {
-            for (var key in this.submission) {
-                this.selectLang[key] = ((json) => {
-                    for (var key in json) return key
-                })(this.acceptLangs(this.submission[key].Langs))
-            }
-            if (this.advancedEditor) {
-                this.monaco = await import('monaco-editor')
-                for (var key in this.submission) {
-                    if (this.submission[key].Accepted[0] == 1) continue
-                    this.editors[key] = this.monaco.editor.create(document.getElementById("codeEdit_" + key), {
-                        value: '', //编辑器初始显示文字
-                        language: LangModel[this.selectLang[key]], //此处使用的python，其他语言支持自行查阅demo
-                        theme: 'vs-dark', //官方自带三种主题vs, hc-black, or vs-dark
-                        selectOnLineNumbers: true,//显示行号
-                        roundedSelection: false,
-                        readOnly: false, // 只读
-                        cursorStyle: 'line', //光标样式
-                        automaticLayout: true, //自动布局
-                        glyphMargin: true, //字形边缘
-                        useTabStops: false,
-                        fontSize: 14, //字体大小
-                        autoIndent: true, //自动布局
-                        quickSuggestionsDelay: 100, //代码提示延时
-                    })
-                }
-            }
-        }, 500)
     },
     computed: {
         allFiles() {
@@ -111,10 +79,21 @@ export default {
             return ret
         }
     },
+    async created() {
+        while (this.submission == undefined) {
+            await new Promise((res) => setTimeout(res, 20))
+        }
+        for (var key in this.submission) {
+            while (document.getElementById('selectLang_' + key) == null) {
+                await new Promise((res) => setTimeout(res, 20))
+            }
+            console.log(this.submission)
+            this.selectLang[key] = ((json) => {
+                    for (var key in json) return key
+            })(this.acceptLangs(this.submission[key].Langs))
+        }
+    },
     methods: {
-        changeLang(index) {
-            this.monaco.editor.setModelLanguage(this.editors[index].getModel(), LangModel[this.selectLang[index]])
-        },
         acceptLangs(langs) {
             if (langs == null) return Language
             var ret = {}
@@ -138,7 +117,14 @@ export default {
                     alert("You should upload zip file.")
                     return
                 }
-                form.append('all', file)
+                form.append('all.zip', file)
+                form.append('submit_all', true)
+                upload('submission', 'post', form, (res) => {
+                    this.$temp_store['/submissions_table'] = undefined
+                    this.$router.push('/submissions')
+                }, (res) => {
+                    alert(res.response.data._error)
+                })
             } else {
                 for (var key in this.submission) {
                     if (this.submission[key].Accepted == FileType.Code) {
@@ -147,7 +133,7 @@ export default {
                     if (this.submission[key].Accepted != FileType.Binary && !this.checkboxes[key]) {
                         form.append(key + "_text", this.advancedEditor ? toRaw(this.editors[key]).getValue() : this.editors[key])
                     } else {
-                        var file = this.$refs[key + "_file"].files[0]
+                        var file = document.getElementById("file_" + key).files[0]
                         if (!file) {
                             alert("You haven't chosen any file!")
                             return
@@ -155,14 +141,14 @@ export default {
                         form.append(key + "_file", file)
                     }
                 }
+                upload('submission', 'post', form, (res) => {
+                    this.$temp_store['/submissions_table'] = undefined
+                    this.$router.push('/submissions')
+                }, (res) => {
+                    alert(res.response.data._error)
+                })
             }
-            upload('submission', 'post', form, (res) => {
-                this.$temp_store['/submissions_table'] = undefined
-                this.$router.push('/submissions')
-            }, (res) => {
-                alert(res.response.data._error)
-            })
         },
-    }
+    },
 }
 </script>
