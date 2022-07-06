@@ -25,7 +25,7 @@
                     </label>
                 </div>
             </div>
-            <textarea class="form-control" style="height:400px" :hidden="checkboxes[index]" v-if="!advancedEditor" v-model="editors[indnex]"></textarea>
+            <textarea class="form-control" style="height:400px" :hidden="checkboxes[index]" v-if="!advancedEditor" v-model="editors[index]"></textarea>
             <div :id="'codeEdit_' + index" style="height:400px" :hidden="checkboxes[index]" v-else></div>
             <input type="file" class="form-control" :hidden="!checkboxes[index]" :ref="'file_' + index">
         </template>
