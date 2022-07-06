@@ -96,7 +96,7 @@ export default {
                     })
                 }
             }
-        }, 100)
+        }, 500)
     },
     computed: {
         allFiles() {
