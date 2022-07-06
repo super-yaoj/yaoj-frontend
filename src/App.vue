@@ -36,7 +36,7 @@
                     <span class="col align-items-center px-3 text-muted" style="text-transform:uppercase;color:#444">{{$user.user_name}}</span>
                 </div>
                 <div id="userForm" class="row mt-2">
-                    <ul class="nav flex-column" style="font-size:.5rem">
+                    <ul class="nav flex-column">
                         <nav-item icon="newspaper-outline" title="Personal Information" :href="'#/user/' + $user.user_id"></nav-item>
                         <nav-item icon="chatbox-outline" title="Custom Test" href="#"></nav-item>
                         <nav-item icon="build-outline" title="System Manage" href="#/manage" v-if="$user.user_group <= 1"></nav-item>
@@ -52,7 +52,7 @@
                     </h6>
                     </div>
                     <div class="row mt-2">
-                    <ul class="nav flex-column" style="font-size:.5rem">
+                    <ul class="nav flex-column">
                         <nav-item icon="enter-outline" title="Log In" href="#/login"></nav-item>
                         <nav-item icon="person-add-outline" title="Sign Up" href="#/signup"></nav-item>
                     </ul>
