@@ -9,13 +9,13 @@
         <hr>
         or upload them one by one:
     </div>
-    <div class="mt-3" v-for="(val, index) in submission">
+    <div class="mt-3" v-for="(val, index) in submission" :key="`subm-${index}`">
         <template v-if="val.Accepted != filetype.Binary">
             <div class="row mb-1 align-items-center">
                 <label class="col"><strong>{{(val.Accepted == filetype.Text ? 'Text file: ' : 'Source code: ') + index}}</strong></label>
                 <div class="col-3" v-if="val.Accepted == filetype.Code">
                     <select class="form-select" v-model="selectLang[index]" @change="changeLang(index)">
-                        <option v-for="(val, index) in acceptLangs(val.Langs)" :value="index">{{val}}</option>
+                        <option v-for="(val, index) in acceptLangs(val.Langs)" :value="index" :key="`aclang-${index}`">{{val}}</option>
                     </select>
                 </div>
                 <div class="form-check col" style="text-align:right">
