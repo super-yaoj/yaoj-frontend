@@ -7,16 +7,13 @@
     </div>
     <ul class="nav nav-tabs mt-3">
         <li class="nav-item">
-            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#dashboard">Dashboard</button>
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#dashboard" :value="id">Dashboard</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#submission">Submissions</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#standing">Standing</button>
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#standing" :value="id">Standing</button>
         </li>
         <li class="nav-item" role="presentation" v-if="can_edit">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#manage">Manage</button>
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#manage" :value="id">Manage</button>
         </li>
     </ul>
     <div class="tab-content">
@@ -26,12 +23,16 @@
                     <div class="card">
                         <div class="card-body text-center">
                             <div style="color:#666">Remaining Time:</div>
-                            <h2><Clock :seconds="(contest.end_time - current_time) / 1000"></Clock></h2>
+                            <h2>
+                                <Clock :seconds="(contest.end_time - current_time) / 1000" v-if="contest.end_time > current_time"></Clock>
+                                <span v-else>Ended</span>
+                            </h2>
                             <hr>
                             <div style="color:#666">Rule: {{rule}}<br>Max Rating Change: 0<br>Status: {{status}}</div>
                         </div>
                     </div>
                     <a class="btn btn-light mt-3" style="width:100%" :href="'#/contest/' + id + '/participants'">Participants</a>
+                    <a class="btn btn-info mt-3" style="width:100%" :href="'#/submissions/?contest_id=' + id + '&submitter=' + $user.user_id" v-if="$user.user_id > 0">My submissions</a>
                     <button class="btn btn-danger mt-3" style="width:100%" v-if="can_edit">End Contest</button>
                 </div>
                 <div class="col">
@@ -39,14 +40,14 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="submission">...</div>
-        <div class="tab-pane fade" id="standing">...</div>
+        <div class="tab-pane fade" id="standing">
+        </div>
         <div class="tab-pane fade mt-3" id="manage" v-if="can_edit">
             <div class="d-flex align-items-start">
                 <div class="nav flex-column nav-pills me-3">
                     <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#v-pills-basic" :value="id">Basic</button>
-                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-permissions">Permissions</button>
-                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-managers">Managers</button>
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-permissions" :value="id">Permissions</button>
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-managers" :value="id">Managers</button>
                 </div>
                 <div class="tab-content container">
                     <div class="tab-pane fade show active" id="v-pills-basic">

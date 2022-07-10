@@ -68,10 +68,6 @@
             </div>
             <div class="tab-pane fade" id="preference" role="tabpanel">
                 <label class="ml-1 small" style="color:gray">Settings in this page become effective immediately after modification.</label>
-                <div class="form-check mt-2">
-                    <input class="form-check-input" type="checkbox" value="" id="advanced-editor" @click="advancedEditor" :checked="advanced_editor">
-                    <label class="form-check-label" for="advanced-editor">Use advanced code editor</label>
-                </div>
             </div>
         </div>
     </div>
@@ -116,13 +112,6 @@ export default {
                 })
             }
         },
-        advancedEditor(event) {
-            if (event.target.checked) {
-                localStorage.setItem("advanced_editor", "true")
-            } else {
-                localStorage.removeItem("advanced_editor")
-            }
-        }
     },
 }
 </script>

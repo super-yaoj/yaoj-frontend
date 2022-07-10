@@ -21,7 +21,7 @@
             <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#statement" :value="id">Statement</button>
         </li>
         <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#submit" :value="id" @click="refreshCodemirror = true">Submit</button>
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#submit" :value="id">Submit</button>
         </li>
         <li class="nav-item" v-if="problem.has_sample">
             <a class="nav-link" :href="download_path" :value="id">File Download</a>
@@ -38,7 +38,7 @@
             <v-md-preview :text="problem.statement_zh"></v-md-preview>
         </div>
         <div class="tab-pane fade" id="submit">
-            <ProblemSubmit :submission="problem.subm_config" :refresh="refreshCodemirror"></ProblemSubmit>
+            <ProblemSubmit :submission="problem.subm_config"></ProblemSubmit>
         </div>
         <div class="tab-pane fade" id="tutorial" v-if="problem.tutorial_zh">
             <v-md-preview :text="problem.tutorial_zh"></v-md-preview>
@@ -55,7 +55,7 @@ import VMdPreview from '@/models/VMdPreview'
 import ClickLike from '@/models/ClickLike.vue'
 import ProblemManage from './ProblemManage.vue'
 import ProblemSubmit from './ProblemSubmit.vue'
-import { callAPI } from '@/utils'
+import { callAPI, tooltipInit } from '@/utils'
 import { BASE_URL } from '@/config'
 
 export default {
@@ -76,7 +76,6 @@ export default {
             },
             can_edit: false,
             download_path: BASE_URL + 'problem_data?type=sample&problem_id=' + this.$route.params.id + (this.$route.query.contest_id ? '&contest_id=' + this.$route.query.contest_id : ''),
-            refreshCodemirror: false,
         }
     },
     created() {
@@ -89,10 +88,7 @@ export default {
         })
     },
     mounted() {
-        var tooltipTriggerList = Array.prototype.slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        tooltipTriggerList.forEach((tooltipTriggerEl) => {
-            new bootstrap.Tooltip(tooltipTriggerEl, { customClass: "limitation-icon" })
-        })
+        tooltipInit()
     },
     components: {
         VMdPreview,

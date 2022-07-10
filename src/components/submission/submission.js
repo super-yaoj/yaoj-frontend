@@ -4,15 +4,18 @@ export {
 }
 
 import { h } from 'vue'
-import { Language, SubmStatus } from "@/config"
+import { Language } from "@/config"
 import { format } from "silly-datetime"
 
 function submissionRow(row) {
     return [
         h('td', h('a', { href: "#/submission/" + row.submission_id }, row.submission_id)),
-        h('td', h('a', { href: "#/problem/" + row.problem_id }, '#' + row.problem_id + '. ' + row.problem_name)),
+        h('td', h('a', { href: "#/problem/" + row.problem_id }, [
+            '#' + row.problem_id + '. ' + row.problem_name,
+            row.contest_id > 0 ? h('a', {class: "badge bg-secondary ms-1", href: "#/contest/" + row.contest_id}, 'Contest') : null,
+        ])),
         h('td', h('a', { href: "#/user/" + row.submitter }, row.submitter_name)),
-        h('td', h('a', { href: "#/submission/" + row.submission_id }, row.status == 0 ? row.score : SubmStatus[row.status])),
+        h('td', h('a', { href: "#/submission/" + row.submission_id }, SubmStatus(row.status) == 'Finished' ? row.score : SubmStatus(row.status))),
         h('td', row.time < 0 ? '/' : row.time + 'ms'),
         h('td', row.memory < 0 ? '/' : row.memory + 'KB'),
         h('td', h('a', { href: "#/submission/" + row.submission_id }, row.language < 0 ? '/' : Language[row.language])),
@@ -22,4 +25,12 @@ function submissionRow(row) {
 
 function cutContent(str, len) {
     return str.length < len ? str : str.substr(0, len) + '...'
+}
+
+function SubmStatus(status) {
+    if (status < 0) return 'Internal Server Error'
+    if ((status & 1) == 0) return 'Waiting'
+    if (status < 15) return 'Judging'
+    if (status == 15) return 'Finished'
+    return 'Invalid Status'
 }

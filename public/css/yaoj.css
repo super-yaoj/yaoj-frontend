@@ -190,3 +190,17 @@ tbody {
     padding: 12px 20px 12px 20px;
     box-shadow: none!important;
 }
+.result-success {
+    color: #fff;
+    background-color: #25AD40!important;
+}
+.result-failed {
+    color: #fff;
+    background-color: #CC2020!important;
+}
+.result-success:not(.collapsed) {
+    color: #fff;
+}
+.result-failed:not(.collapsed) {
+    color: #fff;
+}

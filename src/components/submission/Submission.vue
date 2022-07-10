@@ -5,30 +5,33 @@
             <tr><SubmissionRow :submission="submission"></SubmissionRow></tr>
         </tbody>
     </table>
-    <div class="card" v-for="(item, index) in submission.preview" :key="index">
-        <div class="card-header">{{FileTypeName[submconfig[index].Accepted]}}: {{index}}</div>
-        <div class="card-body"><Codemirror :value="item" :options="cmOptions" border></Codemirror></div>
+    <div class="card" v-for="(item, index) in submission.details.content_preview" :key="index">
+        <div class="card-header py-0">
+            <div class="row align-items-center" style="height:37px">
+            <div class="col">
+                {{FileTypeName[item.Accepted]}}: {{index}}
+            </div>
+            <div class="col" style="text-align:right" v-if="can_edit">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-sm btn-warning" style="width:80px" @click="rejudge">Rejudge</button>
+                    <button type="button" class="btn btn-sm btn-danger" style="width:80px" @click="remove">Delete</button>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <Codemirror :value="item.Content" :options="cmOptions(item.Language)" border v-if="item.Accepted == FileType.Code"></Codemirror>
+            <div class="card text-dark bg-light mb-3 mt-1" v-else>
+                <div class="card-body">{{item}}</div>
+            </div>
+        </div>
     </div>
     <div class="card mt-4">
         <div class="card-header">Status Details</div>
         <div class="card-body">
-            <div class="accordion" id="result_data">
-                <div class="accordion-item" v-for="(sub, index) in submission.result.Subtask" :key="index" v-if="submission.result.IsSubtask">
-                    <h2 class="accordion-header">
-                        <button :class="'accordion-button collapsed btn result-' + (isSubAC(sub) ? 'success' : 'failed')" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse_data_subtask' + index">
-                            Subtask #{{index}}: {{getSubScore(sub)}}/{{sub.Fullscore}}pts
-                        </button>
-                    </h2>
-                    <div :id="'collapse_data_subtask' + index" class="accordion-collapse collapse" data-bs-parent="#result_data">
-                        <div class="accordion-body">
-                            <TestcaseAccordion :testcases="sub.Testcase" :sub_index="'result_data_subtask' + index"></TestcaseAccordion>
-                        </div>
-                    </div>
-                </div>
-                <template v-else-if="submission.result.IsSubtask == false">
-                    <TestcaseAccordion :testcases="submission.result.Subtask[0].Testcase" sub_index="result_data"></TestcaseAccordion>
-                </template>
-            </div>
+            <SubtaskAccordion class="mt-1 mb-2" :result="submission.details.pretest_result" data_index="result_pretest" title="Pretests:"></SubtaskAccordion>
+            <SubtaskAccordion class="mt-1 mb-2" :result="submission.details.result" data_index="result_data" title="Testcases:"></SubtaskAccordion>
+            <SubtaskAccordion class="mt-1 mb-2" :result="submission.details.extra_result" data_index="result_extra" title="Extra Tests:"></SubtaskAccordion>
         </div>
     </div>
 </div>
@@ -36,19 +39,18 @@
 
 <script>
 import { submissionRow } from './submission.js'
-import { callAPI } from '@/utils'
-import { CalcMethod, FileTypeName } from '@/config'
-import TestcaseAccordion from './TestcaseAccordion.vue'
+import { callAPI, callRPC } from '@/utils'
+import { FileTypeName, LangModel, FileType } from '@/config'
+import SubtaskAccordion from './SubtaskAccordion.vue'
 
 import Codemirror from 'codemirror-editor-vue3'
-// plugin-style
-import "codemirror-editor-vue3/dist/style.css";
-// language
-import "codemirror/mode/nginx/nginx.js"
-// theme
+import "codemirror/mode/clike/clike.js"
+import "codemirror/mode/go/go.js"
+import "codemirror/mode/python/python.js"
 import "codemirror/theme/dracula.css"
 
 export default {
+    inject: ['reload'],
     components: {
         SubmissionRow: {
             props: ['submission'],
@@ -56,7 +58,7 @@ export default {
                 return submissionRow(this.submission)
             },
         },
-        TestcaseAccordion,
+        SubtaskAccordion,
         Codemirror,
     },
     data() {
@@ -75,85 +77,52 @@ export default {
                 memory: -1,
                 language: -1,
                 submit_time: "",
-                result: {},
-                preview: {},
+                details: { content_preview: "", result: "", pretest_result: "", extra_result: "" }
             },
-            calcmethod: 0,
-            submconfig: {},
-            FileTypeName: FileTypeName,
-            cmOptions: {
-                mode: 'text/x-cpp', // Language mode
-                theme: props.theme || 'dracula', // Theme
-                lineNumbers: true, // Show line number
-                smartIndent: true, // Smart indent
-                indentUnit: 4, // The smart indent unit is 2 spaces in length
-                foldGutter: true, // Code folding
-                matchBrackets: true,
-                autoCloseBrackets: true,
-                styleActiveLine: true, // Display the style of the selected row
-                readOnly: props.readOnly,
-            }
+            FileTypeName,
+            FileType,
+            can_edit: false,
         }
     },
     created() {
         callAPI('submission', 'get', { submission_id: this.id }, (res) => {
             this.submission = res.data.submission
-            this.submission.result = this.submission.result == "" ? {} : JSON.parse(this.submission.result)
-            this.submission.preview = this.submission.preview == "" ? {} : JSON.parse(this.submission.preview)
-            this.calcmethod = res.data.calcmethod
-            this.submconfig = res.data.submconfig
-            console.log(this.submission, this.submconfig)
+            for (var key in this.submission.details) {
+                this.submission.details[key] = this.submission.details[key] == "" ? {} : JSON.parse(this.submission.details[key])
+            }
+            this.can_edit = res.data.can_edit
+            console.log(this.submission)
         }, (res) => {
             alert(res.data._error)
         })
     },
     methods: {
-        isSubAC(sub) {
-            if (CalcMethod[this.calcmethod] != 'MAX') {
-                for (var key in sub.Testcase)  {
-                    if (sub.Testcase[key].Fullscore > sub.Testcase[key].Score) {
-                        return false
-                    }
-                }
-                return true
-            } else {
-                for (var key in sub.Testcase)  {
-                    if (sub.Testcase[key].Fullscore == sub.Testcase[key].Score) {
-                        return true
-                    }
-                }
-                return false
+        cmOptions(lang) {
+            return {
+                mode: LangModel[lang],
+                theme: 'dracula',
+                lineNumbers: true,
+                readOnly: true,
             }
         },
-        getSubScore(sub) {
-            switch(CalcMethod[this.calcmethod]) {
-            case 'MIN':
-                return Math.min.apply(Math, sub.Testcase.map((x) => x.Score))
-            case 'MAX':
-                return Math.max.apply(Math, sub.Testcase.map((x) => x.Score))
-            case 'SUM':
-                var sum = 0
-                for (var i of sub.Testcase) sum += i.Score
-                return sum
+        rejudge() {
+            if (confirm("Do you really want to rejudge?")) {
+                callRPC('Rejudge', {submission_id: this.id}, (res) => {
+                    this.reload()
+                }, (res) => {
+                    alert(res.data._error.message)
+                })
+            }
+        },
+        remove() {
+            if (confirm("Do you really want to delete?")) {
+                callAPI('submission', 'delete', {submission_id: this.id}, (res) => {
+                    this.$router.back()
+                }, (res) => {
+                    alert(res.data._error)
+                })
             }
         },
     }
 }
 </script>
-
-<style>
-.result-success {
-    color: #fff;
-    background-color: #25AD40!important;
-}
-.result-failed {
-    color: #fff;
-    background-color: #CC2020!important;
-}
-.result-success:not(.collapsed) {
-    color: #fff;
-}
-.result-failed:not(.collapsed) {
-    color: #fff;
-}
-</style>

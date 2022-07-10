@@ -19,7 +19,7 @@
                 <nav-item icon="file-tray-full-outline" title="Problems" href="#/problems"></nav-item>
                 <nav-item icon="hourglass-outline" title="Submissions" href="#/submissions"></nav-item>
                 <nav-item icon="bar-chart-outline" title="Contests" href="#/contests"></nav-item>
-                <nav-item icon="document-outline" title="Blogs" href="#/blogs"></nav-item>
+                <nav-item icon="create-outline" title="Blogs" href="#/blogs"></nav-item>
                 <div class="row">
                     <div class="col">
                         <nav-item icon="refresh-outline" title="Refresh" @click.prevent="myReload" href="#"></nav-item>
@@ -38,6 +38,7 @@
                 <div id="userForm" class="row mt-2">
                     <ul class="nav flex-column">
                         <nav-item icon="newspaper-outline" title="Personal Information" :href="'#/user/' + $user.user_id"></nav-item>
+                        <nav-item icon="pulse-outline" title="Custom Test" href="#/customtest"></nav-item>
                         <nav-item icon="build-outline" title="System Manage" href="#/manage" v-if="$user.user_group <= 1"></nav-item>
                         <nav-item icon="keypad-outline" title="Permission List" href="#/permissions" v-if="$user.user_group <= 1"></nav-item>
                         <nav-item icon="exit-outline" title="Log Out" href="#/logout"></nav-item>

@@ -2,9 +2,9 @@
 <div class="d-flex align-items-start">
     <div class="nav flex-column nav-pills me-3">
         <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#v-pills-normal" :value="id">Normal</button>
-        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-permissions">Permissions</button>
-        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-managers">Managers</button>
-        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-data">Data</button>
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-permissions" :value="id">Permissions</button>
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-managers" :value="id">Managers</button>
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-data" :value="id">Data</button>
     </div>
     <div class="tab-content container" id="v-pills-tabContent">
         <div class="tab-pane fade show active" id="v-pills-normal">
@@ -30,44 +30,19 @@
         </div>
         <div class="tab-pane fade" id="v-pills-data">
             <div class="row align-items-end">
-                <div class="col">
+                <div class="col" style="min-width:150px">
                     <label for="formFile" class="form-label"><strong>Upload Data</strong></label>
                     <input class="form-control" type="file" id="formFile" accept=".zip" ref="dataFile">
                 </div>
                 <button class="btn btn-primary col-2 me-2" style="min-width: 80px;" @click="uploadData">Submit</button>
-                <a class="btn btn-info col-2" style="min-width: 80px;" :href="downloadPath" v-if="problem.data.Subtasks">Download</a>
+                <a class="btn btn-info col-2 me-2" style="min-width: 80px;" :href="downloadPath" v-if="problem.data.Subtasks">Download</a>
+                <button class="btn btn-danger col-2" style="min-width: 80px;" @click="rejudge">Rejudge</button>
             </div>
             <template v-if="problem.data.Subtasks">
-                <div class="mt-5"><strong>View Data</strong></div>
-                <div class="accordion mt-1" id="subtasks" v-if="problem.data.IsSubtask">
-                    <div class="accordion-item" v-for="sub in problem.data.Subtasks" :key="sub.Id">
-                        <div class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse' + sub.Id">
-                            <div class="row" style="width:100%">
-                                <div class="col"><strong>Subtask #{{sub.Id}}: {{sub.Fullscore}}pts</strong></div>
-                                <template v-for="(field, index) in sub.Field" :key="index">
-                                    <div class="col" v-if="index[0] != '_'">
-                                        {{index}}: {{field}}
-                                    </div>
-                                </template>
-                            </div>
-                        </button>
-                        </div>
-                        <div :id="'collapse' + sub.Id" class="accordion-collapse collapse" data-bs-parent="#subtasks">
-                            <div class="accordion-body">
-                                <TestInfoTable :subtask="sub.Tests"></TestInfoTable>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div v-else>
-                    <TestInfoTable :subtask="problem.data.Subtasks[0].Tests"></TestInfoTable>
-                </div>
-                <div class="text-center mt-2" style="width:100%;color:gray">
-                    Score Calc Method: {{CalcMethod[problem.data.CalcMethod]}}<br>
-                    Full Score: {{problem.data.Fullscore}}
-                </div>
-                <div class="mt-3 mb-1"><strong>Static Files</strong></div>
+                <PMDataView :data="problem.data.Pretest" title="Pretest" class="mt-4"></PMDataView>
+                <PMDataView :data="problem.data" title="Data" class="mt-4"></PMDataView>
+                <PMDataView :data="problem.data.Extra" title="Extra Data" class="mt-4"></PMDataView>
+                <div class="mt-4 mb-1"><strong>Static Files</strong></div>
                 <table class="table table-bordered">
                     <tbody>
                         <tr v-for="(item, index) in problem.data.Static" :key="index">
@@ -75,7 +50,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="mt-5 mb-1"><strong>Submission Config</strong></div>
+                <div class="mt-4 mb-1"><strong>Submission Config</strong></div>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -101,27 +76,10 @@
 </template>
 
 <script>
-import { BASE_URL, Language, CalcMethod, FileTypeName } from '@/config'
+import { BASE_URL, Language, FileTypeName } from '@/config'
 import ManageTable from '@/models/ManageTable.vue'
-import { callAPI, upload } from '@/utils'
-import { defineComponent } from 'vue'
-
-var TestInfoTable = defineComponent({
-    template:   
-`<table class="table table-bordered">
-    <tbody>
-        <tr v-for="test in subtask" :key="test.Id">
-            <td>Test #{{test.Id}}</td>
-            <template v-for="(field, index) in test.Field" :key="index">
-                <td v-if="index[0] != '_'">
-                    {{index}}: {{field}}
-                </td>
-            </template>
-        </tr>
-    </tbody>
-</table>`,
-    props: ['subtask']
-})
+import { callAPI, callRPC, upload } from '@/utils'
+import PMDataView from './PMDataView.vue'
 
 export default {
     inject: ['reload'],
@@ -137,13 +95,12 @@ export default {
             downs_all: downs_all,
             downs: downs,
             title: this.problem.title,
-            CalcMethod: CalcMethod,
-            FileTypeName: FileTypeName,
+            FileTypeName,
         }
     },
     components: {
         ManageTable,
-        TestInfoTable,
+        PMDataView,
     },
     methods: {
         submitNormal() {
@@ -181,6 +138,15 @@ export default {
                 arr.push(Language[langs[key]])
             }
             return arr.join(",")
+        },
+        rejudge() {
+            if (confirm("Do you really want to rejudge?")) {
+                callRPC('Rejudge', {problem_id: this.id}, (res) => {
+                    this.$router.push('/submissions?problem_id=' + this.id)
+                }, (res) => {
+                    alert(res.data._error.message)
+                })
+            }
         },
     },
     computed: {

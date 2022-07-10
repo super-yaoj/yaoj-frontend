@@ -11,7 +11,7 @@
                         {{test.Title}}
                     </div>
                     <div class="col">
-                        {{test.Time}} ms
+                        {{Math.floor(test.Time / 1000000)}} ms
                     </div>
                     <div class="col">
                         {{Math.floor(test.Memory / 1024)}} KB

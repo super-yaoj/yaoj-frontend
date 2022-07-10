@@ -14,7 +14,7 @@
             <div class="row mb-1 align-items-center">
                 <label class="col"><strong>{{(val.Accepted == filetype.Text ? 'Text file: ' : 'Source code: ') + index}}</strong></label>
                 <div class="col-3" v-if="val.Accepted == filetype.Code">
-                    <select class="form-select" v-model="selectLang[index]" @change="changeLang(index)" :id="'selectLang_' + index">
+                    <select class="form-select" v-model="selectLang[index]" :id="'selectLang_' + index">
                         <option v-for="(val, index) in acceptLangs(val.Langs)" :value="index" :key="index">{{val}}</option>
                     </select>
                 </div>
@@ -41,27 +41,18 @@
 
 <script>
 import { jsonLength, upload } from '@/utils'
-import { Language, LangModel, FileType } from '@/config'
-import { toRaw } from 'vue'
+import { Language, FileType } from '@/config'
 
 export default {
-    props: ['submission', 'refresh'],
+    props: ['submission'],
     data() {
-        var checkboxes = {}, text = {}, editors = {}, selectLang = {}
-        for (var key in this.submission) {
-            checkboxes[key] = false
-            text[key] = ""
-            editors[key] = ""
-            selectLang[key] = 0
-        }
         return {
             id: this.$route.params.id,
             contest_id: this.$route.query.contest_id,
             multiFile: jsonLength(this.submission) > 1,
-            checkboxes: checkboxes,
-            text: text,
-            editors: editors,
-            selectLang: selectLang,
+            checkboxes: {},
+            editors: {},
+            selectLang: {},
             monaco: null,
             filetype: FileType,
         }
@@ -87,7 +78,8 @@ export default {
             while (document.getElementById('selectLang_' + key) == null) {
                 await new Promise((res) => setTimeout(res, 20))
             }
-            console.log(this.submission)
+            this.checkboxes[key] = false
+            this.editors[key] = ""
             this.selectLang[key] = ((json) => {
                     for (var key in json) return key
             })(this.acceptLangs(this.submission[key].Langs))
@@ -131,7 +123,7 @@ export default {
                         form.append(key + "_lang", this.selectLang[key])
                     }
                     if (this.submission[key].Accepted != FileType.Binary && !this.checkboxes[key]) {
-                        form.append(key + "_text", this.advancedEditor ? toRaw(this.editors[key]).getValue() : this.editors[key])
+                        form.append(key + "_text", this.editors[key])
                     } else {
                         var file = document.getElementById("file_" + key).files[0]
                         if (!file) {
