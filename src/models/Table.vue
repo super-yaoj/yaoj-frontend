@@ -14,8 +14,8 @@ const PageItem = defineComponent({
 const PageSize = defineComponent({
     props: ['f', 'sizes', 'defaultsize'],
     template: `
-    <select class="form-select" @change="f($event.srcElement.value)">
-        <option v-for="size in sizes" :value="size" :selected="defaultsize == size">{{size}} per page</option>
+    <select class="form-select" @change="f($event.srcElement.value)" v-if="sizes.length>1">
+        <option v-for="size in sizes" :value="size" :selected="defaultsize == size" :key="size">{{size}} per page</option>
     </select>
     `,
 })
@@ -23,14 +23,15 @@ const PageSize = defineComponent({
 export default {
     props: ['row', 'sizes', 'tableclass', 'get', 'next', 'pagination', 'nocache'],
     data() {
-        if (!this.nocache && this.$temp_store[this.$route.path + "_table"] == undefined)
-            this.$temp_store[this.$route.path + "_table"] = {}
+        var key = this.$route.fullPath + "_table"
+        if (!this.nocache && this.$temp_store[key] == undefined)
+            this.$temp_store[key] = {}
         
-        if (!this.pagination) return { data: [], temp: this.$temp_store[this.$route.path + "_table"] }
+        if (!this.pagination) return { data: [], temp: this.$temp_store[key] }
         return {
             isfull: false,
             data: [],
-            temp: this.nocache ? {} : this.$temp_store[this.$route.path + "_table"],
+            temp: this.nocache ? {} : this.$temp_store[key],
             right: undefined,
             left: this.next(null, -1),
             BEGIN: this.next(null, -1),

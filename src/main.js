@@ -3,14 +3,18 @@ import router from './Router.js'
 import App from './App.vue'
 import { callRPC } from './utils.js'
 
+const app = createApp(App)
+app.config.compilerOptions.isCustomElement = tag => tag.startsWith('ion-')
+app.config.globalProperties.$user = { user_id: -1, user_name: "", user_group: 2 }
+app.config.globalProperties.$time = 0
+app.config.globalProperties.$temp_store = {}
+app.config.globalProperties.$monaco = null
+app.use(router)
+app.mount("#app")
+
 callRPC("Init", {}, function(response) {
-    const app = createApp(App)
-    app.config.compilerOptions.isCustomElement = tag => tag.startsWith('ion-')
     app.config.globalProperties.$user = response.data
     app.config.globalProperties.$time = response.data.server_time
-    app.config.globalProperties.$temp_store = {}
-    app.use(router)
-    app.mount("#app")
 }, function(response) {
     alert(response.statusMessage + "\n" + response.data._error.message)
 })

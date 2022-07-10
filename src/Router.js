@@ -4,11 +4,14 @@ const routes = [
     { path: '/', name: 'Dashboard', component: () => import(/* webpackChunkName: "router-all" */ './components/Dashboard.vue') },
     { path: '/404NotFound', name: '404NotFound', component: () => import(/* webpackChunkName: "router-all" */ './components/404NotFound.vue') },
     { path: '/403Forbidden', name: '403Forbidden', component: () => import(/* webpackChunkName: "router-all" */ './components/403Forbidden.vue') },
+    { path: '/judgerlog', name: 'JudgerLog', component: () => import(/* webpackChunkName: "router-all" */ './components/JudgerLog.vue') },
     
     { path: '/problems', name: 'ProblemList', component: () => import(/* webpackChunkName: "router-all" */ './components/problem/ProblemList.vue') },
     { path: '/problem/:id', name: 'Problem', component: () => import(/* webpackChunkName: "router-all" */ './components/problem/Problem.vue') },
     
     { path: '/submissions', name: 'SubmissionList', component: () => import(/* webpackChunkName: "router-all" */ './components/submission/SubmissionList.vue') },
+    { path: '/submission/:id', name: 'Submission', component: () => import(/* webpackChunkName: "router-all" */ './components/submission/Submission.vue') },
+    { path: '/customtest', name: 'CustomTest', component: () => import(/* webpackChunkName: "router-all" */ './components/submission/CustomTest.vue') },
     
     { path: '/contests', name: 'ContestList', component: () => import(/* webpackChunkName: "router-all" */ './components/contest/ContestList.vue') },
     { path: '/contest/:id', name: 'Contest', component: () => import(/* webpackChunkName: "router-all" */ './components/contest/Contest.vue') },

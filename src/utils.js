@@ -13,6 +13,7 @@ export {
     validPassword,
     validUsername,
     validEmail,
+    tooltipInit,
 }
 
 function jsonLength(json) {
@@ -107,6 +108,13 @@ function callRPC(name, data, success, failed) {
         } else {
             alert(response.statusText + (flag ? "" : "\n" + response.data._error.message))
         }
+    })
+}
+
+function tooltipInit() {
+    var tooltipTriggerList = Array.prototype.slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.forEach((tooltipTriggerEl) => {
+        new bootstrap.Tooltip(tooltipTriggerEl, { customClass: "limitation-icon" })
     })
 }
 

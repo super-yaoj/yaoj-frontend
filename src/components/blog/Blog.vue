@@ -24,7 +24,7 @@
         </div>
     </div>
     <h4 class="mt-4" v-if="comments != null">Comments</h4>
-    <div class="card mt-3" v-for="comment in comments">
+    <div class="card mt-3" v-for="comment in comments" :key="comment.comment_id">
         <div class="card-body px-0 pb-0" style="margin-bottom: -20px">
             <v-md-preview :text="comment.content"></v-md-preview>
         </div>

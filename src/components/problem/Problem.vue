@@ -55,7 +55,7 @@ import VMdPreview from '@/models/VMdPreview'
 import ClickLike from '@/models/ClickLike.vue'
 import ProblemManage from './ProblemManage.vue'
 import ProblemSubmit from './ProblemSubmit.vue'
-import { callAPI } from '@/utils'
+import { callAPI, tooltipInit } from '@/utils'
 import { BASE_URL } from '@/config'
 
 export default {
@@ -75,7 +75,7 @@ export default {
                 data: {},
             },
             can_edit: false,
-            download_path: BASE_URL + 'problem_data?type=sample&problem_id=' + this.$route.params.id + (this.$route.query.contest_id ? '&contest_id=' + this.$route.query.contest_id : '')
+            download_path: BASE_URL + 'problem_data?type=sample&problem_id=' + this.$route.params.id + (this.$route.query.contest_id ? '&contest_id=' + this.$route.query.contest_id : ''),
         }
     },
     created() {
@@ -88,10 +88,7 @@ export default {
         })
     },
     mounted() {
-        var tooltipTriggerList = Array.prototype.slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        tooltipTriggerList.forEach((tooltipTriggerEl) => {
-            new bootstrap.Tooltip(tooltipTriggerEl, { customClass: "limitation-icon" })
-        })
+        tooltipInit()
     },
     components: {
         VMdPreview,
