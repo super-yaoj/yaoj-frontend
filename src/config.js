@@ -5,9 +5,11 @@ export {
     LangModel,
     Language,
     CalcMethod,
+    UserGroup,
 }
 
 const BASE_URL = process.env.NODE_ENV == "development" ? "http://localhost:8081/" : "http://www.wzyhome.work:8081/"
+const UserGroup = { Banned: 0, Normal: 1, Admin: 2, Root: 3 }
 
 const FileType = { Text: 0, Binary: 1, Code: 2 }
 const FileTypeName = ['Text File', 'Binary File', 'Source Code']

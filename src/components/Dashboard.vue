@@ -24,7 +24,7 @@
         <div class="card-header">
             <div class="row mt-1 mb-1 px-2">
                 <div class="mb-0 h5 col">Announcements</div>
-                <a class="col" href="#" style="text-align:right;font-size:1.3rem;height:20px" data-bs-toggle="modal" data-bs-target="#addAnouncement" v-if="$user.user_group <= 1">
+                <a class="col" href="#" style="text-align:right;font-size:1.3rem;height:20px" data-bs-toggle="modal" data-bs-target="#addAnouncement" v-if="isAdmin()">
                     <strong><ion-icon name="add" style="--ionicon-stroke-width:50px;color:gray;"></ion-icon></strong>
                 </a>
             </div>
@@ -62,6 +62,7 @@ import { h, nextTick } from 'vue'
 import { format } from 'silly-datetime'
 
 export default {
+    inject: ['isAdmin'],
     data() {
         return { blog_id: "", priority: "", reloadAnnounce: true }
     },
@@ -75,7 +76,7 @@ export default {
                 h('td', { style: "text-align: left" }, h('strong', 'Title')),
                 h('td', { style: "width:15%" }, h('strong', 'Release Date')),
                 h('td', { style: "width: 10%; text-align: right" }, h('strong', 'Comments')),
-                this.$user.user_group <= 1 ? h('td', { style: "width: 10%;" }, h('strong', 'Priority')) : null
+                this.isAdmin() ? h('td', { style: "width: 10%;" }, h('strong', 'Priority')) : null
             ]
             else return [
                 h('td', { style: "text-align: left" }, h('a', { href: '#/blog/' + row.blog_id }, row.title)),
@@ -84,7 +85,7 @@ export default {
                     h(ClickLike, { class: "col px-0", icon: "chatbox-outline", number: row.comments }),
                     h(ClickLike, { class: "col px-0", icon: "thumbs-up-outline", number: row.like, target: { name: "blog", id: row.blog_id }, active: row.liked })
                 ])),
-                this.$user.user_group <= 1 ? h('td', [row.priority + " ", h('a', { href: "#", onClick: this.deleteAnnounce(row.id) }, 'delete')]) : null
+                this.isAdmin() ? h('td', [row.priority + " ", h('a', { href: "#", onClick: this.deleteAnnounce(row.id) }, 'delete')]) : null
             ]
         },
         async getAnnouncements(query) {

@@ -23,12 +23,12 @@
                         <span class="input-group-text">Change</span>
                         <input type="text" class="form-control" placeholder="User id" v-model="user1">
                         <span class="input-group-text" style="border-right:0px">to</span>
-                        <input type="radio" class="btn-check" id="btnradio1" autocomplete="off" v-if="$user.user_group == 0" :checked="permission1 == 1">
-                        <label class="btn btn-outline-secondary" for="btnradio1" style="border-right:0px" v-if="$user.user_group == 0" @click.prevent="selectPermission(1)">Administrator</label>
-                        <input type="radio" class="btn-check" id="btnradio2" autocomplete="off" :checked="permission1 == 2">
-                        <label class="btn btn-outline-secondary" for="btnradio2" style="border-right:0px" @click.prevent="selectPermission(2)">Normal User</label>
-                        <input type="radio" class="btn-check" id="btnradio3" autocomplete="off" :checked="permission1 == 3">
-                        <label class="btn btn-outline-secondary" for="btnradio3" @click.prevent="selectPermission(3)">Banned User</label>
+                        <input type="radio" class="btn-check" id="btnradio1" autocomplete="off" v-if="$user.user_group == UserGroup.Root" :checked="permission1 == UserGroup.Admin">
+                        <label class="btn btn-outline-secondary" for="btnradio1" style="border-right:0px" v-if="$user.user_group == UserGroup.Root" @click.prevent="selectPermission(UserGroup.Admin)">Administrator</label>
+                        <input type="radio" class="btn-check" id="btnradio2" autocomplete="off" :checked="permission1 == UserGroup.Normal">
+                        <label class="btn btn-outline-secondary" for="btnradio2" style="border-right:0px" @click.prevent="selectPermission(UserGroup.Normal)">Normal User</label>
+                        <input type="radio" class="btn-check" id="btnradio3" autocomplete="off" :checked="permission1 == UserGroup.Banned">
+                        <label class="btn btn-outline-secondary" for="btnradio3" @click.prevent="selectPermission(UserGroup.Banned)">Banned User</label>
                     </div>
                     <button class="btn btn-primary col-lg-2 mt-3" @click="submit1('user', 'patch', { user_id: user1, user_group: permission1 }, 0)">Submit</button>
                 </div>
@@ -126,21 +126,20 @@
 
 <script>
 import { callAPI } from '@/utils'
-import { getCurrentInstance, onBeforeMount } from 'vue'
+import { UserGroup } from '@/config'
 
 export default {
-    setup() {
-        onBeforeMount(() => {
-            var tmp = getCurrentInstance().appContext.config.globalProperties
-            if (tmp.$user.user_group > 1) {
-                tmp.$router.replace("/403Forbidden")
-            }
-        })
+    inject: ['isAdmin'],
+    created() {
+        if (!this.isAdmin()) {
+            this.$router.replace("/403Forbidden")
+        }
     },
     data() {
         return { user1: "", user2: "", user3: "", permission1: 0, permission_name1: "", permission_name2: "",
             permission_id1: "", permission_id2: "", permission_id3: "", permission_id4: "",
-            success: [false, false, false], fail: [false, false, false], success3: "", fail3: "" }
+            success: [false, false, false], fail: [false, false, false], success3: "", fail3: "",
+            UserGroup }
     },
     methods: {
         selectPermission(val) {

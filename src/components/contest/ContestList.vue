@@ -4,7 +4,7 @@
         <div class="col">
             <div class="h3 mb-0">Contest List</div>
         </div>
-        <div class="col" style="text-align:right;" v-if="$user.user_group <= 1">
+        <div class="col" style="text-align:right;" v-if="isAdmin()">
             <button class="btn btn-sm btn-primary" @click="addContest">New Contest</button>
             <div class="text-success small" v-if="success > 0">
                 Successfully added, contest id: {{success}}.
@@ -24,6 +24,7 @@ import { format } from 'silly-datetime'
 import { getRule, getRegisterStatus, getStatus } from './contest.js'
 
 export default {
+    inject: ['isAdmin'],
     data() {
         return {
             reloadContests: true,

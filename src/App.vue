@@ -39,8 +39,8 @@
                     <ul class="nav flex-column">
                         <nav-item icon="newspaper-outline" title="Personal Information" :href="'#/user/' + $user.user_id"></nav-item>
                         <nav-item icon="pulse-outline" title="Custom Test" href="#/customtest"></nav-item>
-                        <nav-item icon="build-outline" title="System Manage" href="#/manage" v-if="$user.user_group <= 1"></nav-item>
-                        <nav-item icon="keypad-outline" title="Permission List" href="#/permissions" v-if="$user.user_group <= 1"></nav-item>
+                        <nav-item icon="build-outline" title="System Manage" href="#/manage" v-if="isAdmin()"></nav-item>
+                        <nav-item icon="keypad-outline" title="Permission List" href="#/permissions" v-if="isAdmin()"></nav-item>
                         <nav-item icon="exit-outline" title="Log Out" href="#/logout"></nav-item>
                     </ul>
                 </div>
@@ -97,6 +97,7 @@ import { nextTick, h } from 'vue'
 import { format } from 'silly-datetime'
 import Table from './models/Table.vue'
 import { callAPI, callRPC } from './utils'
+import { UserGroup } from './config'
 
 export default {
     data() {
@@ -131,6 +132,9 @@ export default {
             nextTick(() => {
                 this.activeNow = true
             })
+        },
+        isAdmin() {
+            return this.$user.user_group == UserGroup.Admin || this.$user.user_group == UserGroup.Root
         },
         myReload() {
             this.reloadApp()
@@ -178,7 +182,7 @@ export default {
         $route() { this.reloadApp() }
     },
     provide() {
-        return { reload: this.reloadApp }
+        return { reload: this.reloadApp, isAdmin: this.isAdmin }
     }
 }
 </script>

@@ -62,12 +62,13 @@ import ClickLike from '@/models/ClickLike.vue'
 import { format } from 'silly-datetime'
 
 export default {
+    inject: ['isAdmin'],
     data() {
         return {
             tab: this.$route.query.tab,
             user: {},
             id: this.$route.params.id,
-            canSeePermission: this.$user.user_group <= 1 || this.$route.params.id == this.$user.user_id,
+            canSeePermission: this.isAdmin() || this.$route.params.id == this.$user.user_id,
             reloadBlog: true
         }
     },

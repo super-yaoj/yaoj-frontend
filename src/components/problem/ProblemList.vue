@@ -4,7 +4,7 @@
         <div class="col">
             <div class="h3 mb-0">Problem List</div>
         </div>
-        <div class="col" style="text-align:right;" v-if="$user.user_group <= 1">
+        <div class="col" style="text-align:right;" v-if="isAdmin()">
             <button class="btn btn-sm btn-primary" @click="addProblem">New Problem</button>
             <div class="text-success small" v-if="success > 0">
                 Successfully added, problem id: {{success}}.
@@ -22,6 +22,7 @@ import { h, nextTick } from 'vue'
 import { callAPI } from '@/utils'
 
 export default {
+    inject: ['isAdmin'],
     data() {
         return {
             reloadProblems: true,

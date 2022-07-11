@@ -32,7 +32,7 @@ function randomString(len) {
 }
 
 async function queryUser(data) {
-    const user_group = ["Root", "Administrator", "Normal User", "Banned User"]
+    const user_group = ["Banned User", "Normal User", "Administrator", "Root"]
     var user
     try {
         user = await new Promise(function(resolve, reject) {
