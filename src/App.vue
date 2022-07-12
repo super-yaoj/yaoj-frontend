@@ -98,6 +98,7 @@ import { format } from 'silly-datetime'
 import Table from './models/Table.vue'
 import { callAPI, callRPC } from './utils'
 import { UserGroup } from './config'
+import { Modal } from "bootstrap"
 
 export default {
     data() {
@@ -107,7 +108,8 @@ export default {
             reloadSearch: false,
             myModal: null,
             refreshed: false,
-            server_time: format(new Date(this.$time))
+            server_time: format(new Date(this.$time)),
+            show_result: false
         }
     },
     components: {
@@ -142,12 +144,14 @@ export default {
             setTimeout(() => this.refreshed = false, 1000)
         },
         showResult() {
-            this.myModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('userModal'))
+            this.show_result = true
+            this.myModal = Modal.getOrCreateInstance(document.getElementById('userModal'))
             this.myModal.show()
             this.reloadSearch = false
             nextTick(() => { this.reloadSearch = true })
         },
         hideResult(event) {
+            this.show_result = false
             this.myModal.dispose()
             document.body.removeAttribute("class")
             document.body.removeAttribute("style")

@@ -1,6 +1,8 @@
 import request from 'axios'
 import qs from 'qs'
 import { BASE_URL } from './config.js'
+import { Tooltip } from "bootstrap"
+
 
 export {
     jsonLength,
@@ -114,7 +116,7 @@ function callRPC(name, data, success, failed) {
 function tooltipInit() {
     var tooltipTriggerList = Array.prototype.slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     tooltipTriggerList.forEach((tooltipTriggerEl) => {
-        new bootstrap.Tooltip(tooltipTriggerEl, { customClass: "limitation-icon" })
+        new Tooltip(tooltipTriggerEl, { customClass: "limitation-icon" })
     })
 }
 

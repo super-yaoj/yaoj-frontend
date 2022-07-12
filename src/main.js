@@ -2,6 +2,9 @@ import { createApp } from 'vue'
 import router from './Router.js'
 import App from './App.vue'
 import { callRPC } from './utils.js'
+import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap"
+import './css/yaoj.css'
 
 const app = createApp(App)
 app.config.compilerOptions.isCustomElement = tag => tag.startsWith('ion-')
