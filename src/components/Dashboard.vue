@@ -5,7 +5,7 @@
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title">Add new announcement</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
         </div>
         <div class="modal-body">
             <div class="container">
@@ -25,13 +25,13 @@
             <div class="row mt-1 mb-1 px-2">
                 <div class="mb-0 h5 col">Announcements</div>
                 <a class="col" href="#" style="text-align:right;font-size:1.3rem;height:20px" data-bs-toggle="modal" data-bs-target="#addAnouncement" v-if="isAdmin()">
-                    <strong><ion-icon name="add" style="--ionicon-stroke-width:50px;color:gray;"></ion-icon></strong>
+                    <strong><ion-icon name="add" style="--ionicon-stroke-width:50px;color:gray;" /></strong>
                 </a>
             </div>
         </div>
         <div class="card-body px-0 pb-0">
             <div class="container" v-if="reloadAnnounce">
-                <Table :row="getAnnounceRow" :pagination="false" :get="getAnnouncements"></Table>
+                <Table :row="getAnnounceRow" :pagination="false" :get="getAnnouncements" />
             </div>
         </div>
     </div>
@@ -47,7 +47,7 @@
         </div>
         <div class="card-body px-0 pb-0">
             <div class="container">
-                <Table :row="getUserLine" :get="getUsers" :pagination="false"></Table>
+                <Table :row="getUserLine" :get="getUsers" :pagination="false" />
             </div>
         </div>
     </div>

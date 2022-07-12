@@ -4,7 +4,7 @@
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title">Add {{title}}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" />
         </div>
         <div class="modal-body">
             <input class="form-control" :placeholder="name + ' id'" v-model="add_id">
@@ -16,7 +16,7 @@
         </div>
     </div>
 </div>
-<Table :pagination="false" :get="getData" :row="getRow" v-if="reload"></Table>
+<Table :pagination="false" :get="getData" :row="getRow" v-if="reload" />
 </template>
 
 <script>

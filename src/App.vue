@@ -6,7 +6,7 @@
         <button type="submit" class="btn btn-outline-light col-3 px-2">Search</button>
     </form>
     <button class="navbar-toggler d-md-none collapsed mx-2 mt-1 mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon" />
     </button>
 </header>
 <div class="container h-100">
@@ -16,16 +16,16 @@
         <div class="container" id="sideNav">
             <div class="row">
             <ul class="nav flex-column">
-                <nav-item icon="file-tray-full-outline" title="Problems" href="#/problems"></nav-item>
-                <nav-item icon="hourglass-outline" title="Submissions" href="#/submissions"></nav-item>
-                <nav-item icon="bar-chart-outline" title="Contests" href="#/contests"></nav-item>
-                <nav-item icon="create-outline" title="Blogs" href="#/blogs"></nav-item>
+                <nav-item icon="file-tray-full-outline" title="Problems" href="#/problems" />
+                <nav-item icon="hourglass-outline" title="Submissions" href="#/submissions" />
+                <nav-item icon="bar-chart-outline" title="Contests" href="#/contests" />
+                <nav-item icon="create-outline" title="Blogs" href="#/blogs" />
                 <div class="row">
                     <div class="col">
-                        <nav-item icon="refresh-outline" title="Refresh" @click.prevent="myReload" href="#"></nav-item>
+                        <nav-item icon="refresh-outline" title="Refresh" @click.prevent="myReload" href="#" />
                     </div>
                     <div class="col-2" style="height:100%;padding-top:10px;" v-if="refreshed">
-                        <ion-icon name="checkmark-circle-outline" style="font-size:1.1rem;color:green"></ion-icon>
+                        <ion-icon name="checkmark-circle-outline" style="font-size:1.1rem;color:green" />
                     </div>
                 </div>
             </ul>
@@ -37,11 +37,11 @@
                 </div>
                 <div id="userForm" class="row mt-2">
                     <ul class="nav flex-column">
-                        <nav-item icon="newspaper-outline" title="Personal Information" :href="'#/user/' + $user.user_id"></nav-item>
-                        <nav-item icon="pulse-outline" title="Custom Test" href="#/customtest"></nav-item>
-                        <nav-item icon="build-outline" title="System Manage" href="#/manage" v-if="isAdmin()"></nav-item>
-                        <nav-item icon="keypad-outline" title="Permission List" href="#/permissions" v-if="isAdmin()"></nav-item>
-                        <nav-item icon="exit-outline" title="Log Out" href="#/logout"></nav-item>
+                        <nav-item icon="newspaper-outline" title="Personal Information" :href="'#/user/' + $user.user_id" />
+                        <nav-item icon="pulse-outline" title="Custom Test" href="#/customtest" />
+                        <nav-item icon="build-outline" title="System Manage" href="#/manage" v-if="isAdmin()" />
+                        <nav-item icon="keypad-outline" title="Permission List" href="#/permissions" v-if="isAdmin()" />
+                        <nav-item icon="exit-outline" title="Log Out" href="#/logout" />
                     </ul>
                 </div>
             </div>
@@ -53,8 +53,8 @@
                     </div>
                     <div class="row mt-2">
                     <ul class="nav flex-column">
-                        <nav-item icon="enter-outline" title="Log In" href="#/login"></nav-item>
-                        <nav-item icon="person-add-outline" title="Sign Up" href="#/signup"></nav-item>
+                        <nav-item icon="enter-outline" title="Log In" href="#/login" />
+                        <nav-item icon="person-add-outline" title="Sign Up" href="#/signup" />
                     </ul>
                 </div>
             </div>
@@ -73,10 +73,10 @@
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Search result</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
         </div>
         <div class="modal-body">
-            <Table :get="queryUsers" :row="getRow" :pagination="true" :next="getNext" v-if="reloadSearch" :sizes="[20]" :nocache="true"></Table>
+            <Table :get="queryUsers" :row="getRow" :pagination="true" :next="getNext" v-if="reloadSearch" :sizes="[20]" :nocache="true" />
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -85,8 +85,8 @@
     </div>
 </div>
 <main role="main" class="col-md-9 ms-sm-auto col-lg-10 px-md-4" ref="mainPart">
-    <router-view v-if="activeNow"></router-view>
-    <footer style="height:30px"></footer>
+    <router-view v-if="activeNow" />
+    <footer style="height:30px" />
 </main>
 </div>
 </div>
@@ -115,7 +115,7 @@ export default {
             props: ['icon', 'title', 'href'],
             template: `<li class="nav-item">
                 <a class="nav-link" :href="href">
-                <ion-icon :name="icon" class="feather"></ion-icon>
+                <ion-icon :name="icon" class="feather" />
                 <span>{{ title }}</span>
                 </a>
             </li>`

@@ -11,7 +11,7 @@
             </div>
         </div>
     </div>
-    <Table :row="getLine" :sizes="[20, 50, 100]" :get="getProblems" :next="next" :pagination="true" v-if="reloadProblems"></Table>
+    <Table :row="getLine" :sizes="[20, 50, 100]" :get="getProblems" :next="next" :pagination="true" v-if="reloadProblems" />
 </div>
 </template>
 

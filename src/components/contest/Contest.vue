@@ -24,7 +24,7 @@
                         <div class="card-body text-center">
                             <div style="color:#666">Remaining Time:</div>
                             <h2>
-                                <Clock :seconds="(contest.end_time - current_time) / 1000" v-if="contest.end_time > current_time"></Clock>
+                                <Clock :seconds="(contest.end_time - current_time) / 1000" v-if="contest.end_time > current_time" />
                                 <span v-else>Ended</span>
                             </h2>
                             <hr>
@@ -36,7 +36,7 @@
                     <button class="btn btn-danger mt-3" style="width:100%" v-if="can_edit">End Contest</button>
                 </div>
                 <div class="col">
-                    <ManageTable url="contest_problems" :data_name="['contest_id', 'problem_id', 'title']" title="Problem" name="problem" :no-modify="!can_edit" :query="{contest_id:id}"></ManageTable>
+                    <ManageTable url="contest_problems" :data_name="['contest_id', 'problem_id', 'title']" title="Problem" name="problem" :no-modify="!can_edit" :query="{contest_id:id}" />
                 </div>
             </div>
         </div>
@@ -68,10 +68,10 @@
                         <div class="text-center mt-1" @click="modifyContest"><button class="btn btn-primary">Submit</button></div>
                     </div>
                     <div class="tab-pane fade" id="v-pills-permissions">
-                        <ManageTable url="contest_permissions" :data_name="['contest_id', 'permission_id', 'permission_name']" title="Permission" name="permission"></ManageTable>
+                        <ManageTable url="contest_permissions" :data_name="['contest_id', 'permission_id', 'permission_name']" title="Permission" name="permission" />
                     </div>
                     <div class="tab-pane fade" id="v-pills-managers">
-                        <ManageTable url="contest_managers" :data_name="['contest_id', 'user_id', 'user_name']" title="Manager" name="user"></ManageTable>
+                        <ManageTable url="contest_managers" :data_name="['contest_id', 'user_id', 'user_name']" title="Manager" name="user" />
                     </div>
                 </div>
             </div>

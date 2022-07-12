@@ -42,7 +42,7 @@
             <hr>
             <div class="mb-4">
                 <strong>
-                    <ion-icon name="alert-circle" style="font-size:1rem;vertical-align:middle;"></ion-icon>
+                    <ion-icon name="alert-circle" style="font-size:1rem;vertical-align:middle;" />
                     You cannot modify the default permission group 1 except its name. You can view all permission groups at
                     <a href="#permissions" style="text-decoration: none;">this page</a>.
                 </strong>

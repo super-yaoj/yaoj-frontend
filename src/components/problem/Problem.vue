@@ -35,16 +35,16 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane fade show active" id="statement">
-            <v-md-preview :text="problem.statement_zh"></v-md-preview>
+            <v-md-preview :text="problem.statement_zh" />
         </div>
         <div class="tab-pane fade" id="submit">
-            <ProblemSubmit :submission="problem.subm_config"></ProblemSubmit>
+            <ProblemSubmit :submission="problem.subm_config" />
         </div>
         <div class="tab-pane fade" id="tutorial" v-if="problem.tutorial_zh">
-            <v-md-preview :text="problem.tutorial_zh"></v-md-preview>
+            <v-md-preview :text="problem.tutorial_zh" />
         </div>
         <div class="tab-pane fade mt-3" id="manage" v-if="can_edit">
-            <ProblemManage :problem="problem" :id="id"></ProblemManage>
+            <ProblemManage :problem="problem" :id="id" />
         </div>
     </div>
 </div>

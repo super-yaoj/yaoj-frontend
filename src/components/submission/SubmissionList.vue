@@ -25,7 +25,7 @@
             <button class="btn btn-primary" type="submit">Search</button>
         </div>
     </form>
-    <Table :row="getLine" :sizes="[10, 20, 50, 100]" :get="getSubmissions" :next="next" :pagination="true" v-if="reloadSubmissions" :nocache="true"></Table>
+    <Table :row="getLine" :sizes="[10, 20, 50, 100]" :get="getSubmissions" :next="next" :pagination="true" v-if="reloadSubmissions" :nocache="true" />
 </div>
 </template>
 

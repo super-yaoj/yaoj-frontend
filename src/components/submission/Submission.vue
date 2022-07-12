@@ -2,7 +2,7 @@
 <div class="mt-4 container">
     <table class="table text-center">
         <tbody>
-            <tr><SubmissionRow :submission="submission"></SubmissionRow></tr>
+            <tr><SubmissionRow :submission="submission" /></tr>
         </tbody>
     </table>
     <div class="card" v-for="(item, index) in submission.details.content_preview" :key="index">
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="card-body">
-            <Codemirror :value="item.Content" :options="cmOptions(item.Language)" border v-if="item.Accepted == FileType.Code"></Codemirror>
+            <Codemirror :value="item.Content" :options="cmOptions(item.Language)" border v-if="item.Accepted == FileType.Code" />
             <div class="card text-dark bg-light mb-3 mt-1" v-else>
                 <div class="card-body">{{item}}</div>
             </div>
@@ -29,9 +29,9 @@
     <div class="card mt-4">
         <div class="card-header">Status Details</div>
         <div class="card-body">
-            <SubtaskAccordion class="mt-1 mb-2" :result="submission.details.pretest_result" data_index="result_pretest" title="Pretests:"></SubtaskAccordion>
-            <SubtaskAccordion class="mt-1 mb-2" :result="submission.details.result" data_index="result_data" title="Testcases:"></SubtaskAccordion>
-            <SubtaskAccordion class="mt-1 mb-2" :result="submission.details.extra_result" data_index="result_extra" title="Extra Tests:"></SubtaskAccordion>
+            <SubtaskAccordion class="mt-1 mb-2" :result="submission.details.pretest_result" data_index="result_pretest" title="Pretests:" />
+            <SubtaskAccordion class="mt-1 mb-2" :result="submission.details.result" data_index="result_data" title="Testcases:" />
+            <SubtaskAccordion class="mt-1 mb-2" :result="submission.details.extra_result" data_index="result_extra" title="Extra Tests:" />
         </div>
     </div>
 </div>

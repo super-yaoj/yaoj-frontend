@@ -10,12 +10,12 @@
                 </h2>
                 <div :id="'collapse_' + data_index + '_subtask' + index" class="accordion-collapse collapse" :data-bs-parent="'#' + data_index">
                     <div class="accordion-body">
-                        <TestcaseAccordion :testcases="sub.Testcase" :sub_index="data_index + '_subtask' + index"></TestcaseAccordion>
+                        <TestcaseAccordion :testcases="sub.Testcase" :sub_index="data_index + '_subtask' + index" />
                     </div>
                 </div>
             </div>
         </div>
-        <TestcaseAccordion :testcases="result.Subtask[0].Testcase" :sub_index="data_index" v-else></TestcaseAccordion>
+        <TestcaseAccordion :testcases="result.Subtask[0].Testcase" :sub_index="data_index" v-else />
     </div>
 </template>
 

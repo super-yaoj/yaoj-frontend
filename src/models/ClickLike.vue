@@ -1,6 +1,6 @@
 <template>
 <div :class="class" :style="(target == undefined ? '' : 'cursor: pointer;') + (current ^ active ? 'color: #F70' : '')" @click="like">
-    <ion-icon :name="icon" style="vertical-align: middle; font-size: 1rem; margin-right: 2px;"></ion-icon>
+    <ion-icon :name="icon" style="vertical-align: middle; font-size: 1rem; margin-right: 2px;" />
     <span style="vertical-align: middle;">{{num}}</span>
 </div>
 </template>

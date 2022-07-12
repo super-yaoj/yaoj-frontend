@@ -1,7 +1,7 @@
 <template>
 <div class="mt-4 container" style="">
     <div class="h3 mb-3">User List</div>
-    <Table :row="getLine" :sizes="[10, 20, 50, 100]" :get="update" :next="next" :pagination="true"></Table>
+    <Table :row="getLine" :sizes="[10, 20, 50, 100]" :get="update" :next="next" :pagination="true" />
 </div>
 </template>
 
