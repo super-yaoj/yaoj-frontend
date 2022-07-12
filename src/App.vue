@@ -111,7 +111,7 @@ export default {
         }
     },
     components: {
-        'nav-item': {
+        NavItem: {
             props: ['icon', 'title', 'href'],
             template: `<li class="nav-item">
                 <a class="nav-link" :href="href">
