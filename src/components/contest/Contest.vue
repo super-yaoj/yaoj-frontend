@@ -31,8 +31,8 @@
                             <div style="color:#666">Rule: {{rule}}<br>Max Rating Change: 0<br>Status: {{status}}</div>
                         </div>
                     </div>
-                    <a class="btn btn-light mt-3" style="width:100%" :href="'#/contest/' + id + '/participants'">Participants</a>
-                    <a class="btn btn-info mt-3" style="width:100%" :href="'#/submissions/?contest_id=' + id + '&submitter=' + $user.user_id" v-if="$user.user_id > 0">My submissions</a>
+                    <router-link class="btn btn-light mt-3" style="width:100%" :to="'/contest/' + id + '/participants'">Participants</router-link>
+                    <router-link class="btn btn-info mt-3" style="width:100%" :to="'/submissions/?contest_id=' + id + '&submitter=' + $user.user_id" v-if="$user.user_id > 0">My submissions</router-link>
                     <button class="btn btn-danger mt-3" style="width:100%" v-if="can_edit">End Contest</button>
                 </div>
                 <div class="col">

@@ -16,7 +16,7 @@
         <div class="card-footer">
             <div class="row">
                 <div class="small ms-3 col" style="color:gray">
-                    by <a :href="'#/user/' + blog.author">{{blog.author_name}}</a> at {{blog.create_time}}
+                    by <router-link :to="'/user/' + blog.author">{{blog.author_name}}</router-link> at {{blog.create_time}}
                 </div>
                 <ClickLike class="col px-0" icon="chatbox-outline" style="max-width: 50px" :number="blog.comments"></ClickLike>
                 <ClickLike class="col px-0 me-2" icon="thumbs-up-outline" style="max-width: 50px" :number="blog.like" :active="blog.liked" :target="{name:'blog',id:id}"></ClickLike>
@@ -31,7 +31,7 @@
         <div class="card-footer">
             <div class="row">
                 <div class="small ms-3 col" style="color:gray">
-                    by <a :href="'#/user/' + comment.author">{{comment.author_name}}</a> at {{comment.create_time.replace(/[A-Z]/g, ' ')}}
+                    by <router-link :to="'/user/' + comment.author">{{comment.author_name}}</router-link> at {{comment.create_time.replace(/[A-Z]/g, ' ')}}
                 </div>
                 <a href="#" class="col px-0" style="max-width: 60px;" @click.prevent="deleteComment(comment.comment_id)" v-if="isAdmin() || comment.author == $user.user_id">delete</a>
                 <ClickLike class="col px-0 me-2" icon="thumbs-up-outline" style="max-width: 50px" :number="comment.like" :active="comment.liked" :target="{name:'comment',id:comment.comment_id}"></ClickLike>

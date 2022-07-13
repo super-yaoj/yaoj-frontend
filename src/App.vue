@@ -65,7 +65,6 @@
             <main
                 role="main"
                 class="col-md-9 col-lg-10 ms-sm-auto px-md-4"
-                ref="mainPart"
             >
                 <router-view v-if="activeNow" />
                 <footer style="height: 30px" />

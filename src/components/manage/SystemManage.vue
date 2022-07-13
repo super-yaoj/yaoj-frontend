@@ -44,7 +44,7 @@
                 <strong>
                     <ion-icon name="alert-circle" style="font-size:1rem;vertical-align:middle;" />
                     You cannot modify the default permission group 1 except its name. You can view all permission groups at
-                    <a href="#permissions" style="text-decoration: none;">this page</a>.
+                    <router-link to="#permissions" style="text-decoration: none;">this page</router-link>.
                 </strong>
                 <div class="row">
                     <div class="input-group col-lg-9 mt-2">

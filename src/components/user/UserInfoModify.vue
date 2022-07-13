@@ -5,7 +5,7 @@
         <div class="mt-2" style="font-size:1.5rem;color:gray">{{user.user_name}}</div>
         <div class="mt-2 row px-2 mb-2">
         <button class="btn btn-outline-primary col mx-1" role="button" style="width:100%" @click="submit">Submit</button>
-        <a class="btn btn-outline-secondary col mx-1" role="button" :href="'#/user/' + user.user_id" style="width:100%">Go Back</a>
+        <router-link class="btn btn-outline-secondary col mx-1" role="button" :to="'/user/' + user.user_id" style="width:100%">Go Back</router-link>
         </div>
     </div>
      <div class="col-12 col-sm-8 col-lg-9">

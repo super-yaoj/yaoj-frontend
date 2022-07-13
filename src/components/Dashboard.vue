@@ -40,9 +40,9 @@
         <div class="card-header">
             <div class="row mt-1 mb-1 px-2">
                 <div class="mb-0 h5 col">Top Rating 10</div>
-                <a class="col" href="#/users" style="text-align:right;margin-top:2px;">
+                <router-link class="col" to="/users" style="text-align:right;margin-top:2px;">
                     view all
-                </a>
+                </router-link>
             </div>
         </div>
         <div class="card-body px-0 pb-0">

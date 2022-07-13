@@ -10,22 +10,22 @@
                     <nav-item
                         icon="file-tray-full-outline"
                         title="Problems"
-                        href="#/problems"
+                        href="/problems"
                     />
                     <nav-item
                         icon="hourglass-outline"
                         title="Submissions"
-                        href="#/submissions"
+                        href="/submissions"
                     />
                     <nav-item
                         icon="bar-chart-outline"
                         title="Contests"
-                        href="#/contests"
+                        href="/contests"
                     />
                     <nav-item
                         icon="create-outline"
                         title="Blogs"
-                        href="#/blogs"
+                        href="/blogs"
                     />
                     <div class="row">
                         <div class="col">
@@ -63,29 +63,29 @@
                         <nav-item
                             icon="newspaper-outline"
                             title="Profile"
-                            :href="'#/user/' + $user.user_id"
+                            :href="'/user/' + $user.user_id"
                         />
                         <nav-item
                             icon="pulse-outline"
                             title="Custom Test"
-                            href="#/customtest"
+                            href="/customtest"
                         />
                         <nav-item
                             icon="build-outline"
                             title="System Manage"
-                            href="#/manage"
+                            href="/manage"
                             v-if="isAdmin()"
                         />
                         <nav-item
                             icon="keypad-outline"
                             title="Permission List"
-                            href="#/permissions"
+                            href="/permissions"
                             v-if="isAdmin()"
                         />
                         <nav-item
                             icon="exit-outline"
                             title="Log Out"
-                            href="#/logout"
+                            href="/logout"
                         />
                     </ul>
                 </div>
@@ -112,12 +112,12 @@
                         <nav-item
                             icon="enter-outline"
                             title="Log In"
-                            href="#/login"
+                            href="/login"
                         />
                         <nav-item
                             icon="person-add-outline"
                             title="Sign Up"
-                            href="#/signup"
+                            href="/signup"
                         />
                     </ul>
                 </div>
@@ -142,14 +142,13 @@ export default {
         NavItem: {
             props: ["icon", "title", "href"],
             template: `<li class="nav-item">
-                <a class="nav-link" :href="href">
+                <router-link class="nav-link" :to="href">
                 <ion-icon :name="icon" class="feather" />
                 <span>{{ title }}</span>
-                </a>
+                </router-link>
             </li>`,
         },
     },
-    data() {},
     mounted() {
         console.log(this.$props.servertime);
     },
