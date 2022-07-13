@@ -1,5 +1,5 @@
 <template>
-<div class="container mt-4">
+<div class="container-lg mt-4">
     <div class="row align-items-end mb-3">
         <div class="col">
             <h3><strong>{{blog.title}}</strong></h3>
