@@ -3,7 +3,7 @@
     <div class="h3">Custom Test</div>
     <div class="card mt-3">
         <div class="card-header">Your code & data</div>
-        <div class="card-body px-5">
+        <div class="card-body px-4">
             <div class="row mb-1 align-items-center">
                 <label class="col"><strong>Source code:</strong></label>
                 <select class="form-select col" v-model="selectLang">

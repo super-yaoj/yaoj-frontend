@@ -4,24 +4,22 @@
         <div class="h3 mb-0">Submission List</div>
     </div>
     <hr>
-    <form class="row mb-3" @submit.prevent="query">
-        <div class="input-group col">
+    <form class="row mb-3 subm-list-form flex-column flex-lg-row" @submit.prevent="query">
+        <div class="input-group col flex-nowrap mb-1">
             <span class="input-group-text" id="basic-addon1">Problem</span>
             <input type="text" class="form-control" placeholder="Problem id" v-model="problem_id">
         </div>
-        <div class="input-group col">
+        <div class="input-group col flex-nowrap mb-1">
             <span class="input-group-text" id="basic-addon1">Contest</span>
             <input type="text" class="form-control" placeholder="Contest id" v-model="contest_id">
         </div>
-        <div class="input-group col">
+        <div class="input-group col flex-nowrap mb-1">
             <span class="input-group-text" id="basic-addon1">Submitter</span>
             <input type="text" class="form-control" placeholder="User id" v-model="submitter">
         </div>
-        <div class="col" style="text-align:right;max-width:120px;" v-if="$user.user_id > 0">
-            <input type="checkbox" id="onlyme" class="btn-check" v-model="onlyme">
-            <label class="btn btn-outline-warning" for="onlyme" style="max-width:100px">Only me</label>
-        </div>
-        <div class="col" style="text-align:right;max-width:100px;">
+        <div class="col d-flex flex-row mb-1" style="text-align:right" v-if="$user.user_id > 0">
+            <input type="checkbox" id="onlyme" class="btn-check" v-model="onlyme" style="display: none;">
+            <label class="btn btn-outline-warning" for="onlyme">Only me</label>
             <button class="btn btn-primary" type="submit">Search</button>
         </div>
     </form>
@@ -100,3 +98,6 @@ export default {
     },
 }
 </script>
+
+<style>
+</style>
