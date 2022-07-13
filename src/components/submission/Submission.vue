@@ -1,5 +1,5 @@
 <template>
-<div class="mt-4 container">
+<div class="px-0 px-md-4 mt-4 container-lg">
     <table class="table text-center">
         <tbody>
             <tr><SubmissionRow :submission="submission" /></tr>
@@ -7,14 +7,14 @@
     </table>
     <div class="card" v-for="(item, index) in submission.details.content_preview" :key="index">
         <div class="card-header py-0">
-            <div class="row align-items-center" style="height:37px">
-            <div class="col">
+            <div class="row align-items-center flex-column flex-md-row">
+            <div class="col col-md-8 my-2">
                 {{FileTypeName[item.Accepted]}}: {{index}}
             </div>
-            <div class="col" style="text-align:right" v-if="can_edit">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-sm btn-warning" style="width:80px" @click="rejudge">Rejudge</button>
-                    <button type="button" class="btn btn-sm btn-danger" style="width:80px" @click="remove">Delete</button>
+            <div class="col col-md-4 my-2" style="text-align:right" v-if="can_edit">
+                <div class="btn-group" role="group" style="width: 100%">
+                    <button type="button" class="btn btn-sm btn-warning" style="min-width:80px" @click="rejudge">Rejudge</button>
+                    <button type="button" class="btn btn-sm btn-danger" style="min-width:80px" @click="remove">Delete</button>
                 </div>
             </div>
             </div>
