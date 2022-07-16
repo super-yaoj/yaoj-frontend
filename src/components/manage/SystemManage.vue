@@ -2,13 +2,13 @@
 <div class="mt-4 container" style=""><div class="row">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="permissions-tab" data-bs-toggle="tab" data-bs-target="#permissions" type="button" role="tab" aria-controls="permissions" aria-selected="true">Permissions</button>
+            <button class="nav-link active" id="permissions-tab" data-bs-toggle="tab" data-bs-target="#permissions" type="button" role="tab">Permissions</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="submissions-tab" data-bs-toggle="tab" data-bs-target="#submissions" type="button" role="tab" aria-controls="submissions" aria-selected="false">Submissions</button>
+            <button class="nav-link" id="submissions-tab" data-bs-toggle="tab" data-bs-target="#submissions" type="button" role="tab">Submissions</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="thumbs-tab" data-bs-toggle="tab" data-bs-target="#thumbs" type="button" role="tab" aria-controls="thumbs" aria-selected="false">Thumbs</button>
+            <button class="nav-link" id="thumbs-tab" data-bs-toggle="tab" data-bs-target="#thumbs" type="button" role="tab">Thumbs</button>
         </li>
     </ul>
     <div class="tab-content container mt-3" id="myTabContent">
@@ -19,7 +19,7 @@
             </strong>
             <div class="mb-4">
                 <div class="row">
-                    <div class="col-lg-9 input-group mt-3">
+                    <div class="col col-lg-9 input-group mt-2">
                         <span class="input-group-text">Change</span>
                         <input type="text" class="form-control" placeholder="User id" v-model="user1">
                         <span class="input-group-text" style="border-right:0px">to</span>
@@ -30,7 +30,9 @@
                         <input type="radio" class="btn-check" id="btnradio3" autocomplete="off" :checked="permission1 == UserGroup.Banned">
                         <label class="btn btn-outline-secondary" for="btnradio3" @click.prevent="selectPermission(UserGroup.Banned)">Banned User</label>
                     </div>
-                    <button class="btn btn-primary col-lg-2 mt-3" @click="submit1('user', 'patch', { user_id: user1, user_group: permission1 }, 0)">Submit</button>
+                    <div class="col-lg-3 mt-2">
+                        <button style="width: 100%" class="btn btn-primary" @click="submit1('user', 'patch', { user_id: user1, user_group: permission1 }, 0)">Submit</button>
+                    </div>
                 </div>
                 <div class="text-success small mt-1" v-if="success[0]">
                     Successfully modified.
@@ -47,27 +49,33 @@
                     <router-link to="#permissions" style="text-decoration: none;">this page</router-link>.
                 </strong>
                 <div class="row">
-                    <div class="input-group col-lg-9 mt-2">
+                    <div class="input-group col col-lg-9 mt-2">
                         <span class="input-group-text">Add permission group</span>
                         <input type="text" class="form-control" placeholder="Permission name" v-model="permission_name1" maxlength="60">
                     </div>
-                    <button class="btn btn-primary col-lg-2 mt-2" @click="submit1('permissions', 'post', { permission_name: permission_name1 }, 1)">Submit</button>
+                    <div class="col-lg-3 mt-2">
+                    <button class="btn btn-primary" style="width: 100%" @click="submit1('permissions', 'post', { permission_name: permission_name1 }, 1)">Submit</button>
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="input-group col-lg-9 mt-3">
+                    <div class="input-group col col-lg-9 mt-2">
                         <span class="input-group-text">Delete permission group</span>
                         <input type="text" class="form-control" placeholder="Permission id" v-model="permission_id1">
                     </div>
-                    <button class="btn btn-primary col-lg-2 mt-3" @click="submit1('permissions', 'delete', { permission_id: permission_id1 }, 1)">Submit</button>
+                    <div class="col-lg-3 mt-2">
+                    <button class="btn btn-primary" style="width: 100%" @click="submit1('permissions', 'delete', { permission_id: permission_id1 }, 1)">Submit</button>
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="input-group col-lg-9 mt-3">
+                    <div class="input-group col col-lg-9 mt-2">
                         <span class="input-group-text">Change name of</span>
                         <input type="text" class="form-control" placeholder="Permission id" v-model="permission_id2">
                         <span class="input-group-text">to</span>
                         <input type="text" class="form-control" placeholder="Permission name" v-model="permission_name2" maxlength="60">
                     </div>
-                    <button class="btn btn-primary col-lg-2 mt-3" @click="submit1('permissions', 'patch', { permission_id: permission_id2, permission_name: permission_name2 }, 1)">Submit</button>
+                    <div class="col-lg-3 mt-2">
+                    <button class="btn btn-primary" style="width: 100%" @click="submit1('permissions', 'patch', { permission_id: permission_id2, permission_name: permission_name2 }, 1)">Submit</button>
+                    </div>
                 </div>
                 <div class="text-success small mt-1" v-if="success[1]">
                     Successfully modified.
@@ -79,11 +87,13 @@
             <hr>
             <div class="mb-4">
                 <div class="row mb-2">
-                    <div class="col-lg-9 input-group mt-2">
+                    <div class="col col-lg-9 input-group mt-2">
                         <span class="input-group-text">Add users to permission group</span>
                         <input type="text" class="form-control" placeholder="Permission id" v-model="permission_id3">
                     </div>
-                    <button class="btn btn-primary col-lg-2 mt-2" @click="submit5">Submit</button>
+                    <div class="col-lg-3 mt-2">
+                    <button class="btn btn-primary" style="width: 100%" @click="submit5">Submit</button>
+                    </div>
                 </div>
                 <strong>
                     <ion-icon name="alert-circle" style="font-size:1rem;vertical-align:middle;"></ion-icon>
@@ -102,13 +112,15 @@
             <hr>
             <div class="mb-4">
                 <div class="row mb-2">
-                    <div class="col-lg-9 input-group mt-2">
+                    <div class="col col-lg-9 input-group mt-2">
                         <span class="input-group-text">Delete</span>
                         <input type="text" class="form-control" placeholder="User id" v-model="user3">
                         <span class="input-group-text">from permission group</span>
                         <input type="text" class="form-control" placeholder="Permission id" v-model="permission_id4">
                     </div>
-                    <button class="btn btn-primary col-lg-2 mt-2" @click="submit1('user_permissions', 'delete', { permission_id: permission_id4, user_id: user3 }, 2)">Submit</button>
+                    <div class="col-lg-3 mt-2">
+                    <button class="btn btn-primary" style="width: 100%" @click="submit1('user_permissions', 'delete', { permission_id: permission_id4, user_id: user3 }, 2)">Submit</button>
+                    </div>
                 </div>
                 <div class="text-success small mt-1" v-if="success[2]">
                     Successfully modified.

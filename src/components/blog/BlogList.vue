@@ -1,14 +1,14 @@
 <template>
     <div class="mt-4 container" style="">
         <div class="row mb-3 align-items-end">
-            <div class="col">
+            <div class="col-md-8">
                 <div class="h3 mb-0">Blog List</div>
                 <div class="small" style="color: gray">
                     You can view your drafts by clicking "My blogs".
                 </div>
             </div>
             <div
-                class="col-4 btn-group"
+                class="col-md-4 btn-group mt-1"
                 style="text-align: right"
                 v-if="$user.user_id > 0"
             >

@@ -184,9 +184,3 @@ export default {
     },
 };
 </script>
-
-<style>
-#app {
-    height: 90%;
-}
-</style>

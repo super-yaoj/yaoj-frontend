@@ -17,7 +17,7 @@
             <span class="input-group-text" id="basic-addon1">Submitter</span>
             <input type="text" class="form-control" placeholder="User id" v-model="submitter">
         </div>
-        <div class="col d-flex flex-row mb-1" style="text-align:right" v-if="$user.user_id > 0">
+        <div class="btn-group col d-flex flex-row mb-1" style="text-align:right" v-if="$user.user_id > 0">
             <input type="checkbox" id="onlyme" class="btn-check" v-model="onlyme" style="display: none;">
             <label class="btn btn-outline-warning" for="onlyme">Only me</label>
             <button class="btn btn-primary" type="submit">Search</button>
