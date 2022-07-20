@@ -22,7 +22,7 @@
             </button>
         </form>
     </header>
-    <div class="container-lg h-100">
+    <div class="container-lg h-100" v-if="activeNow">
         <div class="row h-100">
             <the-sidebar :servertime="server_time" :reload="myReload" :refreshed="refreshed" />
             <div class="modal fade" id="userModal" tabindex="-1">
@@ -66,7 +66,7 @@
                 role="main"
                 class="col-md-9 col-lg-10 ms-sm-auto px-md-4"
             >
-                <router-view v-if="activeNow" />
+                <router-view />
                 <footer style="height: 30px" />
             </main>
         </div>
@@ -81,6 +81,7 @@ import { callAPI, callRPC } from "./utils";
 import { UserGroup } from "./config";
 import { Modal } from "bootstrap";
 import TheSidebar from './TheSidebar.vue';
+import UserName from "./models/UserName.vue";
 
 export default {
     data() {
@@ -91,7 +92,6 @@ export default {
             myModal: null,
             refreshed: false,
             server_time: format(new Date(this.$time)),
-            show_result: false,
         };
     },
     components: {
@@ -121,7 +121,6 @@ export default {
             setTimeout(() => (this.refreshed = false), 1000);
         },
         showResult() {
-            this.show_result = true;
             this.myModal = Modal.getOrCreateInstance(
                 document.getElementById("userModal")
             );
@@ -132,7 +131,6 @@ export default {
             });
         },
         hideResult(event) {
-            this.show_result = false;
             this.myModal.dispose();
             document.body.removeAttribute("class");
             document.body.removeAttribute("style");
@@ -145,17 +143,7 @@ export default {
                 ];
             return [
                 h("td", row.user_id),
-                h(
-                    "td",
-                    h(
-                        "a",
-                        {
-                            href: "#/user/" + row.user_id,
-                            onClick: this.hideResult,
-                        },
-                        row.user_name
-                    )
-                ),
+                h("td", h(UserName, {id: row.user_id, name: row.user_name, rating: row.rating, onClick: this.hideResult})),
             ];
         },
         async queryUsers(query) {
@@ -164,6 +152,7 @@ export default {
                 var res = await new Promise((res, rej) => {
                     callAPI("users", "get", query, res, rej);
                 });
+                console.log(res.data)
                 return res.data;
             } catch (e) {
                 alert(e.data._error);

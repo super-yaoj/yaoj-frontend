@@ -33,7 +33,7 @@
                                 icon="refresh-outline"
                                 title="Refresh"
                                 @click.prevent="$props.reload"
-                                href="#"
+                                :href="$route.fullPath"
                             />
                         </div>
                         <div

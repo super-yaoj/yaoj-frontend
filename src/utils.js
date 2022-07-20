@@ -16,6 +16,7 @@ export {
     validUsername,
     validEmail,
     tooltipInit,
+    formatSeconds,
 }
 
 function jsonLength(json) {
@@ -128,6 +129,20 @@ function validPassword(str) {
 }
 function validEmail(str) {
     return /^[\w_-]+@[\w.]+$/.test(str)
+}
+
+function formatSeconds(seconds) {
+    var format = (num) => {
+        var ret = "" + num
+        while (ret.length < 2) {
+            ret = "0" + ret
+        }
+        return ret
+    }
+    var hour = Math.floor(seconds / 3600)
+    var minite = Math.floor(seconds / 60) % 60
+    var second = Math.floor(seconds) % 60
+    return format(hour) + ":" + format(minite) + ":" + format(second)
 }
 
 function SHA256(s) {

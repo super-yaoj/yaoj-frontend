@@ -2,7 +2,7 @@
 <div class="mt-5 container" style=""><div class="row">
     <div class="col-lg-3 col-sm-4 col-8" style="max-width:300px">
         <div><img src="/icons/default_icon.svg" /></div>
-        <div class="mt-2" style="font-size:1.5rem;color:gray">{{user.user_name}}</div>
+        <UserName :id="user.user_id" :name="user.user_name" :rating="user.rating" style="font-size:1.5rem" class="mt-2"></UserName>
         <div class="mt-2 row px-2 mb-2">
         <button class="btn btn-outline-primary col mx-1" role="button" style="width:100%" @click="submit">Submit</button>
         <router-link class="btn btn-outline-secondary col mx-1" role="button" :to="'/user/' + user.user_id" style="width:100%">Go Back</router-link>
@@ -76,6 +76,7 @@
 
 <script>
 import { queryUser, validPassword, validEmail, callAPI, SHA256 } from '@/utils'
+import UserName from '@/models/UserName.vue'
 
 export default {
     data() {
@@ -113,6 +114,9 @@ export default {
             }
         },
     },
+    components: {
+        UserName,
+    }
 }
 </script>
 

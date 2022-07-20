@@ -11,6 +11,7 @@
 
 <script>
 import Table from '@/models/Table.vue'
+import UserName from '@/models/UserName.vue'
 import { callAPI } from '@/utils'
 import { h } from 'vue'
 
@@ -24,7 +25,7 @@ export default {
                 h('td', {style: "text-align:left"}, h('strong', 'Username')), 
                 h('td', {style: "width: 10%"}, h('strong', 'Rating'))]
             else return [h('td', {style: "text-align:left"}, row.user_id),
-                h('td', {style: "text-align:left"}, h('a', {href: '#/user/' + row.user_id}, row.user_name)),
+                h('td', {style: "text-align:left"}, h(UserName, {id: row.user_id, name: row.user_name, rating: row.rating})),
                 h('td', row.rating)]
         },
         async getParticipants(query) {

@@ -3,10 +3,10 @@
 <div class="col-lg-4 col-sm-5 col-12" style="max-width:300px">
     <div class="me-3">
     <div><img src="/icons/default_icon.svg" /></div>
-    <div class="mt-2" style="font-size:1.5rem;color:gray">
+    <div class="mt-2" style="font-size:1.5rem">
         <ion-icon name="male-outline" class="info-gender-icon" style="color:#66F" v-if="user.gender == 1">
         </ion-icon><ion-icon name="female-outline" class="info-gender-icon" style="color:#F66" v-if="user.gender == 2"></ion-icon>
-        {{user["user_name"]}}
+        <UserName :id="user.user_id" :name="user.user_name" :rating="user.rating"></UserName>
     </div>
     <div class="small" style="color:gray;word-wrap:break-word">{{user.motto}}</div>
     <a class="mt-2 mb-2 btn btn-sm btn-outline-secondary" role="button" :href="'#/user/' + user.user_id + '/modify/'" style="width:100%" v-if="user.user_id == $user.user_id">Modify Information</a>
@@ -60,6 +60,7 @@ import { h, nextTick } from 'vue'
 import Table from '@/models/Table.vue'
 import ClickLike from '@/models/ClickLike.vue'
 import { format } from 'silly-datetime'
+import UserName from '@/models/UserName.vue'
 
 export default {
     inject: ['isAdmin'],
@@ -77,7 +78,8 @@ export default {
     },
     components: {
         Table,
-        ClickLike
+        ClickLike,
+        UserName
     },
     methods: {
         permissionRow(row) {

@@ -60,6 +60,7 @@ import ClickLike from '@/models/ClickLike.vue'
 import { callAPI } from '@/utils'
 import { h, nextTick } from 'vue'
 import { format } from 'silly-datetime'
+import UserName from '@/models/UserName.vue'
 
 export default {
     inject: ['isAdmin'],
@@ -139,7 +140,7 @@ export default {
                 h('td', {}, h('strong', 'Motto')),
                 h('td', {style: "width: 10%"}, h('strong', 'Rating'))]
             else return [h('td', {style: "text-align:left"}, row.user_id),
-                h('td', {style: "text-align:left"}, h('a', {href: '#/user/' + row.user_id}, row.user_name)),
+                h('td', {style: "text-align:left"}, h(UserName, {id: row.user_id, name: row.user_name, rating: row.rating})),
                 h('td', row.motto),
                 h('td', row.rating)]
         },

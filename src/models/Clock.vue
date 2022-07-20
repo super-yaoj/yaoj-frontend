@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { formatSeconds } from '@/utils'
+
 export default {
     props: ['seconds'],
     data() {
@@ -15,19 +17,7 @@ export default {
     },
     computed: {
         str() {
-            var hour = Math.floor(this.remain / 3600)
-            var minite = Math.floor(this.remain / 60) % 60
-            var second = Math.floor(this.remain) % 60
-            return this.format(hour) + ":" + this.format(minite) + ":" + this.format(second)
-        }
-    },
-    methods: {
-        format(num) {
-            var ret = "" + num
-            while (ret.length < 2) {
-                ret = "0" + ret
-            }
-            return ret
+            return formatSeconds(this.remain)
         }
     },
     watch: {

@@ -123,18 +123,4 @@ export default {
 </script>
 
 <style>
-.page-link {
-    color: #444;
-    font-size: 1.2rem;
-    padding-top: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-button:disabled.page-link {
-    color: #999;
-}
-td {
-    font-size: 0.85rem;
-    padding: 10px 10px 10px 10px!important;
-}
 </style>

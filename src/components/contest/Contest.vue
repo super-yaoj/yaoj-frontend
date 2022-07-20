@@ -25,7 +25,8 @@
                             <div style="color:#666">Remaining Time:</div>
                             <h2>
                                 <Clock :seconds="(contest.end_time - current_time) / 1000" v-if="contest.end_time > current_time" />
-                                <span v-else>Ended</span>
+                                <span v-else-if="contest.finished">Ended</span>
+                                <span v-else>Judging</span>
                             </h2>
                             <hr>
                             <div style="color:#666">Rule: {{rule}}<br>Max Rating Change: 0<br>Status: {{status}}</div>
@@ -33,7 +34,7 @@
                     </div>
                     <router-link class="btn btn-light mt-3" style="width:100%" :to="'/contest/' + id + '/participants'">Participants</router-link>
                     <router-link class="btn btn-info mt-3" style="width:100%" :to="'/submissions/?contest_id=' + id + '&submitter=' + $user.user_id" v-if="$user.user_id > 0">My submissions</router-link>
-                    <button class="btn btn-danger mt-3" style="width:100%" v-if="can_edit">End Contest</button>
+                    <button class="btn btn-danger mt-3" style="width:100%" v-if="can_edit" @click="endContest">End Contest</button>
                 </div>
                 <div class="col">
                     <ManageTable url="contest_problems" :data_name="['contest_id', 'problem_id', 'title']" title="Problem" name="problem" :no-modify="!can_edit" :query="{contest_id:id}" />
@@ -41,6 +42,7 @@
             </div>
         </div>
         <div class="tab-pane fade" id="standing">
+            <ContestStanding></ContestStanding>
         </div>
         <div class="tab-pane fade mt-3" id="manage" v-if="can_edit">
             <div class="d-flex align-items-start">
@@ -85,6 +87,7 @@ import { callAPI, callRPC } from '@/utils'
 import ClickLike from '@/models/ClickLike.vue'
 import Table from '@/models/Table.vue'
 import ManageTable from '@/models/ManageTable.vue'
+import ContestStanding from './ContestStanding.vue'
 import Clock from '@/models/Clock.vue'
 import { getRule, getStatus } from './contest'
 import { format } from 'silly-datetime'
@@ -94,7 +97,7 @@ export default {
     data() {
         return {
             id: this.$route.params.id,
-            contest: { title: "", like: 0, liked: false, start_time: "", end_time: "" },
+            contest: { title: "", like: 0, liked: false, start_time: "", end_time: "", finished: false },
             can_edit: false,
             current_time: "",
             rule: "",
@@ -106,7 +109,8 @@ export default {
         ClickLike,
         Table,
         ManageTable,
-        Clock
+        Clock,
+        ContestStanding
     },
     created() {
         callAPI('contest', 'get', { contest_id: this.id }, (res) => {
@@ -141,6 +145,13 @@ export default {
                 this.reload()
             }, (res) => {
                 alert(res.data._error)
+            })
+        },
+        endContest() {
+            callAPI('FinishContest', 'post', {contest_id: this.id}, (res) => {
+                this.reload()
+            }, (res) => {
+                alert(res.data._error.message)
             })
         },
     },

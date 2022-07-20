@@ -16,7 +16,7 @@
         </div>
     </div>
 </div>
-<Table :pagination="false" :get="getData" :row="getRow" v-if="reload" />
+<Table :pagination="false" :get="getData" :row="getRow" v-if="reload"></Table>
 </template>
 
 <script>
