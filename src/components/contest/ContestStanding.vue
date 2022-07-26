@@ -52,14 +52,13 @@ export default {
             this.problems = res.data.problems
             this.standing = res.data.standing
             if (this.standing != null) {
-                for (var key in this.standing) {
-                    this.standing[key].TotalScore = 0
-                    this.standing[key].TotalPenalty = 0
-                    for (var score of this.standing[key].Scores) {
-                        this.standing[key].TotalScore += score
-                    }
-                    for (var penalty of this.standing[key].Penalties) {
-                        this.standing[key].TotalPenalty += penalty
+                for (var entry of this.standing) {
+                    entry.TotalScore = 0
+                    entry.TotalPenalty = 0
+                    for (var i in entry.SubIds) {
+                        if (entry.SubIds[i] == 0) continue
+                        entry.TotalScore += entry.Scores[i]
+                        entry.TotalPenalty += entry.Penalties[i]
                     }
                 }
                 this.standing.sort((a, b) => a.TotalScore == b.TotalScore ? a.Penalties - b.Penalties : b.TotalScore - a.TotalScore)

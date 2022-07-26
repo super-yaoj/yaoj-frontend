@@ -8,6 +8,7 @@ const routes = [
     
     { path: '/problems', name: 'ProblemList', component: () => import(/* webpackChunkName: "router-all" */ './components/problem/ProblemList.vue') },
     { path: '/problem/:id', name: 'Problem', component: () => import(/* webpackChunkName: "router-all" */ './components/problem/Problem.vue') },
+    { path: '/problem/:id/statistic', name: 'ProblemStatistic', component: () => import(/* webpackChunkName: "router-all" */ './components/problem/ProblemStatistic.vue') },
     
     { path: '/submissions', name: 'SubmissionList', component: () => import(/* webpackChunkName: "router-all" */ './components/submission/SubmissionList.vue') },
     { path: '/submission/:id', name: 'Submission', component: () => import(/* webpackChunkName: "router-all" */ './components/submission/Submission.vue') },

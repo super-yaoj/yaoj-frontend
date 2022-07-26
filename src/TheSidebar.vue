@@ -150,7 +150,7 @@ export default {
         },
     },
     mounted() {
-        console.log(this.$props.servertime);
+        console.log(this.$user);
     },
 };
 </script>

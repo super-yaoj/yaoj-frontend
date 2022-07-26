@@ -4,18 +4,39 @@
     <div class="me-3">
     <div><img src="/icons/default_icon.svg" /></div>
     <div class="mt-2" style="font-size:1.5rem">
-        <ion-icon name="male-outline" class="info-gender-icon" style="color:#66F" v-if="user.gender == 1">
-        </ion-icon><ion-icon name="female-outline" class="info-gender-icon" style="color:#F66" v-if="user.gender == 2"></ion-icon>
+        <div style="float:left">
+            <ion-icon name="male-outline" class="info-gender-icon" style="color:#66F" v-if="user.gender == 1">
+            </ion-icon><ion-icon name="female-outline" class="info-gender-icon" style="color:#F66" v-if="user.gender == 2"></ion-icon>
+        </div>
         <UserName :id="user.user_id" :name="user.user_name" :rating="user.rating"></UserName>
     </div>
     <div class="small" style="color:gray;word-wrap:break-word">{{user.motto}}</div>
     <a class="mt-2 mb-2 btn btn-sm btn-outline-secondary" role="button" :href="'#/user/' + user.user_id + '/modify/'" style="width:100%" v-if="user.user_id == $user.user_id">Modify Information</a>
     <ul class="list-group list-group-flush" style="word-wrap:break-word">
-        <li class="list-group-item info-item"><ion-icon name="id-card" class="feather me-1"></ion-icon>ID #{{user.user_id}}</li>
-        <li class="list-group-item info-item"><ion-icon name="people" class="feather me-1"></ion-icon>{{user.user_group}}</li>
-        <li class="list-group-item info-item"><ion-icon name="time" class="feather me-1"></ion-icon>{{"Register at " + user.register_time}}</li>
-        <li class="list-group-item info-item" v-if="user.email != ''"><ion-icon name="mail" class="feather me-1"></ion-icon>{{user.email}}</li>
-        <li class="list-group-item info-item" v-if="user.organization != ''"><ion-icon name="briefcase" class="feather me-1"></ion-icon>{{user.organization}}</li>
+        <li class="list-group-item info-item" data-bs-toggle="tooltip" data-bs-placement="left" title="User Id">
+            <ion-icon name="id-card" class="feather me-1"></ion-icon>
+            ID #{{user.user_id}}
+        </li>
+        <li class="list-group-item info-item" data-bs-toggle="tooltip" data-bs-placement="left" title="Rating">
+            <ion-icon name="bar-chart" class="feather me-2" style="float:left;margin-top:2px"></ion-icon>
+            <UserName :id="user.user_id" :name="user.rating + ''" :rating="user.rating"></UserName>
+        </li>
+        <li class="list-group-item info-item" data-bs-toggle="tooltip" data-bs-placement="left" title="User Group">
+            <ion-icon name="people" class="feather me-1"></ion-icon>
+            {{user.user_group}}
+        </li>
+        <li class="list-group-item info-item" data-bs-toggle="tooltip" data-bs-placement="left" title="Register Time">
+            <ion-icon name="time" class="feather me-1"></ion-icon>
+            {{ user.register_time }}
+        </li>
+        <li class="list-group-item info-item" data-bs-toggle="tooltip" data-bs-placement="left" title="Email" v-if="user.email != ''">
+            <ion-icon name="mail" class="feather me-1"></ion-icon>
+            {{user.email}}
+        </li>
+        <li class="list-group-item info-item" data-bs-toggle="tooltip" data-bs-placement="left" title="Organization" v-if="user.organization != ''">
+            <ion-icon name="briefcase" class="feather me-1"></ion-icon>
+            {{user.organization}}
+        </li>
     </ul>
     </div>
 </div>
@@ -39,15 +60,17 @@
                    data-bs-toggle="tab" data-bs-target="#permission" type="button" role="tab">Permissions</button>
             </li>
         </ul>
-        <div class="tab-content mt-4 container" id="myTabContent">
-        <div :class="'tab-pane fade' + (tab == undefined || tab == 'rating' ? ' active show' : '')" id="rating" role="tabpanel" aria-labelledby="rating-tab">...</div>
-        <div :class="'tab-pane fade' + (tab == 'accepted' ? ' active show' : '')" id="accepted" role="tabpanel" aria-labelledby="accepted-tab">...</div>
-        <div :class="'tab-pane fade' + (tab == 'blogs' ? ' active show' : '')" id="blogs" role="tabpanel" aria-labelledby="blogs-tab">
-            <Table :row="blogRow" :get="getBlog" :pagination="false" v-if="reloadBlog"></Table>
-        </div>
-        <div :class="'tab-pane fade' + (tab == 'permissions' ? ' active show' : '')" id="permission" role="tabpanel" aria-labelledby="permission-tab" v-if="canSeePermission">
-            <Table :row="permissionRow" :get="getPermission" :pagination="false"></Table>
-        </div>
+        <div class="tab-content container" id="myTabContent">
+            <div :class="'tab-pane fade' + (tab == undefined || tab == 'rating' ? ' active show' : '')" id="rating" role="tabpanel" aria-labelledby="rating-tab">
+                <Rating :register_time="user.register_time" v-if="user.user_id"></Rating>
+            </div>
+            <div :class="'mt-4 tab-pane fade' + (tab == 'accepted' ? ' active show' : '')" id="accepted" role="tabpanel" aria-labelledby="accepted-tab">...</div>
+            <div :class="'mt-4 tab-pane fade' + (tab == 'blogs' ? ' active show' : '')" id="blogs" role="tabpanel" aria-labelledby="blogs-tab">
+                <Table :row="blogRow" :get="getBlog" :pagination="false" v-if="reloadBlog"></Table>
+            </div>
+            <div :class="'mt-4 tab-pane fade' + (tab == 'permissions' ? ' active show' : '')" id="permission" role="tabpanel" aria-labelledby="permission-tab" v-if="canSeePermission">
+                <Table :row="permissionRow" :get="getPermission" :pagination="false"></Table>
+            </div>
         </div>
     </div>
 </div>
@@ -55,12 +78,13 @@
 </template>
 
 <script>
-import { callAPI, queryUser } from '@/utils'
+import { callAPI, queryUser, tooltipInit, tooltipDispose } from '@/utils'
 import { h, nextTick } from 'vue'
 import Table from '@/models/Table.vue'
 import ClickLike from '@/models/ClickLike.vue'
 import { format } from 'silly-datetime'
 import UserName from '@/models/UserName.vue'
+import Rating from './Rating.vue'
 
 export default {
     inject: ['isAdmin'],
@@ -70,15 +94,22 @@ export default {
             user: {},
             id: this.$route.params.id,
             canSeePermission: this.isAdmin() || this.$route.params.id == this.$user.user_id,
-            reloadBlog: true
+            reloadBlog: true,
+            tooltips: [],
         }
     },
     async mounted() {
+        this.tooltips = tooltipInit()
         this.user = await queryUser({user_id: this.id})
+    },
+    beforeUnmount() {
+        tooltipDispose(this.tooltips)
     },
     components: {
         Table,
         ClickLike,
+        UserName,
+        Rating,
         UserName
     },
     methods: {

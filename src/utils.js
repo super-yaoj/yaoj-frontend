@@ -2,9 +2,10 @@ import request from 'axios'
 import qs from 'qs'
 import { BASE_URL } from './config.js'
 import { Tooltip } from "bootstrap"
-
+import { format } from 'silly-datetime'
 
 export {
+    echoSize,
     jsonLength,
     randomString,
     queryUser,
@@ -17,6 +18,17 @@ export {
     validEmail,
     tooltipInit,
     formatSeconds,
+    tooltipDispose,
+}
+
+function echoSize(bytes) {
+    if (bytes < 1024) {
+        return bytes + 'B'
+    } else if (bytes < 1048576) {
+        return (bytes / 1024).toFixed(1) + 'KB'
+    } else {
+        return (bytes / 1048576).toFixed(1) + 'MB'
+    }
 }
 
 function jsonLength(json) {
@@ -43,7 +55,7 @@ async function queryUser(data) {
                 function(response) { resolve(response.data) }, function(response) { reject(response.data) })
         })
         user.user_group = user_group[user.user_group]
-        user.register_time = user.register_time.substr(0, 10)
+        user.register_time = format(user.register_time)
     } catch (e) {
         window.location.replace("#/404NotFound")
     }
@@ -116,8 +128,17 @@ function callRPC(name, data, success, failed) {
 
 function tooltipInit() {
     var tooltipTriggerList = Array.prototype.slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltips = []
     tooltipTriggerList.forEach((tooltipTriggerEl) => {
-        new Tooltip(tooltipTriggerEl, { customClass: "limitation-icon" })
+        var tooltip = new Tooltip(tooltipTriggerEl, { customClass: "limitation-icon" })
+        tooltips.push(tooltip)
+    })
+    return tooltips
+}
+
+function tooltipDispose(tooltips) {
+    tooltips.forEach((tooltip) => {
+        tooltip.dispose()
     })
 }
 

@@ -34,7 +34,7 @@
                     </div>
                     <router-link class="btn btn-light mt-3" style="width:100%" :to="'/contest/' + id + '/participants'">Participants</router-link>
                     <router-link class="btn btn-info mt-3" style="width:100%" :to="'/submissions/?contest_id=' + id + '&submitter=' + $user.user_id" v-if="$user.user_id > 0">My submissions</router-link>
-                    <button class="btn btn-danger mt-3" style="width:100%" v-if="can_edit" @click="endContest">End Contest</button>
+                    <button class="btn btn-danger mt-3" style="width:100%" v-if="can_edit && !contest.finished" @click="endContest">End Contest</button>
                 </div>
                 <div class="col">
                     <ManageTable url="contest_problems" :data_name="['contest_id', 'problem_id', 'title']" title="Problem" name="problem" :no-modify="!can_edit" :query="{contest_id:id}" />
@@ -57,14 +57,14 @@
                         <input class="form-control info-input-form" placeholder="Contest Name" v-model="newcontest.title" maxlength="80">
                         <hr>
                         <label class="ml-1"><strong>Start Time:</strong></label>
-                        <input class="form-control info-input-form" placeholder="Start Time" v-model="newcontest.start_time">
+                        <input class="form-control info-input-form" placeholder="Start Time" v-model="newcontest.start_time" :disabled="contest.finished">
                         <label class="ml-1"><strong>Last:</strong></label>
-                        <input class="form-control info-input-form" placeholder="End Time" v-model="newcontest.last">
+                        <input class="form-control info-input-form" placeholder="End Time" v-model="newcontest.last" :disabled="contest.finished">
                         <hr>
                         <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                            <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" v-model="newcontest.pretest">
+                            <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" v-model="newcontest.pretest" :disabled="contest.finished">
                             <label class="btn btn-outline-secondary" style="border-right:0px;" for="btncheck1">Pretest Only</label>
-                            <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off" v-model="newcontest.score_private">
+                            <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off" v-model="newcontest.score_private" :disabled="contest.finished">
                             <label class="btn btn-outline-secondary" for="btncheck2">Score Private</label>
                         </div>
                         <div class="text-center mt-1" @click="modifyContest"><button class="btn btn-primary">Submit</button></div>

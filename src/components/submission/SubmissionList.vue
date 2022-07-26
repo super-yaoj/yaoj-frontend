@@ -23,13 +23,12 @@
             <button class="btn btn-primary" type="submit">Search</button>
         </div>
     </form>
-    <Table :row="getLine" :sizes="[10, 20, 50, 100]" :get="getSubmissions" :next="next" :pagination="true" v-if="reloadSubmissions" :nocache="true" />
+    <Table :row="getLine" :sizes="[10, 20, 50, 100]" :get="getSubmissions" :next="next" :pagination="true" v-if="reloadSubmissions" :nocache="true"></Table>
 </div>
 </template>
 
 <script>
 import Table from "@/models/Table.vue"
-import { h } from 'vue'
 import { callAPI } from '@/utils'
 import { submissionRow } from "./submission"
 
@@ -48,16 +47,6 @@ export default {
     },
     methods: {
         getLine(row) {
-            if (row == null) return [
-                h('td', h('strong', '#ID')),
-                h('td', h('strong', 'Problem')),
-                h('td', h('strong', 'Submitter')),
-                h('td', h('strong', 'Score')),
-                h('td', h('strong', 'Time')),
-                h('td', h('strong', 'Memory')),
-                h('td', h('strong', 'Language')),
-                h('td', h('strong', 'Submit Time')),
-            ]
             return submissionRow(row)
         },
         async getSubmissions(query) {
@@ -67,6 +56,7 @@ export default {
                 var res = await new Promise((res, rej) => {
                     callAPI('submissions', 'get', query, res, rej)
                 })
+                console.log(res.data)
                 return res.data
             } catch (e) {
                 console.log(e)

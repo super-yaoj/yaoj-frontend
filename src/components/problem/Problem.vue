@@ -32,6 +32,9 @@
         <li class="nav-item" v-if="can_edit">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#manage" :value="id">Manage</button>
         </li>
+        <li class="nav-item" v-if="!in_contest">
+            <a class="nav-link" :href="'#/problem/' + id + '/statistic'" :value="id">Statistic</a>
+        </li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane fade show active" id="statement">
@@ -75,6 +78,7 @@ export default {
                 data: {},
             },
             can_edit: false,
+            in_contest: true,
             download_path: BASE_URL + 'problem_data?type=sample&problem_id=' + this.$route.params.id + (this.$route.query.contest_id ? '&contest_id=' + this.$route.query.contest_id : ''),
         }
     },
@@ -82,6 +86,7 @@ export default {
         callAPI('problem', 'get', { problem_id: this.id, contest_id: this.contest_id }, (res) => {
             this.problem = res.data.problem
             this.can_edit = res.data.can_edit
+            this.in_contest = res.data.in_contest
             console.log(this.problem)
         }, (res) => {
             alert(res.data._error)
