@@ -1,5 +1,5 @@
 <template>
-<div v-if="this.name" :class="class" :style="style">
+<div v-if="this.name" :class="this.class" :style="style">
     <a :href="'#/user/' + id" @click="onClick">
         <span :style="'color:' + colorHead">{{name[0]}}</span>
         <span :style="'color:' + colorTail">{{name.substr(1)}}</span>

@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div>
     <table class="table table-hover text-center" style="vertical-align:middle">
         <thead>
             <tr>

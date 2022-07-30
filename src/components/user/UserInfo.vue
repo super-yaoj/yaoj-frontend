@@ -1,14 +1,13 @@
 <template>
-<div class="mt-5" style=""><div class="row">
-<div class="col-lg-4 col-sm-5 col-12" style="max-width:300px">
-    <div class="me-3">
-    <div><img src="/icons/default_icon.svg" /></div>
+<div class="mt-5 row" style="">
+<div class="col-lg-4 col-sm-5 col-12 mx-auto mb-3"><div>
+    <div class="rounded-2" style="overflow: hidden"><img src="/icons/default_icon.svg" /></div>
     <div class="mt-2" style="font-size:1.5rem">
-        <div style="float:left">
-            <ion-icon name="male-outline" class="info-gender-icon" style="color:#66F" v-if="user.gender == 1">
-            </ion-icon><ion-icon name="female-outline" class="info-gender-icon" style="color:#F66" v-if="user.gender == 2"></ion-icon>
+        <div style="display: inline-block;" class="me-1">
+            <ion-icon name="male-outline" class="info-gender-icon" style="color:#66F" v-if="user.gender == 1" />
+            <ion-icon name="female-outline" class="info-gender-icon" style="color:#F66" v-if="user.gender == 2" />
         </div>
-        <UserName :id="user.user_id" :name="user.user_name" :rating="user.rating"></UserName>
+        <UserName style="display: inline-block;" :id="user.user_id" :name="user.user_name" :rating="user.rating" />
     </div>
     <div class="small" style="color:gray;word-wrap:break-word">{{user.motto}}</div>
     <a class="mt-2 mb-2 btn btn-sm btn-outline-secondary" role="button" :href="'#/user/' + user.user_id + '/modify/'" style="width:100%" v-if="user.user_id == $user.user_id">Modify Information</a>
@@ -25,8 +24,7 @@
         <user-info v-if="user.email != ''" title="Email" icon="mail">{{user.email}}</user-info>
         <user-info v-if="user.organization != ''" title="Organization" icon="briefcase">{{user.organization}}</user-info>
     </ul>
-    </div>
-</div>
+</div></div>
 <div class="col-12 col-sm-7 col-lg-8">
     <div class="">
         <ul class="nav nav-tabs" id="myTab" role="tablist" style="flex-wrap: none;">
@@ -49,19 +47,19 @@
         </ul>
         <div class="tab-content container" id="myTabContent">
             <div :class="'tab-pane fade' + (tab == undefined || tab == 'rating' ? ' active show' : '')" id="rating" role="tabpanel" aria-labelledby="rating-tab">
-                <Rating :register_time="user.register_time" v-if="user.user_id"></Rating>
+                <Rating :register_time="user.register_time" v-if="user.user_id" />
             </div>
             <div :class="'mt-4 tab-pane fade' + (tab == 'accepted' ? ' active show' : '')" id="accepted" role="tabpanel" aria-labelledby="accepted-tab">...</div>
             <div :class="'mt-4 tab-pane fade' + (tab == 'blogs' ? ' active show' : '')" id="blogs" role="tabpanel" aria-labelledby="blogs-tab">
-                <Table :row="blogRow" :get="getBlog" :pagination="false" v-if="reloadBlog"></Table>
+                <Table :row="blogRow" :get="getBlog" :pagination="false" v-if="reloadBlog" />
             </div>
             <div :class="'mt-4 tab-pane fade' + (tab == 'permissions' ? ' active show' : '')" id="permission" role="tabpanel" aria-labelledby="permission-tab" v-if="canSeePermission">
-                <Table :row="permissionRow" :get="getPermission" :pagination="false"></Table>
+                <Table :row="permissionRow" :get="getPermission" :pagination="false" />
             </div>
         </div>
     </div>
 </div>
-</div></div>
+</div>
 </template>
 
 <script>

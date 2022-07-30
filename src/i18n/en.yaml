@@ -1,0 +1,15 @@
+name: English
+hello: Hello
+sidebar:
+  problems: Problems
+  submissions: Submissions
+  contests: Contests
+  blogs: Blogs
+  refresh: Refresh
+  profile: Profile
+  custom_test: 'Custom Test'
+  system_manage: 'Sysetm Manage'
+  permissions: 'Permission List'
+  login: 'Log In'
+  logout: 'Log Out'
+  signup: 'Sign Up'
