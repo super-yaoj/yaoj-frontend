@@ -13,30 +13,17 @@
     <div class="small" style="color:gray;word-wrap:break-word">{{user.motto}}</div>
     <a class="mt-2 mb-2 btn btn-sm btn-outline-secondary" role="button" :href="'#/user/' + user.user_id + '/modify/'" style="width:100%" v-if="user.user_id == $user.user_id">Modify Information</a>
     <ul class="list-group list-group-flush" style="word-wrap:break-word">
-        <li class="list-group-item info-item" data-bs-toggle="tooltip" data-bs-placement="left" title="User Id">
-            <ion-icon name="id-card" class="feather me-1"></ion-icon>
-            ID #{{user.user_id}}
-        </li>
-        <li class="list-group-item info-item" data-bs-toggle="tooltip" data-bs-placement="left" title="Rating">
-            <ion-icon name="bar-chart" class="feather me-2" style="float:left;margin-top:2px"></ion-icon>
-            <UserName :id="user.user_id" :name="user.rating + ''" :rating="user.rating"></UserName>
-        </li>
-        <li class="list-group-item info-item" data-bs-toggle="tooltip" data-bs-placement="left" title="User Group">
-            <ion-icon name="people" class="feather me-1"></ion-icon>
-            {{user.user_group}}
-        </li>
-        <li class="list-group-item info-item" data-bs-toggle="tooltip" data-bs-placement="left" title="Register Time">
-            <ion-icon name="time" class="feather me-1"></ion-icon>
-            {{ user.register_time }}
-        </li>
-        <li class="list-group-item info-item" data-bs-toggle="tooltip" data-bs-placement="left" title="Email" v-if="user.email != ''">
-            <ion-icon name="mail" class="feather me-1"></ion-icon>
-            {{user.email}}
-        </li>
-        <li class="list-group-item info-item" data-bs-toggle="tooltip" data-bs-placement="left" title="Organization" v-if="user.organization != ''">
-            <ion-icon name="briefcase" class="feather me-1"></ion-icon>
-            {{user.organization}}
-        </li>
+        <user-info title="User ID" icon="id-card">ID #{{user.user_id}}</user-info>
+        <user-info title="Rating" icon="bar-chart"> 
+            <UserName 
+                style="display: inline-block;" :id="user.user_id" 
+                :name="user.rating + ''" :rating="user.rating"
+            />
+        </user-info>
+        <user-info title="User Group" icon="people">{{user.user_group}}</user-info>
+        <user-info title="Register Time" icon="time">{{ user.register_time }}</user-info>
+        <user-info v-if="user.email != ''" title="Email" icon="mail">{{user.email}}</user-info>
+        <user-info v-if="user.organization != ''" title="Organization" icon="briefcase">{{user.organization}}</user-info>
     </ul>
     </div>
 </div>
@@ -86,6 +73,12 @@ import { format } from 'silly-datetime'
 import UserName from '@/models/UserName.vue'
 import Rating from './Rating.vue'
 
+const UserInfo = ({ title, icon }, context) => 
+    <li class="list-group-item info-item" data-bs-toggle="tooltip" data-bs-placement="left" title={title}>
+        <ion-icon name={icon} class="feather me-2" />
+        {context.slots.default()}
+    </li>
+
 export default {
     inject: ['isAdmin'],
     data() {
@@ -109,6 +102,7 @@ export default {
         Table,
         ClickLike,
         UserName,
+        UserInfo,
         Rating,
         UserName
     },
@@ -134,24 +128,39 @@ export default {
         },
         blogRow(row) {
             if (row == null) return [
-                h('td', { style: "text-align: left" }, h('strong', 'Title')),
-                h('td', { style: "width:20%" }, h('strong', 'Create date')),
-                h('td', { style: "width: 10%; text-align: right" }, h('strong', 'Comments')),
+                <td style="text-align: left"><strong>Title</strong></td>,
+                <td style="width: 20%"><strong>Create Date</strong></td>,
+                <td style="width: 10%; text-align: right"><strong>Comments</strong></td>,
             ]
             else if (row.id < 0) {
                 return [
-                    h('td', { style: "text-align: left" }, h('a', { href: '#/editblog?local=' + row.local }, [
-                        h('span', { style: "color: red" }, '[Draft]'), row.title])),
-                    h('td'), h('td', h('a', {onClick: this.deleteDraft(row.local), href: '#'}, 'delete'))
+                    <td style="text-align: left">
+                        <router-link to={'/editblog?local=' + row.local}>
+                            <span style="color: red">[Draft] </span>
+                            {row.title}
+                        </router-link>
+                    </td>,
+                    <td></td>,
+                    <td><a onClick={this.deleteDraft(row.local)} href="#">delete</a></td>
                 ]
             } else return [
-                h('td', { style: "text-align: left" }, h('a', { href: '#/blog/' + row.blog_id }, [
-                    h('span', { style: "color: gray" }, row.private ? '[Private]' : ''), row.title])),
-                h('td', {}, format(row.create_time, 'YYYY-MM-DD')),
-                h('td', h('div', { class: "row" }, [
-                    h(ClickLike, { class: "col px-0", icon: "chatbox-outline", number: row.comments }),
-                    h(ClickLike, { class: "col px-0", icon: "thumbs-up-outline", number: row.like, target: { name: "blog", id: row.blog_id }, active: row.liked })
-                ]))
+                <td style="text-align: left">
+                    <router-link to={'/blog/' + row.blog_id}>
+                        {row.private ? <span style="color: gray">[Private] </span> : null}
+                        {row.title}
+                    </router-link>
+                </td>,
+                <td>{format(row.create_time, "YYYY-MM-DD")}</td>,
+                <td>
+                    <div class="d-flex justify-content-between">
+                    <ClickLike icon="chatbox-outline" number={row.comments}/>
+                    <ClickLike 
+                        icon="thumbs-up-outline" number={row.like} 
+                        target={{name: "blog", id: row.blog_id}}
+                        active={row.liked}
+                    />
+                    </div>
+                </td>
             ]
         },
         async getBlog(query) {
