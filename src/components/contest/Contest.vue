@@ -38,6 +38,7 @@
                 </div>
                 <div class="col">
                     <ManageTable url="contest_problems" :data_name="['contest_id', 'problem_id', 'title']" title="Problem" name="problem" :no-modify="!can_edit" :query="{contest_id:id}" />
+                    <ContestDashboard :data="dashboard" @new="runtask"></ContestDashboard>
                 </div>
             </div>
         </div>
@@ -88,10 +89,13 @@ import ClickLike from '@/models/ClickLike.vue'
 import Table from '@/models/Table.vue'
 import ManageTable from '@/models/ManageTable.vue'
 import ContestStanding from './ContestStanding.vue'
+import ContestDashboard from './ContestDashboard.vue'
 import Clock from '@/models/Clock.vue'
 import { getRule, getStatus } from './contest'
 import { format } from 'silly-datetime'
+import ContestList from './ContestList.vue'
 
+const RefreshInterval = 30000
 export default {
     inject: ['reload'],
     data() {
@@ -104,6 +108,7 @@ export default {
             status: "",
             newcontest: {},
             tasks: null,
+            dashboard: [],
         }
     },
     components: {
@@ -111,7 +116,9 @@ export default {
         Table,
         ManageTable,
         Clock,
-        ContestStanding
+        ContestStanding,
+        ContestList,
+        ContestDashboard
     },
     created() {
         callAPI('contest', 'get', { contest_id: this.id }, (res) => {
@@ -133,7 +140,7 @@ export default {
             }
         })
         this.runtask()
-        this.tasks = setInterval(this.runtask, 30000)
+        this.tasks = setInterval(this.runtask, RefreshInterval)
     },
     methods: {
         modifyContest() {
@@ -155,8 +162,23 @@ export default {
             })
         },
         runtask() {
+            var ct = this.current_time
             callRPC('GetTime', {}, (res) => {
                 this.current_time = new Date(res.data.server_time)
+            })
+            callAPI('contest_dashboard', 'get', {contest_id: this.id}, (res) => {
+                if (res.data.data != null) {
+                    this.dashboard = res.data.data.sort((a, b) => b.id - a.id)
+                    if (ct) {
+                        for (var row of res.data.data) {
+                            if (new Date(row.time) > ct) {
+                                alert("New Announcement!!!\n" + row.dashboard)
+                            }
+                        }
+                    }
+                }
+            }, (res) => {
+                alert(res.data._error)
             })
         },
         contestEnd() {

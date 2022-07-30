@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import ClickLike from '@/models/ClickLike.vue'
 import Table from '@/models/Table.vue'
 import { callAPI } from '@/utils'
 import qs from 'qs'
@@ -37,7 +36,6 @@ export default {
         }
     },
     components: {
-        ClickLike,
         Table,
     },
     methods: {
