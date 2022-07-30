@@ -1,5 +1,5 @@
 <template>
-<div class="mt-4 container">
+<div class="mt-4 container-md">
     <div class="row mb-3">
         <div class="col">
             <div class="h3 mb-0">Problem List</div>

@@ -3,21 +3,26 @@ import { h, defineComponent } from 'vue'
 
 const PageItem = defineComponent({
     props: ['icon', 'f', 'disable'],
-    template: `
-        <button class="btn page-link" @click="f" :disabled="disable">
-            <ion-icon :name="icon">
-            </ion-icon>
+    render() {
+        const {f, disable, icon} = this.$props;
+        return <button class="btn page-link" onClick={f} disabled={disable}>
+            <ion-icon name={icon} />
         </button>
-    `,
+    },
 })
 
 const PageSize = defineComponent({
     props: ['f', 'sizes', 'defaultsize'],
-    template: `
-    <select class="form-select" @change="f($event.srcElement.value)" v-if="sizes.length>1">
-        <option v-for="size in sizes" :value="size" :selected="defaultsize == size" :key="size">{{size}} per page</option>
-    </select>
-    `,
+    render() {
+        const {f, sizes, defaultsize} = this.$props
+        if (sizes.length > 1) {
+            return <select class="form-select" onChange={() => f(this.$event.srcElement.value)}>
+                {sizes.map(size => <option value={size} selected={defaultsize == size} key={size}>{size} per page</option>)}
+            </select>
+        } else {
+            return null
+        }
+    },
 })
 
 export default {
@@ -55,22 +60,28 @@ export default {
                 children.push(h('tr', this.row(this.data[i])))
             }
         }
-        var table = h('table', {class: tableclass}, [
-            h('thead', {style: "border-top: 1px solid #CCC"}, h('tr', this.row(null))),
-            h('tbody', children)])
+        var table = <div style="max-width: 100%; overflow: auto"><table class={tableclass}>
+            <thead style="border-top: 1px solid #CCC"><tr>{this.row(null)}</tr></thead>
+            <tbody>{children}</tbody>
+        </table></div>
         if (!this.pagination) return table
         
         var isbegin = this.jsonEqual(this.left, this.BEGIN) || (!this.isfull && this.left == undefined)
         var isend = this.jsonEqual(this.right, this.END) || (!this.isfull && this.right == undefined)
-        var pagination = h('div', {class: 'row'}, [h('div', {class: "col-md-3"}),
-            h('div', {class: 'col-md-6 text-center'}, h('div', {class: "btn-group", style: "max-width:200px"}, [
-                h(PageItem, {f: this.changePage('begin'), icon: 'play-skip-back-outline', disable: isbegin}),
-                h(PageItem, {f: this.changePage('last'), icon: 'chevron-back', disable: isbegin}),
-                h(PageItem, {f: this.changePage('reload'), icon: 'reload-outline'}),
-                h(PageItem, {f: this.changePage('next'), icon: 'chevron-forward', disable: isend}),
-                h(PageItem, {f: this.changePage('end'), icon: 'play-skip-forward-outline', disable: isend}),
-            ])),
-            h('div', {class: "col-md-3"}, h(PageSize, {f: this.changeSize, sizes: this.sizes, defaultsize: this.pagesize }))])
+
+        var pagination = <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 text-center"><div class="btn-group" style="max-width: 200px">
+                <PageItem f={this.changePage('begin')} icon="play-skip-back-outline" disable={isbegin} />
+                <PageItem f={this.changePage('last')} icon="chevron-back" disable={isbegin} />
+                <PageItem f={this.changePage('reload')} icon="reload-outline" />
+                <PageItem f={this.changePage('next')} icon="chevron-forward" disable={isend} />
+                <PageItem f={this.changePage('end')} icon="play-skip-forward-outline" disable={isend} />
+            </div></div>
+            <div class="col-md-3">
+                <PageSize f={this.changeSize} sizes={this.sizes} defaultsize={this.pagesize} />
+            </div>
+        </div>
         return [table, pagination]
     },
     methods: {
