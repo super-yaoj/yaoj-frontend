@@ -29,7 +29,7 @@
             :get="update"
             :next="next"
             :pagination="true"
-        ></Table>
+        />
     </div>
 </template>
 
@@ -52,64 +52,33 @@ export default {
         getLine(row) {
             if (row == null)
                 return [
-                    h(
-                        "td",
-                        { style: "text-align: left" },
-                        h("strong", "Title")
-                    ),
-                    h(
-                        "td",
-                        { style: "text-align: right" },
-                        h("strong", "Author")
-                    ),
-                    h("td", { style: "width:15%" }, h("strong", "Create date")),
-                    h(
-                        "td",
-                        { style: "width: 10%; text-align: right" },
-                        h("strong", "Comments")
-                    ),
+                    <td style="text-align: left"><strong>Title</strong></td>,
+                    <td style="text-align: right"><strong>Author</strong></td>,
+                    <td style="width: 15%"><strong>Create Date</strong></td>,
+                    <td style="width: 10%; text-align: right"><strong>Comments</strong></td>,
                 ];
             else
                 return [
-                    h(
-                        "td",
-                        { style: "text-align: left" },
-                        h("a", { href: "#/blog/" + row.blog_id }, [
-                            h(
-                                "span",
-                                { style: "color: gray" },
-                                row.private ? "[Private]" : ""
-                            ),
-                            row.title,
-                        ])
-                    ),
-                    h(
-                        "td",
-                        { style: "text-align: right" },
-                        h(
-                            "a",
-                            { href: "#/user/" + row.author },
-                            row.author_name
-                        )
-                    ),
-                    h("td", {}, format(row.create_time, "YYYY-MM-DD")),
-                    h(
-                        "td",
-                        h("div", { class: "row" }, [
-                            h(ClickLike, {
-                                class: "col px-0",
-                                icon: "chatbox-outline",
-                                number: row.comments,
-                            }),
-                            h(ClickLike, {
-                                class: "col px-0",
-                                icon: "thumbs-up-outline",
-                                number: row.like,
-                                target: { name: "blog", id: row.blog_id },
-                                active: row.liked,
-                            }),
-                        ])
-                    ),
+                    <td style="text-align: left">
+                        <router-link to={'/blog/' + row.blog_id}>
+                            {row.private ? <span style="color: gray">[Private] </span> : null}
+                            {row.title}
+                        </router-link>
+                    </td>,
+                    <td style="text-align: right">
+                        <router-link to={'/user/' + row.author}>{row.author_name}</router-link>
+                    </td>,
+                    <td>{format(row.create_time, "YYYY-MM-DD")}</td>,
+                    <td>
+                        <div class="d-flex justify-content-between">
+                        <ClickLike icon="chatbox-outline" number={row.comments}/>
+                        <ClickLike 
+                            icon="thumbs-up-outline" number={row.like} 
+                            target={{name: "blog", id: row.blog_id}}
+                            active={row.liked}
+                        />
+                        </div>
+                    </td>
                 ];
         },
         async update(query) {
