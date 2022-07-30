@@ -7,12 +7,17 @@ import { formatSeconds } from '@/utils'
 
 export default {
     props: ['seconds'],
+    emits: ['end'],
     data() {
-        return { remain: this.seconds }
+        return { remain: Math.floor(this.seconds), task: null }
     },
     created() {
-        setInterval(() => {
+        this.task = setInterval(() => {
             --this.remain
+            if (this.remain <= 0) {
+                clearInterval(this.task)
+                this.$emit('end')
+            }
         }, 1000)
     },
     computed: {
@@ -24,6 +29,9 @@ export default {
         seconds() {
             this.remain = this.seconds
         }
-    }
+    },
+    beforeUnmount() {
+        clearInterval(this.task)
+    },
 }
 </script>

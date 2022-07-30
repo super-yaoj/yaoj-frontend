@@ -24,7 +24,7 @@
                         <div class="card-body text-center">
                             <div style="color:#666">Remaining Time:</div>
                             <h2>
-                                <Clock :seconds="(contest.end_time - current_time) / 1000" v-if="contest.end_time > current_time" />
+                                <Clock :seconds="(contest.end_time - current_time) / 1000" v-if="contest.end_time > current_time" @end="contestEnd"/>
                                 <span v-else-if="contest.finished">Ended</span>
                                 <span v-else>Judging</span>
                             </h2>
@@ -102,7 +102,8 @@ export default {
             current_time: "",
             rule: "",
             status: "",
-            newcontest: {}
+            newcontest: {},
+            tasks: null,
         }
     },
     components: {
@@ -131,9 +132,8 @@ export default {
                 score_private: this.contest.score_private,
             }
         })
-        callRPC('GetTime', {}, (res) => {
-            this.current_time = new Date(res.data.server_time)
-        })
+        this.runtask()
+        this.tasks = setInterval(this.runtask, 30000)
     },
     methods: {
         modifyContest() {
@@ -154,6 +154,18 @@ export default {
                 alert(res.data._error.message)
             })
         },
+        runtask() {
+            callRPC('GetTime', {}, (res) => {
+                this.current_time = new Date(res.data.server_time)
+            })
+        },
+        contestEnd() {
+            alert("Contest Ended!")
+            this.runtask()
+        },
+    },
+    beforeUnmount() {
+        clearInterval(this.tasks)
     },
 }
 </script>

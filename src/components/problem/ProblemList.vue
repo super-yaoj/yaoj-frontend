@@ -36,14 +36,18 @@ export default {
     methods: {
         getLine(row) {
             if (row == null) return [
-                h('td', { style: "width:60px" }, h('strong', '#ID')),
-                h('td', { style: "text-align:left;padding-left:30px!important" }, h('strong', 'Problem')),
-                h('td', { style: "text-align:right;width:10%" }, h('strong', 'Comments')),
+                <td style="width:60px"><strong>#ID</strong></td>,
+                <td style="text-align:left;padding-left:30px!important"><strong>Problem</strong></td>,
+                <td style="width:10%"><strong>Comments</strong></td>,
             ]
             return [
-                h('td', { style: "" }, row.problem_id),
-                h('td', { style: "text-align:left;padding-left:30px!important" }, h('a', { href: "#/problem/" + row.problem_id }, row.title)),
-                h('td', { style: "text-align:right" }, h(ClickLike, { icon: "thumbs-up-outline", number: row.like, target: { name: "problem", id: row.problem_id }, active: row.liked }))
+                <td>{row.problem_id}</td>,
+                <td style="text-align:left;padding-left:30px!important">
+                    <a href={"#/problem/" + row.problem_id}>{row.title}</a>
+                </td>,
+                <td>
+                    <ClickLike icon="thumbs-up-outline" number={row.like} target={{name: "problem", id: row.problem_id}} active={row.liked}></ClickLike>
+                </td>
             ]
         },
         async getProblems(query) {
