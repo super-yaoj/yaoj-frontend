@@ -1,9 +1,9 @@
 <template>
-<div class="mt-4 container">
+<div class="mt-4 container-md">
     <div class="row align-items-end">
-        <div class="col"></div>
-        <h3 class="text-center col mb-0">{{ contest.title }}</h3>
-        <ClickLike class="col text-right" icon="thumbs-up-outline" :number="contest.like" :target="{name:'contest',id:id}" :active="contest.liked"></ClickLike>
+        <div class="col-2"></div>
+        <h3 class="text-center col-8 mb-0">{{ contest.title }}</h3>
+        <ClickLike class="col-2 text-right" icon="thumbs-up-outline" :number="contest.like" :target="{name:'contest',id:id}" :active="contest.liked"></ClickLike>
     </div>
     <ul class="nav nav-tabs mt-3">
         <li class="nav-item">
@@ -19,7 +19,7 @@
     <div class="tab-content">
         <div class="tab-pane fade show active mt-3" id="dashboard">
             <div class="row px-2">
-                <div class="col" style="max-width:250px">
+                <div class="col-md timeboard mb-3" >
                     <div class="card">
                         <div class="card-body text-center">
                             <div style="color:#666">Remaining Time:</div>
@@ -36,13 +36,13 @@
                     <router-link class="btn btn-info mt-3" style="width:100%" :to="'/submissions/?contest_id=' + id + '&submitter=' + $user.user_id" v-if="$user.user_id > 0">My submissions</router-link>
                     <button class="btn btn-danger mt-3" style="width:100%" v-if="can_edit && !contest.finished" @click="endContest">End Contest</button>
                 </div>
-                <div class="col">
+                <div class="col-md">
                     <ManageTable url="contest_problems" :data_name="['contest_id', 'problem_id', 'title']" title="Problem" name="problem" :no-modify="!can_edit" :query="{contest_id:id}" />
                 </div>
             </div>
         </div>
         <div class="tab-pane fade" id="standing">
-            <ContestStanding></ContestStanding>
+            <ContestStanding />
         </div>
         <div class="tab-pane fade mt-3" id="manage" v-if="can_edit">
             <div class="d-flex align-items-start">
@@ -174,5 +174,10 @@ export default {
 .text-right {
     text-align: right;
     margin-bottom: 3px;
+}
+@media screen and (min-width: 768px) {
+    .timeboard {
+        max-width:250px;
+    }
 }
 </style>
