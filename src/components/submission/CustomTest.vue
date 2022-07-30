@@ -1,5 +1,5 @@
 <template>
-<div class="mt-4 container">
+<div class="mt-4 container-md">
     <div class="h3">Custom Test</div>
     <div class="card mt-3">
         <div class="card-header">Your code & data</div>

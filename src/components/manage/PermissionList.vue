@@ -1,5 +1,5 @@
 <template>
-<div class="mt-4 container" style="">
+<div class="mt-4 container-md">
     <div class="h3 mb-3">Permission List</div>
     <Table :row="getLine" :sizes="sizes" :get="update" :next="next" :pagination="true"></Table>
 </div>

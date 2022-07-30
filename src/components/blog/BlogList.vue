@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-4 container" style="">
+    <div class="mt-4 container-md">
         <div class="row mb-3 align-items-end">
             <div class="col-md-8">
                 <div class="h3 mb-0">Blog List</div>

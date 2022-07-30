@@ -1,5 +1,5 @@
 <template>
-<div class="mt-4 container" style=""><div class="row">
+<div class="mt-4 container-md"><div class="row">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="permissions-tab" data-bs-toggle="tab" data-bs-target="#permissions" type="button" role="tab">Permissions</button>

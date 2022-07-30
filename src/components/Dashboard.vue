@@ -1,5 +1,5 @@
 <template>
-<div class="mt-4 container">
+<div class="mt-4 container-md">
     <div class="modal fade" id="addAnouncement" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
