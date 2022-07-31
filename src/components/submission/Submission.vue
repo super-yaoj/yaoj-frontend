@@ -50,6 +50,7 @@ import "codemirror/mode/python/python.js"
 import "codemirror/theme/dracula.css"
 
 export default {
+    name: 'Submission',
     inject: ['reload'],
     components: {
         SubmissionRow: {
@@ -65,7 +66,7 @@ export default {
         return {
             id: this.$route.params.id,
             submission: {
-                submission_id: this.$route.params.id,
+                // submission_id: this.$route.params.id,
                 problem_id: 0,
                 problem_name: "",
                 contest_id: 0,
@@ -84,19 +85,20 @@ export default {
             can_edit: false,
         }
     },
-    created() {
-        callAPI('submission', 'get', { submission_id: this.id }, (res) => {
-            this.submission = res.data.submission
-            for (var key in this.submission.details) {
-                this.submission.details[key] = this.submission.details[key] == "" ? {} : JSON.parse(this.submission.details[key])
-            }
-            this.can_edit = res.data.can_edit
-            console.log(this.submission)
-        }, (res) => {
-            alert(res.data._error)
-        })
-    },
     methods: {
+        fetchdata(route){
+            callAPI('submission', 'get', { submission_id: route.params.id }, (res) => {
+                this.id = route.params.id
+                this.submission = res.data.submission
+                for (var key in this.submission.details) {
+                    this.submission.details[key] = this.submission.details[key] == "" ? {} : JSON.parse(this.submission.details[key])
+                }
+                this.can_edit = res.data.can_edit
+                console.log(this.submission)
+            }, (res) => {
+                alert(res.data._error)
+            })
+        },
         cmOptions(lang) {
             return {
                 mode: LangModel[lang],

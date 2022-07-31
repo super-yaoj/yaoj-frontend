@@ -11,22 +11,26 @@
             </div>
         </div>
     </div>
-    <Table :row="getLine" :sizes="[20, 50, 100]" :get="getProblems" :next="next" :pagination="true" v-if="reloadProblems" />
+    <Table 
+        :row="getLine" :sizes="[20, 50, 100]" :get="getProblems" 
+        :next="next" :pagination="true"
+        :timestamp="this.timestamp"
+    />
 </div>
 </template>
 
 <script>
 import Table from '@/models/Table.vue'
 import ClickLike from '@/models/ClickLike.vue'
-import { h, nextTick } from 'vue'
 import { callAPI } from '@/utils'
 
 export default {
+    name: "ProblemList",
     inject: ['isAdmin'],
     data() {
         return {
-            reloadProblems: true,
             success: 0,
+            timestamp: 0,
         }
     },
     components: {
@@ -34,6 +38,9 @@ export default {
         ClickLike,
     },
     methods: {
+        fetchdata() {
+            this.timestamp = new Date().getTime()
+        },
         getLine(row) {
             if (row == null) return [
                 <td style="width:60px"><strong>#ID</strong></td>,
@@ -69,8 +76,9 @@ export default {
             callAPI('problem', 'post', {}, (res) => {
                 this.success = res.data.id
                 setTimeout(() => { this.success = 0 }, 1000)
-                this.reloadProblems = false
-                nextTick(() => { this.reloadProblems = true })
+                this.fetchdata()
+                // this.reloadProblems = false
+                // nextTick(() => { this.reloadProblems = true })
             }, (res) => {
                 alert(res.data._error)
             })

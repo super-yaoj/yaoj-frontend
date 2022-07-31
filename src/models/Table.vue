@@ -26,7 +26,7 @@ const PageSize = defineComponent({
 })
 
 export default {
-    props: ['row', 'sizes', 'tableclass', 'get', 'next', 'pagination', 'nocache'],
+    props: ['row', 'sizes', 'tableclass', 'get', 'next', 'pagination', 'nocache', 'timestamp'],
     data() {
         var key = this.$route.fullPath + "_table"
         if (!this.nocache && this.$temp_store[key] == undefined)
@@ -43,6 +43,12 @@ export default {
             END: this.next(null, 1),
             pagesize: this.sizes[0]
         }
+    },
+    watch: {
+        timestamp(nv, ov) {
+            console.log(nv, ov)
+            this.getData();
+        },
     },
     created() {
         if (this.temp.left != undefined || this.temp.right != undefined) {

@@ -64,7 +64,14 @@
                 role="main"
                 class="col-md-9 col-lg-10 ms-sm-auto px-md-4"
             >
-                <router-view />
+                <router-view v-slot="{ Component, route }">
+                    <keep-alive>
+                        <component
+                            :is="Component"
+                            :key="route.meta.usePathKey ? route.path : undefined"
+                        />
+                    </keep-alive>
+                </router-view>
                 <footer style="height: 30px" />
             </main>
         </div>
@@ -162,9 +169,9 @@ export default {
         },
     },
     watch: {
-        $route() {
-            this.reloadApp();
-        },
+        // $route() {
+        //     this.reloadApp();
+        // },
     },
     provide() {
         return { reload: this.reloadApp, isAdmin: this.isAdmin };

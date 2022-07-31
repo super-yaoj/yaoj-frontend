@@ -11,7 +11,11 @@
             </div>
         </div>
     </div>
-    <Table :row="getLine" :sizes="[20, 50, 100]" :get="getContests" :next="getNext" :pagination="true" v-if="reloadContests"></Table>
+    <Table 
+        :row="getLine" :sizes="[20, 50, 100]" :get="getContests"
+        :next="getNext" :pagination="true"
+        :timestamp="timestamp"
+    />
 </div>
 </template>
 
@@ -24,11 +28,12 @@ import { format } from 'silly-datetime'
 import { getRule, getRegisterStatus, getStatus } from './contest.js'
 
 export default {
+    name: "ContestList",
     inject: ['isAdmin'],
     data() {
         return {
-            reloadContests: true,
             success: "",
+            timestamp: 0,
         }
     },
     components: {
@@ -81,14 +86,18 @@ export default {
                 return b < 0 ? 1 << 30 : 0;
             } else return a - b;
         },
-        reload() {
-            this.reloadContests = false
-            nextTick(() => { this.reloadContests = true })
+        fetchdata() {
+            this.timestamp = new Date().getTime()
         },
+        // reload() {
+        //     this.reloadContests = false
+        //     nextTick(() => { this.reloadContests = true })
+        // },
         addContest() {
             callAPI('contest', 'post', {}, (res) => {
                 this.success = res.data.id
-                this.reload()
+                this.fetchdata()
+                // this.reload()
             }, (res) => {
                 alert(res.data._error)
             })
@@ -98,7 +107,8 @@ export default {
                 event.preventDefault()
                 if (status == 0) return
                 callAPI('contest_participants', status == 1 ? 'post' : 'delete', { contest_id: id }, (res) => {
-                    this.reload()
+                    this.fetchdata()
+                    // this.reload()
                 }, (res) => {
                     alert(res.data._error)
                 })

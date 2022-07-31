@@ -65,6 +65,7 @@ import { callAPI } from '@/utils'
 import { BASE_URL } from '@/config'
 
 export default {
+    name: "Problem",
     data() {
         return {
             id: this.$route.params.id,
@@ -86,20 +87,38 @@ export default {
         }
     },
     created() {
-        callAPI('problem', 'get', { problem_id: this.id, contest_id: this.contest_id }, (res) => {
-            this.problem = res.data.problem
-            this.can_edit = res.data.can_edit
-            this.in_contest = res.data.in_contest
-            console.log(this.problem)
-        }, (res) => {
-            alert(res.data._error)
-        })
+        console.log('created')
+    },
+    updated() {
+        console.log('updated')
+    },
+    beforeUnmount() {
+        console.log('ggg')
     },
     components: {
         VMdPreview,
         ClickLike,
         ProblemManage,
         ProblemSubmit,
+    },
+    watch: {
+        '$props.id': (newVal, oldVal) => {
+            console.log(newVal, oldVal)
+        }
+    },
+    methods: {
+        fetchdata(newRoute) {
+            callAPI('problem', 'get', { problem_id: newRoute.params.id, contest_id: this.contest_id }, (res) => {
+                console.log('fetch!', res.data.problem)
+                this.id = newRoute.params.id
+                this.problem = res.data.problem
+                this.can_edit = res.data.can_edit
+                this.in_contest = res.data.in_contest
+                // console.log(this.problem)
+            }, (res) => {
+                alert(res.data._error)
+            })
+        },
     },
     computed: {
         maxSubmission() {

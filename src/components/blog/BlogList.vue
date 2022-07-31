@@ -24,26 +24,33 @@
             :get="update"
             :next="next"
             :pagination="true"
+            :timestamp="timestamp"
         />
     </div>
 </template>
 
 <script>
 import { callAPI, randomString } from "@/utils";
-import { h } from "vue";
 import Table from "@/models/Table";
 import ClickLike from "@/models/ClickLike.vue";
 import { format } from "silly-datetime";
 
 export default {
+    name: "BlogList",
     data() {
-        return { createBlog: "/editblog?local=" + randomString(16) };
+        return {
+            createBlog: "/editblog?local=" + randomString(16),
+            timestamp: 0,
+        };
     },
     components: {
         Table,
         ClickLike,
     },
     methods: {
+        fetchdata() {
+            this.timestamp = new Date().getTime()
+        },
         getLine(row) {
             if (row == null)
                 return [

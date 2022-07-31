@@ -27,9 +27,27 @@ app.directive('tooltip', {
         el.__tooltip = new Tooltip(el, { customClass: "limitation-icon" })
         // console.log(el, tooltip)
     },
-    beforeUnmount(el){
+    beforeUnmount(el) {
         el.__tooltip.dispose()
     },
+})
+
+app.mixin({
+    watch: {
+        '$route': function (nv, ov) {
+            if (this == undefined) return
+            if (this.fetchdata != undefined && nv.name == this.$options.name) {
+                console.log("refetch", nv.fullPath, ov.fullPath)
+                this.fetchdata(nv);
+            }
+        }
+    },
+    created() {
+        console.log(this.$options.name)
+        if (this.fetchdata != undefined) {
+            this.fetchdata(this.$route);
+        }
+    }
 })
 
 callRPC("Init", {}, function (response) {

@@ -55,6 +55,7 @@ import { format } from 'silly-datetime'
 
 
 export default {
+    name: "Blog",
     inject: ['isAdmin'],
     data() {
         return {
@@ -65,13 +66,6 @@ export default {
         }
     },
     created() {
-        callAPI('blog', 'get', { blog_id: this.id }, (res) => {
-            this.blog = res.data
-            this.blog.create_time = format(new Date(this.blog.create_time))
-        }, (res) => {
-            this.$router.replace('/404NotFound')
-        })
-        this.getComments()
     },
     components: {
         VMdPreview,
@@ -79,6 +73,16 @@ export default {
         VMdEditor
     },
     methods: {
+        fetchdata(route){
+            callAPI('blog', 'get', { blog_id: route.params.id }, (res) => {
+                this.id = route.params.id
+                this.blog = res.data
+                this.blog.create_time = format(new Date(this.blog.create_time))
+                this.getComments(route.params.id)
+            }, (res) => {
+                this.$router.replace('/404NotFound')
+            })
+        },
         edit() {
             var local = randomString(16)
             localStorage.setItem(local + "_blog_id", this.id)
@@ -95,8 +99,8 @@ export default {
                 })
             }
         },
-        getComments() {
-            callAPI('blog_comments', 'get', { blog_id: this.id }, (res) => {
+        getComments(id) {
+            callAPI('blog_comments', 'get', { blog_id: id }, (res) => {
                 this.comments = res.data.data
             }, (res) => {
                 alert(res.data._error)
@@ -107,7 +111,7 @@ export default {
                 var height = document.body.scrollHeight;
                 window.scroll({ top: height , left: 0 })
                 this.new_comment = ""
-                this.getComments()
+                this.getComments(this.id)
             }, (res) => {
                 alert(res.data._error)
             })
@@ -115,7 +119,7 @@ export default {
         deleteComment(id) {
             if (confirm("Do you really want to delete?")) {
                 callAPI('blog_comments', 'delete', { comment_id: id }, (res) => {
-                    this.getComments()
+                    this.getComments(this.id)
                 }, (res) => {
                     alert(res.data._error)
                 })
