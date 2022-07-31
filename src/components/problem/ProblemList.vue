@@ -2,10 +2,10 @@
 <div class="mt-4 container-md">
     <div class="row mb-3">
         <div class="col">
-            <div class="h3 mb-0">Problem List</div>
+            <div class="h3 mb-0" v-t="'problems.title'" />
         </div>
         <div class="col" style="text-align:right;" v-if="isAdmin()">
-            <button class="btn btn-sm btn-primary" @click="addProblem">New Problem</button>
+            <button class="btn btn-sm btn-primary" @click="addProblem" v-t="'problems.new'" />
             <div class="text-success small" v-if="success > 0">
                 Successfully added, problem id: {{success}}.
             </div>

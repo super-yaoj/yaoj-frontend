@@ -14,7 +14,7 @@
     <div class="tab-content mt-4 container">
         <div class="row">
             <div class="col">
-                <div class="progress" style="height:100%" data-bs-toggle="tooltip" data-bs-placement="bottom" :title="acnum + ' AC / ' + totnum + ' Total'">
+                <div class="progress" style="height:100%" v-tooltip:bottom :title="acnum + ' AC / ' + totnum + ' Total'">
                     <div class="progress-bar bg-success" role="progressbar" :style="'width:' + acratio + '%;min-width:20px'">{{ acratio }}%</div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
 
 <script>
 import Table from '@/models/Table.vue'
-import { callAPI, tooltipInit } from '@/utils';
+import { callAPI } from '@/utils';
 import { nextTick } from 'vue';
 import { submissionRow } from '../submission/submission';
 
@@ -71,7 +71,6 @@ export default {
                 })
                 this.acnum = res.data.acnum
                 this.totnum = res.data.totnum
-                nextTick(tooltipInit)
                 return res.data
             } catch(e) {
                 console.log(e)

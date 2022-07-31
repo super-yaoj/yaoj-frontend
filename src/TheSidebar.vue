@@ -126,15 +126,6 @@ export default {
     props: ["servertime", "reload", "refreshed"],
     inject: ["isAdmin"],
     components: {
-        NavItem: {
-            props: ["icon", "title", "href"],
-            template: `<li class="nav-item">
-                <router-link class="nav-link" :to="href">
-                <ion-icon :name="icon" class="feather" />
-                <span>{{ title }}</span>
-                </router-link>
-            </li>`,
-        },
         NiI18n: { // nav item i18n
             props: ["icon", "t", "href"],
             template: `<li class="nav-item">
@@ -146,12 +137,9 @@ export default {
         },
     },
     methods: {
-        onChangeLocale(event) {
+        onChangeLocale() {
             this.$props.reload()
         },
-    },
-    mounted() {
-        console.log(this.$user);
     },
 };
 </script>

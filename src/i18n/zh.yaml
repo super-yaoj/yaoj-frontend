@@ -13,3 +13,6 @@ sidebar:
   login: 登陆
   logout: 登出
   signup: 注册
+problems:
+  title: 题库
+  new: 新建题目

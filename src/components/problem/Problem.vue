@@ -6,14 +6,17 @@
         <ClickLike class="col text-right" icon="thumbs-up-outline" :number="problem.like" :target="{name:'problem',id:id}" :active="problem.liked"></ClickLike>
     </div>
     <div class="text-center mt-2">
-        <span class="badge bg-success mx-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Time Limit">
-            <ion-icon name="time" class="limitation-icon"></ion-icon> <span style="vertical-align:text-bottom">{{ problem.time_limit < 0 ? '/' : problem.time_limit }} ms</span>
+        <span class="badge bg-success mx-1" v-tooltip:bottom title="Time Limit">
+            <ion-icon name="time" class="limitation-icon" /> 
+            <span style="vertical-align:text-bottom">{{ problem.time_limit < 0 ? '/' : problem.time_limit }} ms</span>
         </span>
-        <span class="badge bg-primary mx-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Memory Limit">
-            <ion-icon name="hardware-chip" class="limitation-icon"></ion-icon> <span style="vertical-align:text-bottom">{{ problem.memory_limit < 0 ? '/' : problem.memory_limit }} MB</span>
+        <span class="badge bg-primary mx-1"  v-tooltip:bottom title="Memory Limit">
+            <ion-icon name="hardware-chip" class="limitation-icon" />
+            <span style="vertical-align:text-bottom">{{ problem.memory_limit < 0 ? '/' : problem.memory_limit }} MB</span>
         </span>
-        <span class="badge bg-warning mx-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Submission Limit">
-            <ion-icon name="reader" class="limitation-icon"></ion-icon> <span style="vertical-align:text-bottom">{{ maxSubmission }}</span>
+        <span class="badge bg-warning mx-1" v-tooltip:bottom title="Submission Limit">
+            <ion-icon name="reader" class="limitation-icon" /> 
+            <span style="vertical-align:text-bottom">{{ maxSubmission }}</span>
         </span>
     </div>
     <ul class="nav nav-tabs mt-3">
@@ -58,7 +61,7 @@ import VMdPreview from '@/models/VMdPreview'
 import ClickLike from '@/models/ClickLike.vue'
 import ProblemManage from './ProblemManage.vue'
 import ProblemSubmit from './ProblemSubmit.vue'
-import { callAPI, tooltipInit } from '@/utils'
+import { callAPI } from '@/utils'
 import { BASE_URL } from '@/config'
 
 export default {
@@ -91,9 +94,6 @@ export default {
         }, (res) => {
             alert(res.data._error)
         })
-    },
-    mounted() {
-        tooltipInit()
     },
     components: {
         VMdPreview,

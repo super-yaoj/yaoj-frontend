@@ -3,6 +3,7 @@ import { createI18n } from 'vue-i18n'
 import router from './Router.js'
 import App from './App.vue'
 import { callRPC } from './utils.js'
+import { Tooltip } from "bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 import './css/yaoj.css'
@@ -14,9 +15,21 @@ const i18n = createI18n({
     fallbackLocale: 'en',
     messages: messages,
 })
+const app = createApp(App)
+
+// custom tooltip directive
+// usage: v-tooltip:bottom/top/left/right
+app.directive('tooltip', {
+    mounted(el, binding) {
+        // console.log(binding)
+        el.setAttribute("data-bs-toggle", "tooltip")
+        el.setAttribute("data-bs-placement", binding.arg || "bottom")
+        var tooltip = new Tooltip(el, { customClass: "limitation-icon" })
+        // console.log(el, tooltip)
+    },
+})
 
 callRPC("Init", {}, function(response) {
-    const app = createApp(App)
     app.config.globalProperties.$user = response.data
     app.config.globalProperties.$time = response.data.server_time
     app.config.globalProperties.$temp_store = {}

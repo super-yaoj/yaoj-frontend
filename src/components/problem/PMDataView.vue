@@ -3,8 +3,8 @@
     <div class="row">
         <strong class="col">View {{title}}</strong>
         <div class="col" style="text-align:right">
-            <span class="badge bg-secondary me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Stubask score calculating method" v-if="data.IsSubtask">{{CalcMethod[data.CalcMethod]}}</span>
-            <span v-if="data.Fullscore" class="badge bg-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Fullscore">{{data.Fullscore}}</span>
+            <span class="badge bg-secondary me-1" v-tooltip:bottom title="Stubask score calculating method" v-if="data.IsSubtask">{{CalcMethod[data.CalcMethod]}}</span>
+            <span v-if="data.Fullscore" class="badge bg-success" v-tooltip:bottom title="Fullscore">{{data.Fullscore}}</span>
         </div>
     </div>
     <div class="accordion mt-1" id="subtasks" v-if="data.IsSubtask">
@@ -39,7 +39,6 @@
 
 <script>
 import { CalcMethod } from '@/config'
-import { tooltipInit } from '@/utils'
 
 export default {
     props: ['data', 'title'],
@@ -65,9 +64,6 @@ export default {
         return {
             CalcMethod,
         }
-    },
-    mounted() {
-        tooltipInit()
     },
     computed: {
         totalTests() {

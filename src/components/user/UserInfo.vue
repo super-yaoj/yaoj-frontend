@@ -63,7 +63,8 @@
 </template>
 
 <script>
-import { callAPI, queryUser, tooltipInit, tooltipDispose } from '@/utils'
+import { resolveDirective, withDirectives } from 'vue'
+import { callAPI, queryUser } from '@/utils'
 import { h, nextTick } from 'vue'
 import Table from '@/models/Table.vue'
 import ClickLike from '@/models/ClickLike.vue'
@@ -71,11 +72,15 @@ import { format } from 'silly-datetime'
 import UserName from '@/models/UserName.vue'
 import Rating from './Rating.vue'
 
-const UserInfo = ({ title, icon }, context) => 
-    <li class="list-group-item info-item" data-bs-toggle="tooltip" data-bs-placement="left" title={title}>
+const UserInfo = ({ title, icon }, context) => {
+    const tooltip = resolveDirective('tooltip')
+    return withDirectives(<li class="list-group-item info-item" title={title}>
         <ion-icon name={icon} class="feather me-2" />
         {context.slots.default()}
-    </li>
+    </li>, [
+    [tooltip, undefined, 'left', null]
+  ])
+}
 
 export default {
     inject: ['isAdmin'],
@@ -86,15 +91,10 @@ export default {
             id: this.$route.params.id,
             canSeePermission: this.isAdmin() || this.$route.params.id == this.$user.user_id,
             reloadBlog: true,
-            tooltips: [],
         }
     },
     async mounted() {
-        this.tooltips = tooltipInit()
         this.user = await queryUser({user_id: this.id})
-    },
-    beforeUnmount() {
-        tooltipDispose(this.tooltips)
     },
     components: {
         Table,

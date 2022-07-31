@@ -13,3 +13,6 @@ sidebar:
   login: 'Log In'
   logout: 'Log Out'
   signup: 'Sign Up'
+problems:
+  title: Problem List
+  new: New Problem
