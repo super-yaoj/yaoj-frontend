@@ -1,26 +1,26 @@
 <template>
 <div class="mt-4 container-md">
     <div class="row mb-3">
-        <div class="h3 mb-0">Submission List</div>
+        <div class="h3 mb-0" v-t="'submissions.title'" />
     </div>
     <hr>
     <form class="row mb-3 subm-list-form flex-column flex-lg-row" @submit.prevent="query">
         <div class="input-group col flex-nowrap mb-1">
-            <span class="input-group-text" id="basic-addon1">Problem</span>
+            <span class="input-group-text" id="basic-addon1" v-t="'submissions.filter.problem'" />
             <input type="text" class="form-control" placeholder="Problem id" v-model="problem_id">
         </div>
         <div class="input-group col flex-nowrap mb-1">
-            <span class="input-group-text" id="basic-addon1">Contest</span>
+            <span class="input-group-text" id="basic-addon1" v-t="'submissions.filter.contest'" />
             <input type="text" class="form-control" placeholder="Contest id" v-model="contest_id">
         </div>
         <div class="input-group col flex-nowrap mb-1">
-            <span class="input-group-text" id="basic-addon1">Submitter</span>
+            <span class="input-group-text" id="basic-addon1" v-t="'submissions.filter.user'" />
             <input type="text" class="form-control" placeholder="User id" v-model="submitter">
         </div>
         <div class="btn-group col d-flex flex-row mb-1" style="text-align:right" v-if="$user.user_id > 0">
             <input type="checkbox" id="onlyme" class="btn-check" v-model="onlyme" style="display: none;">
-            <label class="btn btn-outline-warning" for="onlyme">Only me</label>
-            <button class="btn btn-primary" type="submit">Search</button>
+            <label class="btn btn-outline-warning" for="onlyme" v-t="'submissions.filter.onlyme'" />
+            <button class="btn btn-primary" type="submit" v-t="'search'" />
         </div>
     </form>
     <Table :row="getLine" :sizes="[10, 20, 50, 100]" :get="getSubmissions" :next="next" :pagination="true" v-if="reloadSubmissions" :nocache="true"></Table>

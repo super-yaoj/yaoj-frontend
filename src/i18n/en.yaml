@@ -1,5 +1,6 @@
 name: English
 hello: Hello
+search: Search
 sidebar:
   problems: Problems
   submissions: Submissions
@@ -16,3 +17,10 @@ sidebar:
 problems:
   title: Problem List
   new: New Problem
+submissions:
+  title: Submission List
+  filter:
+    problem: Problem
+    contest: Contest
+    user: User
+    onlyme: Only Me
