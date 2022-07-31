@@ -24,12 +24,15 @@ app.directive('tooltip', {
         // console.log(binding)
         el.setAttribute("data-bs-toggle", "tooltip")
         el.setAttribute("data-bs-placement", binding.arg || "bottom")
-        var tooltip = new Tooltip(el, { customClass: "limitation-icon" })
+        el.tooltip = new Tooltip(el, { customClass: "limitation-icon" })
         // console.log(el, tooltip)
+    },
+    beforeUnmount(el){
+        el.tooltip.dispose()
     },
 })
 
-callRPC("Init", {}, function(response) {
+callRPC("Init", {}, function (response) {
     app.config.globalProperties.$user = response.data
     app.config.globalProperties.$time = response.data.server_time
     app.config.globalProperties.$temp_store = {}
@@ -38,6 +41,6 @@ callRPC("Init", {}, function(response) {
     app.use(router)
     app.use(i18n)
     app.mount("#app")
-}, function(response) {
+}, function (response) {
     alert(response.statusMessage + "\n" + response.data._error.message)
 })

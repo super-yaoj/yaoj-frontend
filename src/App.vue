@@ -17,9 +17,7 @@
                 style="max-width: 300px; margin-right: 3px"
                 v-model="user_name"
             />
-            <button type="submit" class="btn btn-outline-light col-3 px-2">
-                Search
-            </button>
+            <button type="submit" class="btn btn-outline-light col-3 px-2" v-t="'search'" />
         </form>
     </header>
     <div class="container-lg h-100" v-if="activeNow">
@@ -138,12 +136,12 @@ export default {
         getRow(row) {
             if (row == null)
                 return [
-                    h("td", h("strong", "#ID")),
-                    h("td", h("strong", "Username")),
+                    <td><strong>#ID</strong></td>,
+                    <td><strong>Username</strong></td>,
                 ];
             return [
-                h("td", row.user_id),
-                h("td", h(UserName, {id: row.user_id, name: row.user_name, rating: row.rating, onClick: this.hideResult})),
+                <td>{row.user_id}</td>,
+                <td><UserName id={row.user_id} name={row.user_name} rating={row.rating} onClick={this.hideResult} /></td>,
             ];
         },
         async queryUsers(query) {

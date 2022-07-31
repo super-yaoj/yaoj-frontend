@@ -39,9 +39,9 @@ export default {
     data() {
         return {
             reloadSubmissions: true,
-            problem_id: this.$route.query.problem_id ? this.$route.query.problem_id : "",
-            contest_id: this.$route.query.contest_id ? this.$route.query.contest_id : "",
-            submitter: this.$route.query.submitter ? this.$route.query.submitter : "",
+            problem_id: this.$route.query.problem_id || "",
+            contest_id: this.$route.query.contest_id || "",
+            submitter: this.$route.query.submitter || "",
             onlyme: this.$user.user_id > 0 && this.$route.query.submitter == this.$user.user_id,
         }
     },
