@@ -24,11 +24,11 @@ app.directive('tooltip', {
         // console.log(binding)
         el.setAttribute("data-bs-toggle", "tooltip")
         el.setAttribute("data-bs-placement", binding.arg || "bottom")
-        el.tooltip = new Tooltip(el, { customClass: "limitation-icon" })
+        el.__tooltip = new Tooltip(el, { customClass: "limitation-icon" })
         // console.log(el, tooltip)
     },
     beforeUnmount(el){
-        el.tooltip.dispose()
+        el.__tooltip.dispose()
     },
 })
 

@@ -24,3 +24,11 @@ submissions:
     contest: 比赛 ID
     user: 用户
     onlyme: 我的提交
+blogs:
+  title: 博客列表
+  my: 我的博客
+  new: 新建博客
+  tip: '在“我的博客”中可以查看草稿'
+contests:
+  title: 比赛列表
+  new: 新建比赛

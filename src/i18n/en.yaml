@@ -24,3 +24,11 @@ submissions:
     contest: Contest
     user: User
     onlyme: Only Me
+blogs:
+  title: Blog List
+  my: My Blogs
+  new: New Blog
+  tip: 'You can view your drafts by clicking "My blogs".'
+contests:
+  title: Contest List
+  new: New Contest

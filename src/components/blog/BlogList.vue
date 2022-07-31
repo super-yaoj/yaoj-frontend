@@ -2,10 +2,8 @@
     <div class="mt-4 container-md">
         <div class="row mb-3 align-items-end">
             <div class="col-md-8">
-                <div class="h3 mb-0">Blog List</div>
-                <div class="small" style="color: gray">
-                    You can view your drafts by clicking "My blogs".
-                </div>
+                <div class="h3 mb-0" v-t="'blogs.title'" />
+                <div class="small" style="color: gray" v-t="'blogs.tip'" />
             </div>
             <div
                 class="col-md-4 btn-group mt-1"
@@ -15,12 +13,9 @@
                 <router-link
                     class="btn btn-sm btn-outline-primary"
                     :to="'/user/' + $user.user_id + '?tab=blogs'"
-                >
-                    My blogs
-                </router-link>
-                <router-link class="btn btn-sm btn-primary" :to="createBlog">
-                    New blog
-                </router-link>
+                    v-t="'blogs.my'"
+                />
+                <router-link class="btn btn-sm btn-primary" :to="createBlog" v-t="'blogs.new'" />
             </div>
         </div>
         <Table

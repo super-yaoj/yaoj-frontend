@@ -2,10 +2,10 @@
 <div class="mt-4 container-md">
     <div class="row mb-3">
         <div class="col">
-            <div class="h3 mb-0">Contest List</div>
+            <div class="h3 mb-0" v-t="'contests.title'" />
         </div>
         <div class="col" style="text-align:right;" v-if="isAdmin()">
-            <button class="btn btn-sm btn-primary" @click="addContest">New Contest</button>
+            <button class="btn btn-sm btn-primary" @click="addContest" v-t="'contests.new'" />
             <div class="text-success small" v-if="success > 0">
                 Successfully added, contest id: {{success}}.
             </div>
