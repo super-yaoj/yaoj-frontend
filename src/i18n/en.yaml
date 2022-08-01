@@ -32,4 +32,8 @@ blogs:
 contests:
   title: Contest List
   new: New Contest
+contest:
+  remaining_time: 'Remaining Time:'
+  ended: Ended
+  judging: Judging
 announcements: Announcements

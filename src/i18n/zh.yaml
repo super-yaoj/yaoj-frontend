@@ -32,4 +32,8 @@ blogs:
 contests:
   title: 比赛列表
   new: 新建比赛
+contest:
+  remaining_time: '剩余时间'
+  ended: 已结束
+  judging: 正在评测
 announcements: 公告

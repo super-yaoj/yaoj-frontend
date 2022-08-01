@@ -41,7 +41,7 @@
                     Invalid request.
                 </div>
             </div>
-            <hr>
+            <hr />
             <div class="mb-4">
                 <strong>
                     <ion-icon name="alert-circle" style="font-size:1rem;vertical-align:middle;" />
@@ -84,7 +84,7 @@
                     Data is unchanged or arguments are invalid.
                 </div>
             </div>
-            <hr>
+            <hr />
             <div class="mb-4">
                 <div class="row mb-2">
                     <div class="col col-lg-9 input-group mt-2">
@@ -109,7 +109,7 @@
                     {{fail3}}
                 </div>
             </div>
-            <hr>
+            <hr />
             <div class="mb-4">
                 <div class="row mb-2">
                     <div class="col col-lg-9 input-group mt-2">

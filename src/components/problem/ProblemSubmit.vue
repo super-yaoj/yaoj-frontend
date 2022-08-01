@@ -6,7 +6,7 @@
         <div class="text-center mt-3">
             <button class="btn btn-primary" style="min-width:100px" @click="submit(true)">Submit</button>
         </div>
-        <hr>
+        <hr />
         or upload them one by one:
     </div>
     <div class="mt-3" v-for="(val, index) in submission" :key="index">

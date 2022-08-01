@@ -3,7 +3,7 @@
     <div class="row mb-3">
         <div class="h3 mb-0" v-t="'submissions.title'" />
     </div>
-    <hr>
+    <hr />
     <form class="row mb-3 subm-list-form flex-column flex-lg-row" @submit.prevent="query">
         <div class="input-group col flex-nowrap mb-1">
             <span class="input-group-text" id="basic-addon1" v-t="'submissions.filter.problem'" />

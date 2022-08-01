@@ -22,19 +22,23 @@
                 <div class="col-md timeboard mb-3" >
                     <div class="card">
                         <div class="card-body text-center">
-                            <div style="color:#666">Remaining Time:</div>
+                            <div class="text-secondary" v-t="'contest.remaining_time'" />
                             <h2>
-                                <Clock :seconds="(contest.end_time - current_time) / 1000" v-if="contest.end_time > current_time" @end="contestEnd"/>
-                                <span v-else-if="contest.finished">Ended</span>
-                                <span v-else>Judging</span>
+                                <Clock v-if="contest.end_time > current_time" :seconds="(contest.end_time - current_time) / 1000" @end="contestEnd"/>
+                                <span v-else-if="contest.finished" v-t="'contest.ended'" />
+                                <span v-else v-t="'contest.judging'" />
                             </h2>
-                            <hr>
-                            <div style="color:#666">Rule: {{rule}}<br>Max Rating Change: 0<br>Status: {{status}}</div>
+                            <hr />
+                            <div class="text-secondary">
+                                <div>Rule: {{rule}}</div>
+                                <div>Max Rating Change: 0</div>
+                                <div>Status: {{status}}</div>
+                            </div>
                         </div>
                     </div>
-                    <router-link class="btn btn-light mt-3" style="width:100%" :to="'/contest/' + id + '/participants'">Participants</router-link>
-                    <router-link class="btn btn-info mt-3" style="width:100%" :to="'/submissions/?contest_id=' + id + '&submitter=' + $user.user_id" v-if="$user.user_id > 0">My submissions</router-link>
-                    <button class="btn btn-danger mt-3" style="width:100%" v-if="can_edit && !contest.finished" @click="endContest">End Contest</button>
+                    <router-link class="btn btn-secondary mt-3 w-100" :to="'/contest/' + id + '/participants'">Participants</router-link>
+                    <router-link class="btn btn-info mt-3 w-100" :to="'/submissions/?contest_id=' + id + '&submitter=' + $user.user_id" v-if="$user.user_id > 0">My submissions</router-link>
+                    <button class="btn btn-danger mt-3 w-100" v-if="can_edit && !contest.finished" @click="endContest">End Contest</button>
                 </div>
                 <div class="col-md">
                     <ManageTable url="contest_problems" :data_name="['contest_id', 'problem_id', 'title']" title="Problem" name="problem" :no-modify="!can_edit" :query="{contest_id:id}" />
@@ -56,12 +60,12 @@
                     <div class="tab-pane fade show active" id="v-pills-basic">
                         <label class="ml-1"><strong>Contest Name:</strong></label>
                         <input class="form-control info-input-form" placeholder="Contest Name" v-model="newcontest.title" maxlength="80">
-                        <hr>
+                        <hr />
                         <label class="ml-1"><strong>Start Time:</strong></label>
                         <input class="form-control info-input-form" placeholder="Start Time" v-model="newcontest.start_time" :disabled="contest.finished">
                         <label class="ml-1"><strong>Last:</strong></label>
                         <input class="form-control info-input-form" placeholder="End Time" v-model="newcontest.last" :disabled="contest.finished">
-                        <hr>
+                        <hr />
                         <div class="btn-group" role="group">
                             <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" v-model="newcontest.pretest" :disabled="contest.finished">
                             <label class="btn btn-outline-secondary" style="border-right:0px;" for="btncheck1">Pretest Only</label>
