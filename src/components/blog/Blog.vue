@@ -4,7 +4,7 @@
         <div class="col">
             <h3><strong>{{blog.title}}</strong></h3>
         </div>
-        <div class="col-3 btn-group" style="text-align: right;" v-if="isAdmin() || $user.user_id == blog.author">
+        <div class="col-3 btn-group" style="text-align: right;" v-if="isAdmin() || $store.user.user_id == blog.author">
             <button class="btn btn-primary" @click="edit">Edit</button>
             <button class="btn btn-danger" @click="remove">Delete</button>
         </div>
@@ -33,7 +33,7 @@
                 <div class="small ms-3 col" style="color:gray">
                     by <router-link :to="'/user/' + comment.author">{{comment.author_name}}</router-link> at {{comment.create_time.replace(/[A-Z]/g, ' ')}}
                 </div>
-                <a href="#" class="col px-0" style="max-width: 60px;" @click.prevent="deleteComment(comment.comment_id)" v-if="isAdmin() || comment.author == $user.user_id">delete</a>
+                <a href="#" class="col px-0" style="max-width: 60px;" @click.prevent="deleteComment(comment.comment_id)" v-if="isAdmin() || comment.author == $store.user.user_id">delete</a>
                 <ClickLike class="col px-0 me-2" icon="thumbs-up-outline" style="max-width: 50px" :number="comment.like" :active="comment.liked" :target="{name:'comment',id:comment.comment_id}"></ClickLike>
             </div>
         </div>

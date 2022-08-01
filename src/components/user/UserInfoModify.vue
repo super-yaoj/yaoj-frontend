@@ -87,7 +87,7 @@ export default {
         }
     },
     async mounted() {
-        if (this.$user.user_id != this.$route.params.id) {
+        if (this.$store.user.user_id != this.$route.params.id) {
             this.$router.replace("/403Forbidden")
             return ''
         }

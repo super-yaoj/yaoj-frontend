@@ -8,11 +8,11 @@
             <div
                 class="col-md-4 btn-group mt-1"
                 style="text-align: right"
-                v-if="$user.user_id > 0"
+                v-if="$store.user.user_id > 0"
             >
                 <router-link
                     class="btn btn-sm btn-outline-primary"
-                    :to="'/user/' + $user.user_id + '?tab=blogs'"
+                    :to="'/user/' + $store.user.user_id + '?tab=blogs'"
                     v-t="'blogs.my'"
                 />
                 <router-link class="btn btn-sm btn-primary" :to="createBlog" v-t="'blogs.new'" />

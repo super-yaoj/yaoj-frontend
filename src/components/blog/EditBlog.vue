@@ -27,7 +27,7 @@ import VMdEditor from '@/models/VMdEditor.js'
 import { callAPI } from '@/utils'
 export default {
     created() {
-        if (this.$user.user_id < 0) {
+        if (this.$store.user.user_id < 0) {
             this.$router.replace("/403Forbidden")
             return
         }

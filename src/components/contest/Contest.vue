@@ -37,7 +37,7 @@
                         </div>
                     </div>
                     <router-link class="btn btn-secondary mt-3 w-100" :to="'/contest/' + id + '/participants'">Participants</router-link>
-                    <router-link class="btn btn-info mt-3 w-100" :to="'/submissions/?contest_id=' + id + '&submitter=' + $user.user_id" v-if="$user.user_id > 0">My submissions</router-link>
+                    <router-link class="btn btn-info mt-3 w-100" :to="'/submissions/?contest_id=' + id + '&submitter=' + $store.user.user_id" v-if="$store.user.user_id > 0">My submissions</router-link>
                     <button class="btn btn-danger mt-3 w-100" v-if="can_edit && !contest.finished" @click="endContest">End Contest</button>
                 </div>
                 <div class="col-md">

@@ -1,9 +1,9 @@
 <template>
 <div v-if="this.name" :class="this.class" :style="style">
-    <a :href="'#/user/' + id" @click="onClick">
+    <router-link :to="'/user/' + id" @click="onClick">
         <span :style="'color:' + colorHead">{{name[0]}}</span>
         <span :style="'color:' + colorTail">{{name.substr(1)}}</span>
-    </a>
+    </router-link>
 </div>
 </template>
 

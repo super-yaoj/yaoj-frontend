@@ -115,8 +115,8 @@ export default {
         },
         isAdmin() {
             return (
-                this.$user.user_group == UserGroup.Admin ||
-                this.$user.user_group == UserGroup.Root
+                this.$store.user.user_group == UserGroup.Admin ||
+                this.$store.user.user_group == UserGroup.Root
             );
         },
         myReload() {

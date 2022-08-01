@@ -30,12 +30,12 @@
             </div>
         </ul>
         <hr class="mx-2" />
-        <div v-if="$user.user_id > 0">
+        <div v-if="$store.user.user_id > 0">
             <div>
                 <span
                     class="col align-items-center px-3 text-muted"
                     style="text-transform: uppercase; color: #444"
-                    >{{ $user.user_name }}</span
+                    >{{ $store.user.user_name }}</span
                 >
             </div>
             <div id="userForm" class="mt-2">
@@ -43,7 +43,7 @@
                     <ni-i18n
                         icon="newspaper-outline"
                         t="sidebar.profile"
-                        :href="'/user/' + $user.user_id"
+                        :href="'/user/' + $store.user.user_id"
                     />
                     <ni-i18n
                         icon="pulse-outline"

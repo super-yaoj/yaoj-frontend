@@ -23,8 +23,8 @@
                         <span class="input-group-text">Change</span>
                         <input type="text" class="form-control" placeholder="User id" v-model="user1">
                         <span class="input-group-text" style="border-right:0px">to</span>
-                        <input type="radio" class="btn-check" id="btnradio1" autocomplete="off" v-if="$user.user_group == UserGroup.Root" :checked="permission1 == UserGroup.Admin">
-                        <label class="btn btn-outline-secondary" for="btnradio1" style="border-right:0px" v-if="$user.user_group == UserGroup.Root" @click.prevent="selectPermission(UserGroup.Admin)">Administrator</label>
+                        <input type="radio" class="btn-check" id="btnradio1" autocomplete="off" v-if="$store.user.user_group == UserGroup.Root" :checked="permission1 == UserGroup.Admin">
+                        <label class="btn btn-outline-secondary" for="btnradio1" style="border-right:0px" v-if="$store.user.user_group == UserGroup.Root" @click.prevent="selectPermission(UserGroup.Admin)">Administrator</label>
                         <input type="radio" class="btn-check" id="btnradio2" autocomplete="off" :checked="permission1 == UserGroup.Normal">
                         <label class="btn btn-outline-secondary" for="btnradio2" style="border-right:0px" @click.prevent="selectPermission(UserGroup.Normal)">Normal User</label>
                         <input type="radio" class="btn-check" id="btnradio3" autocomplete="off" :checked="permission1 == UserGroup.Banned">

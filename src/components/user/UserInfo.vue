@@ -11,7 +11,7 @@
     </div>
     <div class="small" style="color:gray;word-wrap:break-word">{{user.motto}}</div>
     <router-link 
-        v-if="user.user_id == $user.user_id"
+        v-if="user.user_id == $store.user.user_id"
         class="mt-2 mb-2 btn btn-sm btn-outline-secondary w-100" 
         role="button" :to="'/user/' + user.user_id + '/modify/'"
     >Modify Information</router-link>
@@ -92,7 +92,7 @@ export default {
             tab: this.$route.query.tab,
             user: {},
             id: this.$route.params.id,
-            canSeePermission: this.isAdmin() || this.$route.params.id == this.$user.user_id,
+            canSeePermission: this.isAdmin() || this.$route.params.id == this.$store.user.user_id,
             timestamp: 0,
         }
     },
@@ -179,7 +179,7 @@ export default {
                 if (res.data.data == null) {
                     res.data.data = []
                 }
-                if (id == this.$user.user_id) {
+                if (id == this.$store.user.user_id) {
                     for (var i = 0; i < localStorage.length; i++) {
                         var key = localStorage.key(i)
                         if (key.endsWith("_title")) {

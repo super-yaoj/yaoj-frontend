@@ -1,29 +1,13 @@
 <script>
-import { h, defineComponent } from 'vue'
+const PageItem = ({icon, f, disable}) => 
+    <button class="btn page-link" onClick={f} disabled={disable}>
+        <ion-icon name={icon} />
+    </button>
 
-const PageItem = defineComponent({
-    props: ['icon', 'f', 'disable'],
-    render() {
-        const {f, disable, icon} = this.$props;
-        return <button class="btn page-link" onClick={f} disabled={disable}>
-            <ion-icon name={icon} />
-        </button>
-    },
-})
-
-const PageSize = defineComponent({
-    props: ['f', 'sizes', 'defaultsize'],
-    render() {
-        const {f, sizes, defaultsize} = this.$props
-        if (sizes.length > 1) {
-            return <select class="form-select" onChange={() => f(this.$event.srcElement.value)}>
-                {sizes.map(size => <option value={size} selected={defaultsize == size} key={size}>{size} per page</option>)}
-            </select>
-        } else {
-            return null
-        }
-    },
-})
+const PageSize = ({f, sizes, defaultsize}) => 
+    sizes.length > 1 ? <select class="form-select" onChange={() => f(this.$event.srcElement.value)}>
+        {sizes.map(size => <option value={size} selected={defaultsize == size} key={size}>{size} per page</option>)}
+    </select> : null
 
 export default {
     props: ['row', 'sizes', 'tableclass', 'get', 'next', 'pagination', 'nocache', 'timestamp'],
@@ -63,7 +47,7 @@ export default {
         var children = [], tableclass = this.tableclass != undefined ? this.tableclass : 'table table-hover text-center'
         if (this.data != null) {
             for (var i = 0; i < this.data.length; i++) {
-                children.push(h('tr', this.row(this.data[i])))
+                children.push(<tr>{this.row(this.data[i])}</tr>)
             }
         }
         var table = <div style="max-width: 100%; overflow: auto"><table class={tableclass}>

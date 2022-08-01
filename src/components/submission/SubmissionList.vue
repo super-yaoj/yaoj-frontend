@@ -17,7 +17,7 @@
             <span class="input-group-text" id="basic-addon1" v-t="'submissions.filter.user'" />
             <input type="text" class="form-control" placeholder="User id" v-model="submitter">
         </div>
-        <div class="btn-group col d-flex flex-row mb-1" style="text-align:right" v-if="$user.user_id > 0">
+        <div class="btn-group col d-flex flex-row mb-1" style="text-align:right" v-if="$store.user.user_id > 0">
             <input type="checkbox" id="onlyme" class="btn-check" v-model="onlyme" style="display: none;">
             <label class="btn btn-outline-warning" for="onlyme" v-t="'submissions.filter.onlyme'" />
             <button class="btn btn-primary" type="submit" v-t="'search'" />
@@ -42,7 +42,7 @@ export default {
             problem_id: this.$route.query.problem_id || "",
             contest_id: this.$route.query.contest_id || "",
             submitter: this.$route.query.submitter || "",
-            onlyme: this.$user.user_id > 0 && this.$route.query.submitter == this.$user.user_id,
+            onlyme: this.$store.user.user_id > 0 && this.$route.query.submitter == this.$store.user.user_id,
         }
     },
     methods: {
@@ -78,7 +78,7 @@ export default {
     watch: {
         onlyme(to) {
             if (to) {
-                this.submitter = this.$user.user_id
+                this.submitter = this.$store.user.user_id
                 this.query()
             } else {
                 this.submitter = ""
