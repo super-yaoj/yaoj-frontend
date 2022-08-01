@@ -23,7 +23,7 @@
     <div class="card">
         <div class="card-header">
             <div class="row mt-1 mb-1 px-2">
-                <div class="mb-0 h5 col">Announcements</div>
+                <div class="mb-0 h5 col" v-t="'announcements'" />
                 <a class="col" href="#" style="text-align:right;font-size:1.3rem;height:20px" data-bs-toggle="modal" data-bs-target="#addAnouncement" v-if="isAdmin()">
                     <strong><ion-icon name="add" style="--ionicon-stroke-width:50px;color:gray;" /></strong>
                 </a>
@@ -74,19 +74,21 @@ export default {
     methods: {
         getAnnounceRow(row) {
             if (row == null) return [
-                h('td', { style: "text-align: left" }, h('strong', 'Title')),
-                h('td', { style: "width:15%" }, h('strong', 'Release Date')),
-                h('td', { style: "width: 10%; text-align: right" }, h('strong', 'Comments')),
-                this.isAdmin() ? h('td', { style: "width: 10%;" }, h('strong', 'Priority')) : null
+                <td style="text-align: left"><strong>Title</strong></td>,
+                <td style="width:15%"><strong>Release Date</strong></td>,
+                <td style="width: 10%; text-align: right"><strong>Comments</strong></td>,
+                this.isAdmin() ? <td style="width: 10%;"><strong>Priority</strong></td> : null,
             ]
             else return [
-                h('td', { style: "text-align: left" }, h('a', { href: '#/blog/' + row.blog_id }, row.title)),
-                h('td', {}, format(row.release_time, 'YYYY-MM-DD')),
-                h('td', h('div', { class: "row" }, [
-                    h(ClickLike, { class: "col px-0", icon: "chatbox-outline", number: row.comments }),
-                    h(ClickLike, { class: "col px-0", icon: "thumbs-up-outline", number: row.like, target: { name: "blog", id: row.blog_id }, active: row.liked })
-                ])),
-                this.isAdmin() ? h('td', [row.priority + " ", h('a', { href: "#", onClick: this.deleteAnnounce(row.id) }, 'delete')]) : null
+                <td style="text-align: left"><a href={'#/blog/' + row.blog_id}>{row.title}</a></td>,
+                <td>{format(row.release_time, 'YYYY-MM-DD')}</td>,
+                <td><div class="d-flex justify-content-between">
+                    <ClickLike icon="chatbox-outline" number={row.comments} />
+                    <ClickLike icon="thumbs-up-outline" number={row.like} target={{ name: "blog", id: row.blog_id }} active={row.liked} />
+                </div></td>,
+                this.isAdmin() ? <td>{row.priority + " "}
+                    <a href="#" onClick={this.deleteAnnounce(row.id)}>Delete</a>
+                </td> : null
             ]
         },
         async getAnnouncements(query) {
