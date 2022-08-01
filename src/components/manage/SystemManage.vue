@@ -12,7 +12,7 @@
         </li>
     </ul>
     <div class="tab-content container mt-3" id="myTabContent">
-        <div class="tab-pane fade show active" id="permissions" role="tabpanel" aria-labelledby="permissions-tab">
+        <div class="tab-pane fade show active" id="permissions" role="tabpanel">
             <strong style="font-size:1.1rem;">
                 <ion-icon name="alert-circle" style="vertical-align:middle;"></ion-icon>
                 Notice that you must input user id in this page instead of username.
@@ -130,8 +130,8 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="submissions" role="tabpanel" aria-labelledby="submissions-tab">Not decided....</div>
-        <div class="tab-pane fade" id="thumbs" role="tabpanel" aria-labelledby="thumbs-tab">Working now!!!</div>
+        <div class="tab-pane fade" id="submissions" role="tabpanel">Not decided....</div>
+        <div class="tab-pane fade" id="thumbs" role="tabpanel">Working now!!!</div>
     </div>
 </div></div>
 </template>

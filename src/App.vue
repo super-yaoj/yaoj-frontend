@@ -34,7 +34,6 @@
                                 type="button"
                                 class="btn-close"
                                 data-bs-dismiss="modal"
-                                aria-label="Close"
                             />
                         </div>
                         <div class="modal-body">

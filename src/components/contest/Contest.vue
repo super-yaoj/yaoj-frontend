@@ -62,7 +62,7 @@
                         <label class="ml-1"><strong>Last:</strong></label>
                         <input class="form-control info-input-form" placeholder="End Time" v-model="newcontest.last" :disabled="contest.finished">
                         <hr>
-                        <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                        <div class="btn-group" role="group">
                             <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" v-model="newcontest.pretest" :disabled="contest.finished">
                             <label class="btn btn-outline-secondary" style="border-right:0px;" for="btncheck1">Pretest Only</label>
                             <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off" v-model="newcontest.score_private" :disabled="contest.finished">

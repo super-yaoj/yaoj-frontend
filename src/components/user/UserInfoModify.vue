@@ -18,7 +18,7 @@
             </li>
         </ul>
         <div class="tab-content container mt-3" id="myTabContent">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade show active" id="home" role="tabpanel">
                 <label class="ml-1"><strong>Password:</strong></label>
                 <input type="password" class="form-control info-input-form" placeholder="Password" v-model="upassword">
                 <div class="text-danger small mt-1" v-if="invalid_p">
@@ -45,7 +45,7 @@
                 
                 <label class="ml-1"><strong>Gender:</strong></label><br />
                 <div class="btn-group btn-group-toggle info-input-form" data-toggle="buttons" id="toggle">
-                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <div class="btn-group" role="group">
                         <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" :checked="user.gender == 0" @click="user.gender = 0">
                         <label class="btn btn-outline-secondary" for="btnradio1" style="border-right:0px">Secret</label>
                         <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" :checked="user.gender == 1" @click="user.gender = 1">

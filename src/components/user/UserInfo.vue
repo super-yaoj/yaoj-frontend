@@ -1,61 +1,63 @@
 <template>
-<div class="mt-5 row" style="">
-<div class="col-lg-4 col-sm-5 col-12 mx-auto mb-3"><div>
+<div class="mt-5 row">
+<div class="col-lg-4 col-sm-5 col-12 mx-auto mb-3">
     <div class="rounded-2" style="overflow: hidden"><img src="/icons/default_icon.svg" /></div>
-    <div class="mt-2" style="font-size:1.5rem">
-        <div style="display: inline-block;" class="me-1">
+    <div class="mt-2 d-flex" style="font-size:1.5rem">
+        <div class="me-1">
             <ion-icon name="male-outline" class="info-gender-icon" style="color:#66F" v-if="user.gender == 1" />
             <ion-icon name="female-outline" class="info-gender-icon" style="color:#F66" v-if="user.gender == 2" />
         </div>
-        <UserName style="display: inline-block;" :id="user.user_id" :name="user.user_name" :rating="user.rating" />
+        <UserName :id="user.user_id" :name="user.user_name" :rating="user.rating" />
     </div>
     <div class="small" style="color:gray;word-wrap:break-word">{{user.motto}}</div>
-    <a class="mt-2 mb-2 btn btn-sm btn-outline-secondary" role="button" :href="'#/user/' + user.user_id + '/modify/'" style="width:100%" v-if="user.user_id == $user.user_id">Modify Information</a>
+    <router-link 
+        v-if="user.user_id == $user.user_id"
+        class="mt-2 mb-2 btn btn-sm btn-outline-secondary w-100" 
+        role="button" :to="'/user/' + user.user_id + '/modify/'"
+    >Modify Information</router-link>
     <ul class="list-group list-group-flush" style="word-wrap:break-word">
-        <user-info title="User ID" icon="id-card">ID #{{user.user_id}}</user-info>
-        <user-info title="Rating" icon="bar-chart"> 
+        <user-info-meta title="User ID" icon="id-card">ID #{{user.user_id}}</user-info-meta>
+        <user-info-meta title="Rating" icon="bar-chart"> 
             <UserName 
                 style="display: inline-block;" :id="user.user_id" 
                 :name="user.rating + ''" :rating="user.rating"
             />
-        </user-info>
-        <user-info title="User Group" icon="people">{{user.user_group}}</user-info>
-        <user-info title="Register Time" icon="time">{{ user.register_time }}</user-info>
-        <user-info v-if="user.email != ''" title="Email" icon="mail">{{user.email}}</user-info>
-        <user-info v-if="user.organization != ''" title="Organization" icon="briefcase">{{user.organization}}</user-info>
+        </user-info-meta>
+        <user-info-meta title="User Group" icon="people">{{user.user_group}}</user-info-meta>
+        <user-info-meta title="Register Time" icon="time">{{ user.register_time }}</user-info-meta>
+        <user-info-meta v-if="user.email != ''" title="Email" icon="mail">{{user.email}}</user-info-meta>
+        <user-info-meta v-if="user.organization != ''" title="Organization" icon="briefcase">{{user.organization}}</user-info-meta>
     </ul>
-</div></div>
+</div>
 <div class="col-12 col-sm-7 col-lg-8">
-    <div class="">
-        <ul class="nav nav-tabs" id="myTab" role="tablist" style="flex-wrap: none;">
-            <li class="nav-item" role="presentation">
-                <button :class="'nav-link' + (tab == undefined || tab == 'rating' ? ' active' : '')" id="rating-tab"
-                    data-bs-toggle="tab" data-bs-target="#rating" type="button" role="tab">Rating</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button :class="'nav-link' + (tab == 'accepted' ? ' active' : '')" id="accepted-tab"
-                    data-bs-toggle="tab" data-bs-target="#accepted" type="button" role="tab">Accepted</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button :class="'nav-link' + (tab == 'blogs' ? ' active' : '')" id="blogs-tab"
-                    data-bs-toggle="tab" data-bs-target="#blogs" type="button" role="tab">Blogs</button>
-            </li>
-            <li class="nav-item" role="presentation" v-if="canSeePermission">
-                <button :class="'nav-link' + (tab == 'permissions' ? ' active' : '')" id="permission-tab"
-                   data-bs-toggle="tab" data-bs-target="#permission" type="button" role="tab">Permissions</button>
-            </li>
-        </ul>
-        <div class="tab-content container" id="myTabContent">
-            <div :class="'tab-pane fade' + (tab == undefined || tab == 'rating' ? ' active show' : '')" id="rating" role="tabpanel" aria-labelledby="rating-tab">
-                <Rating :register_time="user.register_time" v-if="user.user_id" />
-            </div>
-            <div :class="'mt-4 tab-pane fade' + (tab == 'accepted' ? ' active show' : '')" id="accepted" role="tabpanel" aria-labelledby="accepted-tab">...</div>
-            <div :class="'mt-4 tab-pane fade' + (tab == 'blogs' ? ' active show' : '')" id="blogs" role="tabpanel" aria-labelledby="blogs-tab">
-                <Table :row="blogRow" :get="getBlog" :pagination="false" v-if="reloadBlog" />
-            </div>
-            <div :class="'mt-4 tab-pane fade' + (tab == 'permissions' ? ' active show' : '')" id="permission" role="tabpanel" aria-labelledby="permission-tab" v-if="canSeePermission">
-                <Table :row="permissionRow" :get="getPermission" :pagination="false" />
-            </div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist" style="flex-wrap: none;">
+        <li class="nav-item" role="presentation">
+            <button :class="'nav-link' + (tab == undefined || tab == 'rating' ? ' active' : '')" id="rating-tab"
+                data-bs-toggle="tab" data-bs-target="#rating" type="button" role="tab">Rating</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button :class="'nav-link' + (tab == 'accepted' ? ' active' : '')" id="accepted-tab"
+                data-bs-toggle="tab" data-bs-target="#accepted" type="button" role="tab">Accepted</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button :class="'nav-link' + (tab == 'blogs' ? ' active' : '')" id="blogs-tab"
+                data-bs-toggle="tab" data-bs-target="#blogs" type="button" role="tab">Blogs</button>
+        </li>
+        <li class="nav-item" role="presentation" v-if="canSeePermission">
+            <button :class="'nav-link' + (tab == 'permissions' ? ' active' : '')" id="permission-tab"
+                data-bs-toggle="tab" data-bs-target="#permission" type="button" role="tab">Permissions</button>
+        </li>
+    </ul>
+    <div class="tab-content container" id="myTabContent">
+        <div :class="'tab-pane fade' + (tab == undefined || tab == 'rating' ? ' active show' : '')" id="rating" role="tabpanel">
+            <Rating :register_time="user.register_time" v-if="user.user_id" />
+        </div>
+        <div :class="'mt-4 tab-pane fade' + (tab == 'accepted' ? ' active show' : '')" id="accepted" role="tabpanel">...</div>
+        <div :class="'mt-4 tab-pane fade' + (tab == 'blogs' ? ' active show' : '')" id="blogs" role="tabpanel">
+            <Table :timestamp="timestamp" :row="blogRow" :get="getBlog" :pagination="false" />
+        </div>
+        <div :class="'mt-4 tab-pane fade' + (tab == 'permissions' ? ' active show' : '')" id="permission" role="tabpanel" v-if="canSeePermission">
+            <Table :timestamp="timestamp" :row="permissionRow" :get="getPermission" :pagination="false" />
         </div>
     </div>
 </div>
@@ -72,7 +74,7 @@ import { format } from 'silly-datetime'
 import UserName from '@/models/UserName.vue'
 import Rating from './Rating.vue'
 
-const UserInfo = ({ title, icon }, context) => {
+const UserInfoMeta = ({ title, icon }, context) => {
     const tooltip = resolveDirective('tooltip')
     return withDirectives(<li class="list-group-item info-item" title={title}>
         <ion-icon name={icon} class="feather me-2" />
@@ -83,6 +85,7 @@ const UserInfo = ({ title, icon }, context) => {
 }
 
 export default {
+    name: "UserInfo",
     inject: ['isAdmin'],
     data() {
         return {
@@ -90,21 +93,27 @@ export default {
             user: {},
             id: this.$route.params.id,
             canSeePermission: this.isAdmin() || this.$route.params.id == this.$user.user_id,
-            reloadBlog: true,
+            timestamp: 0,
         }
-    },
-    async mounted() {
-        this.user = await queryUser({user_id: this.id})
     },
     components: {
         Table,
         ClickLike,
         UserName,
-        UserInfo,
+        UserInfoMeta,
         Rating,
         UserName
     },
     methods: {
+        fetchdata(route) {
+            queryUser({user_id: route.params.id}).then(data => {
+                this.user = data
+            })
+            console.log("fetch", route)
+            this.tab = route.query.tab
+            this.id = route.params.id
+            this.timestamp = new Date().getTime()
+        },
         permissionRow(row) {
             if (row == null) return [h('td', {style: "width:60px"}, h('strong', '#ID')),
                 h('td', {style: "text-align:left;padding-left:30px!important"}, h('strong', 'Permission Name')),
@@ -188,11 +197,12 @@ export default {
         deleteDraft(local) {
             return (event) => {
                 event.preventDefault()
-                this.reloadBlog = false
+                // this.reloadBlog = false
                 localStorage.removeItem(local + "_blog_id")
                 localStorage.removeItem(local + "_title")
                 localStorage.removeItem(local + "_content")
-                nextTick(() => { this.reloadBlog = true })
+                // nextTick(() => { this.reloadBlog = true })
+                this.timestamp = new Date().getTime()
             }
         }
     }

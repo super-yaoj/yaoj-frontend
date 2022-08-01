@@ -43,8 +43,8 @@ app.mixin({
         }
     },
     created() {
-        console.log(this.$options.name)
         if (this.fetchdata != undefined) {
+            console.log("on created fetch", this.$options.name)
             this.fetchdata(this.$route);
         }
     }
