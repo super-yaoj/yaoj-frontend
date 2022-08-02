@@ -1,16 +1,43 @@
 <script>
+import { defineComponent } from "vue";
+
 const PageItem = ({icon, f, disable}) => 
     <button class="btn page-link" onClick={f} disabled={disable}>
         <ion-icon name={icon} />
     </button>
 
-const PageSize = ({f, sizes, defaultsize}) => 
-    sizes.length > 1 ? <select class="form-select" onChange={() => f(this.$event.srcElement.value)}>
-        {sizes.map(size => <option value={size} selected={defaultsize == size} key={size}>{size} per page</option>)}
-    </select> : null
+const PageSize = defineComponent({
+    props: ['f', 'sizes', 'defaultsize'],
+    template: `
+    <select class="form-select" @change="f($event.srcElement.value)" v-if="sizes.length>1">
+        <option v-for="size in sizes" :value="size" :selected="defaultsize == size" :key="size">{{size}} per page</option>
+    </select>
+    `,
+})
 
 export default {
-    props: ['row', 'sizes', 'tableclass', 'get', 'next', 'pagination', 'nocache', 'timestamp'],
+    props: {
+        /**
+         * @type {(o: any) => import("vue").VNode}
+         */
+        row: Function,
+        /**
+         * @type {number[]}
+         */
+        sizes: Array,
+        tableclass: String,
+        /**
+         * @type {async (query: { pagesize: number, left?: any, right?: any }) => ({data: any[], isfull: bool})}
+         */
+        get: Function,
+        /**
+         * @type {async (row: any, dir: number) => any}
+         */
+        next: Function,
+        pagination: Boolean,
+        timestamp: [Date, Number],
+    },
+    // props: ['row', 'sizes', 'tableclass', 'get', 'next', 'pagination', 'timestamp'],
     data() {
         if (!this.pagination) return { data: [] }
         return {
