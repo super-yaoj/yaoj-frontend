@@ -101,6 +101,7 @@ import ContestList from './ContestList.vue'
 
 const RefreshInterval = 30000
 export default {
+    name: 'Contest',
     inject: ['reload'],
     data() {
         return {
@@ -124,63 +125,66 @@ export default {
         ContestList,
         ContestDashboard
     },
-    created() {
-        callAPI('contest', 'get', { contest_id: this.id }, (res) => {
-            this.contest = res.data.contest
-            this.contest.start_time = new Date(this.contest.start_time)
-            this.contest.end_time = new Date(this.contest.end_time)
-            
-            this.can_edit = res.data.can_edit
-            this.rule = getRule(this.contest.pretest, this.contest.score_private)
-            this.status = getStatus(this.contest.start_time, this.contest.end_time, this.contest.finished)
-            
-            this.newcontest = {
-                contest_id: this.id,
-                title: this.contest.title,
-                start_time: format(this.contest.start_time),
-                last: Math.floor(this.contest.end_time - this.contest.start_time) / 60000,
-                pretest: this.contest.pretest,
-                score_private: this.contest.score_private,
-            }
-        })
-        this.runtask()
-        this.tasks = setInterval(this.runtask, RefreshInterval)
-    },
     methods: {
+        fetchdata(route) {
+            if (this.tasks != null) {
+                clearInterval(this.tasks)
+            }
+            callAPI('contest', 'get', { contest_id: route.params.id }, (res) => {
+                this.id = route.params.id
+                this.contest = res.data.contest
+                this.contest.start_time = new Date(this.contest.start_time)
+                this.contest.end_time = new Date(this.contest.end_time)
+                
+                this.can_edit = res.data.can_edit
+                this.rule = getRule(this.contest.pretest, this.contest.score_private)
+                this.status = getStatus(this.contest.start_time, this.contest.end_time, this.contest.finished)
+                
+                this.newcontest = {
+                    contest_id: this.id,
+                    title: this.contest.title,
+                    start_time: format(this.contest.start_time),
+                    last: Math.floor(this.contest.end_time - this.contest.start_time) / 60000,
+                    pretest: this.contest.pretest,
+                    score_private: this.contest.score_private,
+                }
+            })
+            this.runtask()
+            this.tasks = setInterval(this.runtask, RefreshInterval)
+        },
         modifyContest() {
             var data = JSON.parse(JSON.stringify(this.newcontest))
             data.start_time = format(new Date(this.newcontest.start_time).getTime() + new Date().getTimezoneOffset() * 60 * 1000)
             data.pretest = this.newcontest.pretest ? 1 : 0
             data.score_private = this.newcontest.score_private ? 1 : 0
             callAPI('contest', 'patch', data, (res) => {
-                this.reload()
+                this.fetchdata(this.$route)
             }, (res) => {
                 alert(res.data._error)
             })
         },
         endContest() {
             callAPI('FinishContest', 'post', {contest_id: this.id}, (res) => {
-                this.reload()
+                this.fetchdata(this.$route)
             }, (res) => {
                 alert(res.data._error.message)
             })
         },
         runtask() {
-            var ct = this.current_time
-            callRPC('GetTime', {}, (res) => {
-                this.current_time = new Date(res.data.server_time)
-            })
             callAPI('contest_dashboard', 'get', {contest_id: this.id}, (res) => {
                 if (res.data.data != null) {
                     this.dashboard = res.data.data.sort((a, b) => b.id - a.id)
-                    if (ct) {
+                    if (this.current_time) {
                         for (var row of res.data.data) {
-                            if (new Date(row.time) > ct) {
+                            if (new Date(row.time) > this.current_time) {
                                 alert("New Announcement!!!\n" + row.dashboard)
                             }
                         }
                     }
                 }
+            callRPC('GetTime', {}, (res) => {
+                this.current_time = new Date(res.data.server_time)
+            })
             }, (res) => {
                 alert(res.data._error)
             })
@@ -191,7 +195,9 @@ export default {
         },
     },
     beforeUnmount() {
-        clearInterval(this.tasks)
+        if (this.tasks != null) {
+            clearInterval(this.tasks)
+        }
     },
 }
 </script>

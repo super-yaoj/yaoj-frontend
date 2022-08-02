@@ -47,12 +47,12 @@
 </template>
 
 <script>
-import { callAPI, randomString } from '@/utils'
+import { callAPI } from '@/utils'
 import VMdPreview from '@/models/VMdPreview'
 import ClickLike from '@/models/ClickLike.vue'
 import VMdEditor from '@/models/VMdEditor'
 import { format } from 'silly-datetime'
-
+import { createDraft } from './blog'
 
 export default {
     name: "Blog",
@@ -65,8 +65,6 @@ export default {
             comments: null
         }
     },
-    created() {
-    },
     components: {
         VMdPreview,
         ClickLike,
@@ -76,7 +74,7 @@ export default {
         fetchdata(route){
             callAPI('blog', 'get', { blog_id: route.params.id }, (res) => {
                 this.id = route.params.id
-                this.blog = res.data
+                this.blog = res.data.blog
                 this.blog.create_time = format(new Date(this.blog.create_time))
                 this.getComments(route.params.id)
             }, (res) => {
@@ -84,10 +82,7 @@ export default {
             })
         },
         edit() {
-            var local = randomString(16)
-            localStorage.setItem(local + "_blog_id", this.id)
-            localStorage.setItem(local + "_title", this.blog.title)
-            localStorage.setItem(local + "_content", this.blog.content)
+            var local = createDraft(this.blog)
             this.$router.push("/editblog?local=" + local)
         },
         remove() {

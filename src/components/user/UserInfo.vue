@@ -73,6 +73,7 @@ import ClickLike from '@/models/ClickLike.vue'
 import { format } from 'silly-datetime'
 import UserName from '@/models/UserName.vue'
 import Rating from './Rating.vue'
+import { removeDraft } from '../blog/blog'
 
 const UserInfoMeta = ({ title, icon }, context) => {
     const tooltip = resolveDirective('tooltip')
@@ -197,11 +198,7 @@ export default {
         deleteDraft(local) {
             return (event) => {
                 event.preventDefault()
-                // this.reloadBlog = false
-                localStorage.removeItem(local + "_blog_id")
-                localStorage.removeItem(local + "_title")
-                localStorage.removeItem(local + "_content")
-                // nextTick(() => { this.reloadBlog = true })
+                removeDraft(local)
                 this.timestamp = new Date().getTime()
             }
         }
