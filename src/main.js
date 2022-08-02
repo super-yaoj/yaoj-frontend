@@ -51,8 +51,7 @@ app.mixin({
     }
 })
 
-app.config.globalProperties.$store = store;
-app.config.globalProperties.$temp_store = {}
+app.config.globalProperties.$store = store
 app.config.compilerOptions.isCustomElement = (tag) => tag.startsWith("ion")
 app.config.compilerOptions.jsx = "preserve"
 // app.config.globalProperties.$store.user = reactive(store.user)
@@ -62,7 +61,6 @@ app.mount("#app")
 
 callRPC("Init", {}, function (response) {
     store.user = response.data
-    app.config.globalProperties.$time = response.data.server_time
 }, function (response) {
     alert(response.statusMessage + "\n" + response.data._error.message)
 })

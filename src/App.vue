@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { nextTick, h } from "vue";
+import { nextTick } from "vue";
 import { format } from "silly-datetime";
 import Table from "./models/Table.vue";
 import { callAPI, callRPC } from "./utils";
@@ -95,18 +95,22 @@ export default {
             reloadSearch: false,
             myModal: null,
             refreshed: false,
-            server_time: format(new Date(this.$time)),
+            server_time: '',
         };
     },
     components: {
         Table,
         TheSidebar,
     },
+    created() {
+        callRPC("GetTime", {}, (res) => {
+            this.server_time = format(new Date(res.data.server_time));
+        });
+    },
     methods: {
         reloadApp() {
             callRPC("GetTime", {}, (res) => {
-                this.$time = res.data.server_time;
-                this.server_time = format(new Date(this.time));
+                this.server_time = format(new Date(res.data.server_time));
             });
             this.activeNow = false;
             nextTick(() => {
@@ -166,11 +170,6 @@ export default {
             if (a == null) return b > 0 ? 1 << 30 : 0;
             return a.user_id + b;
         },
-    },
-    watch: {
-        // $route() {
-        //     this.reloadApp();
-        // },
     },
     provide() {
         return { reload: this.reloadApp, isAdmin: this.isAdmin };

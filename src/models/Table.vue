@@ -12,15 +12,10 @@ const PageSize = ({f, sizes, defaultsize}) =>
 export default {
     props: ['row', 'sizes', 'tableclass', 'get', 'next', 'pagination', 'nocache', 'timestamp'],
     data() {
-        var key = this.$route.fullPath + "_table"
-        if (!this.nocache && this.$temp_store[key] == undefined)
-            this.$temp_store[key] = {}
-        
-        if (!this.pagination) return { data: [], temp: this.$temp_store[key] }
+        if (!this.pagination) return { data: [] }
         return {
             isfull: false,
             data: [],
-            temp: this.nocache ? {} : this.$temp_store[key],
             right: undefined,
             left: this.next(null, -1),
             BEGIN: this.next(null, -1),
@@ -35,12 +30,6 @@ export default {
         },
     },
     created() {
-        if (this.temp.left != undefined || this.temp.right != undefined) {
-            this.left = this.temp.left
-            this.right = this.temp.right
-        }
-        if (this.temp.pagesize != undefined)
-            this.pagesize = this.temp.pagesize
         this.getData()
     },
     render() {
@@ -103,16 +92,14 @@ export default {
                     this.$router.push({query: {}})
                 }
                 this.data = []
-                this.temp.left = this.left
-                this.temp.right = this.right
                 this.getData()
             }
         },
         changeSize(arg) {
             this.data = [],
-            this.temp.pagesize = this.pagesize = arg,
-            this.temp.left = this.left = this.BEGIN,
-            this.temp.right = this.right = undefined,
+            this.pagesize = arg,
+            this.left = this.BEGIN,
+            this.right = undefined,
             this.getData()
         },
         async getData() {
