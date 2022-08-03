@@ -1,6 +1,6 @@
 <template>
     <nav
-        id="sidebarMenu"
+        id="sidebar-menu"
         class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"
         style="min-width: 180px;"
     ><div class="sidebar-sticky">
@@ -9,7 +9,7 @@
             <ni-i18n icon="hourglass-outline" t="sidebar.submissions" href="/submissions" />
             <ni-i18n icon="bar-chart-outline" t="sidebar.contests" href="/contests" />
             <ni-i18n icon="create-outline" t="sidebar.blogs" href="/blogs" />
-            <div class="d-flex justify-content-between">
+            <li class="d-flex justify-content-between">
                 <ni-i18n
                     class="w-100"
                     icon="refresh-outline"
@@ -27,7 +27,7 @@
                         style="font-size: 1.1rem; color: green"
                     />
                 </div>
-            </div>
+            </li>
         </ul>
         <hr class="mx-2" />
         <div v-if="$store.user.user_id > 0">
@@ -120,7 +120,7 @@ export default {
     components: {
         NiI18n: { // nav item i18n
             props: ["icon", "t", "href"],
-            template: `<li class="nav-item">
+            template: `<li class="nav-item sidebar-nav">
                 <router-link class="nav-link" :to="href">
                 <ion-icon :name="icon" class="feather" />
                 <span v-t="t"></span>
@@ -137,4 +137,7 @@ export default {
 </script>
 
 <style>
+#sidebar-menu ul > li:hover {
+    background-color: rgba(0, 0, 0, 0.040);
+}
 </style>
