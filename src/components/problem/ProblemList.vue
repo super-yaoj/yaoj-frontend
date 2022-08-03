@@ -15,26 +15,25 @@
     </div>
 </template>
 
-<script>
-import Table from '@/models/Table.vue'
-import DataTable from '@/components/DataTable'
+<script lang="tsx">
+import DataTable, { Option } from '@/components/DataTable'
 import ClickLike from '@/models/ClickLike.vue'
 import { callAPI } from '@/utils'
 
-const ProbListProvider = {
+const ProbListProvider: Option<{ problem_id: number }> = {
     // head: 提供表头，每一列的标题、对应的data字段名和渲染函数以及附加的css class
-    head: [
-        { name: 'problem_id', title: <strong>#ID</strong>, columnClass: "pl-col-id text-center" },
-        {
-            name: 'title', title: <strong>Problem</strong>, renderer: (title, o) =>
-                <router-link to={"/problem/" + o.problem_id}>{title}</router-link>
-        }, {
-            name: 'like', title: <strong>Comments</strong>, columnClass: "pl-col-comment text-center", renderer: (_, o) =>
-                <ClickLike icon="thumbs-up-outline" number={o.like}
-                    target={{ name: "problem", id: o.problem_id }} active={o.liked} />
-        },
-    ],
+    head: [{
+        name: 'problem_id', title: <strong>#ID</strong>, columnClass: "pl-col-id text-center"
+    }, {
+        name: 'title', title: <strong>Problem</strong>, renderer: (title, o) =>
+            <router-link to={"/problem/" + o.problem_id}>{title}</router-link>
+    }, {
+        name: 'like', title: <strong>Comments</strong>, columnClass: "pl-col-comment text-center", renderer: (_, o) =>
+            <ClickLike icon="thumbs-up-outline" number={o.like}
+                target={{ name: "problem", id: o.problem_id }} active={o.liked} />
+    }],
     // 提供分页信息
+    // 用 display 控制是否显示分页，默认为 true
     paging: {
         beginKey: { problem_id: 0 },
         endKey: { problem_id: 1000000 },
@@ -43,11 +42,9 @@ const ProbListProvider = {
         sizes: [20, 50, 100],
         defaultsize: 20,
     },
-    // 提供数据获取函数，返回值为 [data: any[], isfull: bool]
-    // isfull = true 表示查询的数据有下一页（left 或者 right）
-    // fetch 传入一个 context，有以下三个参数可以选择使用
     async fetch({ queryKey, queryType, pagesize }) {
-        var q = { pagesize }
+        console.log(queryKey)
+        let q: any = { pagesize }
         if (queryType == 'left') {
             q.left = queryKey.problem_id
         } else {
@@ -55,7 +52,7 @@ const ProbListProvider = {
         }
         console.log('fetch query: ', q)
         try {
-            var res = await new Promise((res, rej) => {
+            let res: any = await new Promise((res, rej) => {
                 callAPI('problems', 'get', q, res, rej)
             })
             // console.log(res.data)
@@ -76,7 +73,6 @@ export default {
         }
     },
     components: {
-        Table,
         ClickLike,
         DataTable,
     },
@@ -101,9 +97,11 @@ export default {
 .pl-col-id {
     width: 60px
 }
+
 .pl-col-comment {
     width: 10%
 }
+
 .pl-table {
     border-top: 1px solid rgb(204, 204, 204);
 }

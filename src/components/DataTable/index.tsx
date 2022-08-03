@@ -13,8 +13,9 @@ class Pagination<Key> {
     prev: (key: Key) => Key
     queryType = 'left' // 'right'
     sizes = []
+    display: boolean = true
 
-    constructor({ beginKey, endKey, next, prev, sizes, defaultsize }: Paging<Key>) {
+    constructor({ beginKey, endKey, next, prev, sizes, defaultsize, ...restProps }: Paging<Key>) {
         this.queryKey = beginKey
         this.beginKey = beginKey
         this.endKey = endKey
@@ -22,6 +23,7 @@ class Pagination<Key> {
         this.prev = prev
         this.sizes = sizes
         this.size = defaultsize
+        if (restProps.display === false) this.display = false
     }
 }
 
@@ -32,6 +34,7 @@ interface Paging<QueryKey> {
     prev: (key: QueryKey) => QueryKey;
     sizes: number[];
     defaultsize: number;
+    display?: boolean;
 }
 interface DataHead {
     name: string;
@@ -40,10 +43,13 @@ interface DataHead {
     class?: string;
     renderer?: (o: any, target: any) => string | VNode;
 }
-interface Option<QueryKey> {
+export interface Option<QueryKey> {
     head: Array<DataHead>
     paging: Paging<QueryKey>,
-    fetch: (ctxt: any) => Promise<[data: any[], isfull: boolean]>
+    // 提供数据获取函数，返回值为 [data: any[], isfull: bool]
+    // isfull = true 表示查询的数据有下一页（left 或者 right）
+    // fetch 传入一个 context，有以下三个参数可以选择使用
+    fetch: (ctxt: FetchContext<QueryKey>) => Promise<[data: any[], isfull: boolean]>
 }
 
 interface FetchContext<QueryKey> {
@@ -53,7 +59,9 @@ interface FetchContext<QueryKey> {
 }
 
 interface DataDriver<QueryKey> {
-    data: any;
+    data: {
+        tabledata: any[];
+    };
     context: () => FetchContext<QueryKey>;
     goLeft: () => Promise<void>
     goRight: () => Promise<void>
@@ -63,7 +71,7 @@ interface DataDriver<QueryKey> {
     head: Array<DataHead>
     fetchWithCtxt: (context: FetchContext<QueryKey>) => Promise<[data: any[], isfull: boolean]>
     fetch: () => Promise<void>;
-    pagination?: Pagination<QueryKey>;
+    pagination: Pagination<QueryKey>;
 }
 
 function defineTableDataDriver<QueryKey>({ head, fetch, paging }: Option<QueryKey>): DataDriver<QueryKey> {
@@ -85,7 +93,6 @@ function defineTableDataDriver<QueryKey>({ head, fetch, paging }: Option<QueryKe
             this.fetch()
         },
         async goRight() {
-            console.log(this)
             if (this.pagination.atEnd) return
             this.pagination.queryKey = this.pagination.next(this.queryKeyOf(this.data.tabledata.at(-1)))
             this.pagination.queryType = 'left'
@@ -117,21 +124,25 @@ function defineTableDataDriver<QueryKey>({ head, fetch, paging }: Option<QueryKe
                 if (deepEqual(this.pagination.queryKey, this.pagination.beginKey)) {
                     this.pagination.atBegin = true
                 }
-                if (!isfull) {
+                if (!isfull) { // 到结尾了就调头
                     this.pagination.atEnd = true
+                    this.pagination.queryKey = this.pagination.endKey
+                    this.pagination.queryType = 'right'
                 }
             } else {
                 if (deepEqual(this.pagination.queryKey, this.pagination.endKey)) {
                     this.pagination.atEnd = true
                 }
-                if (!isfull) {
+                if (!isfull) { // 到结尾了就调头
                     this.pagination.atBegin = true
+                    this.pagination.queryKey = this.pagination.beginKey
+                    this.pagination.queryType = 'left'
                 }
             }
 
             this.data.tabledata = data
         },
-        pagination: paging ? new Pagination(paging) : undefined,
+        pagination: new Pagination(paging),
     })
 }
 
@@ -167,10 +178,11 @@ const DataTable: Vue.DefineComponent = defineComponent({
         this.driver.fetch()
     },
     render() {
+        const driver = this.driver as DataDriver<any>;
         // console.log('on datatable render', this.driver.pagination)
-        const renderData = o => {
+        const renderData = (o: any) => {
             var o2 = { ...o }
-            this.driver.head.forEach(hd => {
+            driver.head.forEach(hd => {
                 if (hd.renderer instanceof Function) {
                     o2[hd.name] = hd.renderer(o2[hd.name], o2)
                 }
@@ -178,24 +190,24 @@ const DataTable: Vue.DefineComponent = defineComponent({
             return o2
         }
         return <>
-            <BaseTable class={this.tableclass} head={this.driver.head} data={this.driver.data.tabledata.map(renderData)} />
-            <div class="row">
+            <BaseTable class={this.tableclass} head={driver.head} data={driver.data.tabledata.map(renderData)} />
+            {driver.pagination.display && <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6 text-center"><div class="btn-group" style="max-width: 200px">
-                    <PageItem f={this.driver.goBegin.bind(this.driver)} icon="play-skip-back-outline" disable={this.driver.pagination.atBegin} />
-                    <PageItem f={this.driver.goLeft.bind(this.driver)} icon="chevron-back" disable={this.driver.pagination.atBegin} />
-                    <PageItem f={this.driver.fetch.bind(this.driver)} icon="reload-outline" />
-                    <PageItem f={this.driver.goRight.bind(this.driver)} icon="chevron-forward" disable={this.driver.pagination.atEnd} />
-                    <PageItem f={this.driver.goEnd.bind(this.driver)} icon="play-skip-forward-outline" disable={this.driver.pagination.atEnd} />
+                    <PageItem f={driver.goBegin.bind(driver)} icon="play-skip-back-outline" disable={driver.pagination.atBegin} />
+                    <PageItem f={driver.goLeft.bind(driver)} icon="chevron-back" disable={driver.pagination.atBegin} />
+                    <PageItem f={driver.fetch.bind(driver)} icon="reload-outline" />
+                    <PageItem f={driver.goRight.bind(driver)} icon="chevron-forward" disable={driver.pagination.atEnd} />
+                    <PageItem f={driver.goEnd.bind(driver)} icon="play-skip-forward-outline" disable={driver.pagination.atEnd} />
                 </div></div>
                 <div class="col-md-3">
                     <PageSize f={(val) => {
-                        this.driver.pagination.size = val
-                        // console.log('change size to', val)
-                        this.driver.fetch()
-                    }} sizes={this.driver.pagination.sizes} defaultsize={this.driver.pagination.size} />
+                        driver.pagination.size = parseInt(val)
+                        console.log('change size to', val)
+                        driver.fetch()
+                    }} sizes={driver.pagination.sizes} defaultsize={driver.pagination.size} />
                 </div>
-            </div>
+            </div>}
         </>
     }
 })

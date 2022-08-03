@@ -4,17 +4,17 @@
 
 import { FunctionalComponent, VNode } from "vue";
 
-/**
- * data row must have field "id".
- */
 const BaseTable: FunctionalComponent<{
-    head: {
-        name: string;
+    head: Array<{
+        name: string; // 该列对应 data 中的字段名
         title: string | VNode;
-        columnClass?: string;
-        class?: string;
-    }[];
-    data: Record<string, any>[];
+        columnClass?: string; // 应用于整个列的单元格样式
+        class?: string; // 应用于 thead 单元格的样式
+    }>;
+    data: Array<{
+        id: string; // data row must have field "id".
+        [key: string]: string | VNode;
+    }>;
     class: string;
 }, {}> = ({ head, data }) => {
     if (!(head instanceof Array)) {
