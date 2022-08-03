@@ -10,6 +10,9 @@
 <script>
 export default {
     props: ['id', 'name', 'rating', 'class', 'style', 'onClick'],
+    created() {
+        console.log(this)
+    },
     computed: {
         colorHead() {
             if (this.rating < 3000) return this.colorTail

@@ -18,7 +18,7 @@ const store = new Proxy({
 }, {
     get(target, prop) {
         if (target.debug) {
-            console.log('get store', prop)
+            // console.log('get store', prop)
         }
         return target.state[prop]
     },

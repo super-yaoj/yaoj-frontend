@@ -73,7 +73,7 @@ const defineTableDataDriver = ({
     fetchWithCtxt: fetch,
     async fetch() {
         const [data, isfull] = await this.fetchWithCtxt(this.context())
-        console.log('fetch result:', data, isfull)
+        // console.log('fetch result:', data, isfull)
 
         this.pagination.atBegin = false
         this.pagination.atEnd = false
@@ -131,7 +131,7 @@ const DataTable = defineComponent({
         this.driver.fetch()
     },
     render() {
-        console.log('on datatable render', this.driver.pagination)
+        // console.log('on datatable render', this.driver.pagination)
         const renderData = o => {
             var o2 = { ...o }
             this.driver.head.forEach(hd => {
@@ -155,7 +155,7 @@ const DataTable = defineComponent({
                 <div class="col-md-3">
                     <PageSize f={(val) => {
                         this.driver.pagination.size = val
-                        console.log('change size to', val)
+                        // console.log('change size to', val)
                         this.driver.fetch()
                     }} sizes={this.driver.pagination.sizes} defaultsize={this.driver.pagination.size} />
                 </div>
