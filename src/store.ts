@@ -1,6 +1,8 @@
 import { reactive } from 'vue'
 
-const initStore = {
+type Store = Record<string | symbol, any>
+
+const initStore: Store = {
     // test: 'hello',
     user: {
         is_admin: false,
@@ -29,6 +31,6 @@ const store = new Proxy({
         target.state[prop] = newVal
         return true
     }
-})
+}) as any as Store
 
 export default store;

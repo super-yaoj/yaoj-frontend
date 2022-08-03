@@ -22,6 +22,7 @@
     "silly-datetime": "^0.1.2",
     "util": "^0.12.4",
     "vue": "^3.2.13",
+    "vue-class-component": "^8.0.0-0",
     "vue-codemirror": "^6.0.0",
     "vue-i18n": "9",
     "vue-router": "^4.0.16"
@@ -29,12 +30,18 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+    "@types/bootstrap": "^5.2.1",
     "@types/codemirror": "^5.60.5",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-eslint": "~5.0.8",
+    "@vue/cli-plugin-typescript": "~5.0.0",
     "@vue/cli-service": "~5.0.8",
+    "@vue/eslint-config-typescript": "^9.1.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
+    "typescript": "~4.5.5",
     "yaml-loader": "^0.8.0"
   },
   "eslintConfig": {
@@ -44,10 +51,11 @@
     },
     "extends": [
       "plugin:vue/vue3-essential",
-      "eslint:recommended"
+      "eslint:recommended",
+      "@vue/typescript"
     ],
     "parserOptions": {
-      "parser": "@babel/eslint-parser"
+      "parser": "@typescript-eslint/parser"
     },
     "rules": {}
   },

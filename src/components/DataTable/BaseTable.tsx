@@ -2,12 +2,21 @@
 // head: Array, // Array<{ name: string; title: string|VNode; }>
 // data: Array, // Array<Record<string, string|VNode> >
 
+import { FunctionalComponent, VNode } from "vue";
+
 /**
- * @type {import("vue").FunctionalComponent<{head: {name: string, columnClass?: string, title: any}[], data: Record<string, any>[]},any>}
- * 
  * data row must have field "id".
  */
-const BaseTable = ({ head, data }) => {
+const BaseTable: FunctionalComponent<{
+    head: {
+        name: string;
+        title: string | VNode;
+        columnClass?: string;
+        class?: string;
+    }[];
+    data: Record<string, any>[];
+    class: string;
+}, {}> = ({ head, data }) => {
     if (!(head instanceof Array)) {
         console.error('BaseTable: head is not array:', head)
     }
@@ -16,7 +25,7 @@ const BaseTable = ({ head, data }) => {
     }
     return <table>
         <thead><tr>
-            {head.map(({name, title, columnClass, ...restProps}) => 
+            {head.map(({ name, title, columnClass, ...restProps }) =>
                 <td key={name} class={(columnClass || '') + ' ' + (restProps.class || '')} {...restProps}>{title}</td>)}
         </tr></thead>
         <tbody>

@@ -53,14 +53,13 @@ app.mixin({
 
 app.config.globalProperties.$store = store
 app.config.compilerOptions.isCustomElement = (tag) => tag.startsWith("ion")
-app.config.compilerOptions.jsx = "preserve"
 // app.config.globalProperties.$store.user = reactive(store.user)
 app.use(router)
 app.use(i18n)
 app.mount("#app")
 
-callRPC("Init", {}, function (response) {
+callRPC("Init", {}, function (response: any) {
     store.user = response.data
-}, function (response) {
+}, function (response: any) {
     alert(response.statusMessage + "\n" + response.data._error.message)
 })
