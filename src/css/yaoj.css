@@ -218,3 +218,15 @@ td {
     font-size: 0.85rem;
     padding: 10px 10px 10px 10px!important;
 }
+.table-bt-1 {
+    border-top: 1px solid rgb(204, 204, 204);
+}
+.w-10 {
+    width: 10%;
+}
+.cursor-hover:hover {
+    cursor: pointer;
+}
+.modal.modal-shadow {
+    background-color: rgba(0, 0, 0, 0.4);
+}

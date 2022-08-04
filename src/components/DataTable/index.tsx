@@ -1,6 +1,7 @@
 import Vue, { defineComponent, PropType, reactive, VNode } from "vue";
 import BaseTable from "./BaseTable";
 import { deepEqual } from '@/utils'
+import { RouteLocation, Router } from "vue-router";
 
 class Pagination<Key> {
     size = 0;
@@ -74,7 +75,7 @@ interface DataDriver<QueryKey> {
     pagination: Pagination<QueryKey>;
 }
 
-function defineTableDataDriver<QueryKey>({ head, fetch, paging }: Option<QueryKey>): DataDriver<QueryKey> {
+export function defineTableDataDriver<QueryKey>({ head, fetch, paging }: Option<QueryKey>): DataDriver<QueryKey> {
     return ({
         data: reactive({ tabledata: [] }),
         // context for fetching data
@@ -115,7 +116,7 @@ function defineTableDataDriver<QueryKey>({ head, fetch, paging }: Option<QueryKe
         fetchWithCtxt: fetch,
         async fetch() {
             const [data, isfull] = await this.fetchWithCtxt(this.context())
-            // console.log('fetch result:', data, isfull)
+            console.log('fetch result:', data, isfull)
 
             this.pagination.atBegin = false
             this.pagination.atEnd = false
@@ -146,6 +147,16 @@ function defineTableDataDriver<QueryKey>({ head, fetch, paging }: Option<QueryKe
     })
 }
 
+// do not display pagination. limit is for default size
+export const noPaging = (limit: number = 100) => ({
+    beginKey: {},
+    endKey: {},
+    next: o => o,
+    prev: o => o,
+    sizes: [limit],
+    defaultsize: limit,
+    display: false
+})
 
 const PageItem = ({ icon, f, disable }: { icon: string; f: (...o: any) => any; disable?: boolean }) =>
     <button class="btn page-link" onClick={f} disabled={disable}>
@@ -161,7 +172,7 @@ const PageSize = defineComponent({
     `,
 })
 
-const DataTable: Vue.DefineComponent = defineComponent({
+const DataTable = defineComponent({
     props: {
         dataprovider: Object as PropType<Option<any>>,
         tableclass: {
@@ -177,6 +188,9 @@ const DataTable: Vue.DefineComponent = defineComponent({
     created() {
         this.driver.fetch()
     },
+    updated() {
+        console.log("datatable updated!")
+    },
     render() {
         const driver = this.driver as DataDriver<any>;
         // console.log('on datatable render', this.driver.pagination)
@@ -189,7 +203,8 @@ const DataTable: Vue.DefineComponent = defineComponent({
             })
             return o2
         }
-        return <>
+
+        return driver.data.tabledata instanceof Array && <>
             <BaseTable class={this.tableclass} head={driver.head} data={driver.data.tabledata.map(renderData)} />
             {driver.pagination.display && <div class="row">
                 <div class="col-md-3"></div>
