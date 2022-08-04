@@ -24,12 +24,12 @@
                     <div class="col-md timeboard mb-3">
                         <div class="card">
                             <div class="card-body text-center">
-                                <div class="text-secondary" v-t="'contest.remaining_time'" />
+                                <div class="text-secondary" v-t="'contest.remaining_time'"></div>
                                 <h2>
                                     <Clock v-if="contest.end_time > current_time"
                                         :seconds="(contest.end_time - current_time) / 1000" @end="contestEnd" />
-                                    <span v-else-if="contest.finished" v-t="'contest.ended'" />
-                                    <span v-else v-t="'contest.judging'" />
+                                    <span v-else-if="contest.finished" v-t="'contest.ended'"></span>
+                                    <span v-else v-t="'contest.judging'"></span>
                                 </h2>
                                 <hr />
                                 <div class="text-secondary">
@@ -69,7 +69,7 @@
                                     changes</button>
                             </template>
                         </CardModal>
-                        <ContestDashboard :data="dashboard" @new="runtask"></ContestDashboard>
+                        <ContestAnnouncement :data="dashboard" @new="runtask" />
                     </div>
                 </div>
             </div>
@@ -128,20 +128,21 @@
 </template>
 
 <script lang="tsx">
-import { callAPI, callRPC } from '@/utils'
 import ClickLike from '@/models/ClickLike.vue'
 import Table from '@/models/Table.vue'
 import ManageTable from '@/models/ManageTable.vue'
 import ContestStanding from './ContestStanding.vue'
-import ContestDashboard from './ContestDashboard.vue'
+import ContestAnnouncement from './ContestAnnouncement.vue'
 import Clock from '@/models/Clock.vue'
-import { getRule, getStatus } from './contest'
-import { format } from 'silly-datetime'
 import ContestList from './ContestList.vue'
 import DataTableEditable from '../DataTableEditable'
-import { Option, noPaging } from '../DataTable'
 import { RouterLink } from 'vue-router'
 import CardModal from '../CardModal'
+
+import { callAPI, callRPC } from '@/utils'
+import { getRule, getStatus } from './contest'
+import { format } from 'silly-datetime'
+import { Option, noPaging } from '../DataTable'
 
 const RefreshInterval = 30000
 export default {
@@ -196,7 +197,7 @@ export default {
         Clock,
         ContestStanding,
         ContestList,
-        ContestDashboard,
+        ContestAnnouncement,
         DataTableEditable,
         CardModal,
     },
