@@ -3,7 +3,7 @@ import BaseModal from "./BaseModal";
 
 // provide #header, #body, #footer slots
 // provide @clickdialog event
-// provide "close" method in slot
+// provide "close" method in slot context
 export default defineComponent({
     props: {
         display: {
