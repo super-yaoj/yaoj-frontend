@@ -21,30 +21,15 @@
       <div class="tab-pane fade show active mt-3" id="dashboard">
         <div class="row px-2">
           <div class="col-md timeboard mb-3">
-            <div class="card">
-              <div class="card-body text-center">
-                <div class="text-secondary" v-t="'contest.remaining_time'"></div>
-                <h2>
-                  <Clock v-if="contest.end_time > current_time" :seconds="(contest.end_time - current_time) / 1000"
-                    @end="contestEnd" />
-                  <span v-else-if="contest.finished" v-t="'contest.ended'"></span>
-                  <span v-else v-t="'contest.judging'"></span>
-                </h2>
-                <hr />
-                <div class="text-secondary">
-                  <div>Rule: {{ rule }}</div>
-                  <div>Max Rating Change: 0</div>
-                  <div>Status: {{ status }}</div>
-                </div>
-              </div>
-            </div>
-            <router-link class="btn btn-secondary mt-3 w-100" :to="'/contest/' + id + '/participants'">
-              Participants</router-link>
-            <router-link class="btn btn-info mt-3 w-100"
-              :to="'/submissions/?contest_id=' + id + '&submitter=' + $store.user.user_id"
-              v-if="$store.user.user_id > 0">My submissions</router-link>
-            <button class="btn btn-danger mt-3 w-100" v-if="can_edit && !contest.finished" @click="endContest">End
-              Contest</button>
+            <ContestTimeboard 
+              :id="id" :remainingtime="contest.end_time - current_time"
+              :rule="rule"
+              :status="status"
+              :canedit="can_edit"
+              :finished="contest.finished"
+              @finish="contestEnd"
+              @finalize="endContest"
+            />
           </div>
           <div class="col-md">
             <ContestProblemTable :id="id" />
@@ -109,7 +94,7 @@ import ManageTable from '@/models/ManageTable.vue'
 import ContestStanding from './ContestStanding.vue'
 import ContestAnnouncement from './ContestAnnouncement.vue'
 import ContestProblemTable from './ContestProblemTable.vue'
-import Clock from '@/models/Clock.vue'
+import ContestTimeboard from './ContestTimeboard.vue'
 import ContestList from './ContestList.vue'
 
 import { callAPI, callRPC } from '@/utils'
@@ -136,11 +121,11 @@ export default {
   components: {
     ClickLike,
     ManageTable,
-    Clock,
     ContestStanding,
     ContestList,
     ContestAnnouncement,
     ContestProblemTable,
+    ContestTimeboard,
   },
   methods: {
     fetchdata(route) {
