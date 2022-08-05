@@ -44,7 +44,7 @@ interface DataHead {
     class?: string;
     renderer?: (o: any, target: any) => string | VNode;
 }
-export interface Option<QueryKey> {
+export interface Option<QueryKey = {}> {
     head: Array<DataHead>
     paging: Paging<QueryKey>,
     // 提供数据获取函数，返回值为 [data: any[], isfull: bool]
