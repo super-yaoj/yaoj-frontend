@@ -15,12 +15,12 @@ const initStore: Store = {
 
 // 全局 store 
 const store = new Proxy({
-    debug: true,
+    debug: false,
     state: reactive(initStore),
 }, {
     get(target, prop) {
         if (target.debug) {
-            // console.log('get store', prop)
+            console.log('get store', prop)
         }
         return target.state[prop]
     },

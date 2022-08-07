@@ -23,6 +23,9 @@ const BaseTable: FunctionalComponent<{
     if (!(data instanceof Array)) {
         console.error('BaseTable: data is not array:', data)
     }
+    if (data.some(o => o.id === undefined)) {
+        console.warn('BaseTable: data has no id', data)
+    }
     return <table>
         <thead><tr>
             {head.map(({ name, title, columnClass, ...restProps }) =>
