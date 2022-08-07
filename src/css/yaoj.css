@@ -213,6 +213,9 @@ td {
 .w-10 {
     width: 10%;
 }
+.w-05 {
+    width: 5%;
+}
 .cursor-hover:hover {
     cursor: pointer;
 }
