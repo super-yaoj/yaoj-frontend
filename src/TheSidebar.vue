@@ -1,6 +1,6 @@
 <template>
   <input type="checkbox" id="sidebar-toggler-checkbox" style="display: none" />
-  <nav id="sidebar-menu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" style="min-width: 180px;">
+  <nav id="sidebar-menu" class="col-md-3 col-lg-2 d-block bg-light sidebar" style="min-width: 180px;">
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
         <ni-i18n icon="file-tray-full-outline" t="sidebar.problems" href="/problems" />
@@ -94,7 +94,17 @@ export default {
 #sidebar-menu ul>li:hover {
   background-color: rgba(0, 0, 0, 0.040);
 }
-#sidebar-toggler-checkbox:checked ~ #sidebar-menu {
-  display: block !important;
+
+/* `md` applies to small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+  #sidebar-toggler-checkbox:not(:checked)~#sidebar-menu {
+    transform: translateX(-100%);
+  }
+
+  #sidebar-menu {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+    transition: all .2s ease;
+    width: 250px;
+  }
 }
 </style>
