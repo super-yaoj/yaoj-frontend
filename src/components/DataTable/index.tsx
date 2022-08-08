@@ -43,6 +43,7 @@ interface DataHead {
     columnClass?: string;
     class?: string;
     renderer?: (o: any, target: any) => string | VNode;
+    display?: boolean; // 控制这一列是否显示
 }
 export interface Option<QueryKey = {}> {
     head: Array<DataHead>
@@ -75,6 +76,8 @@ interface DataDriver<QueryKey> {
     pagination: Pagination<QueryKey>;
 }
 
+// 返回一个数据驱动（driver）以按照给定的查询方式获取数据，展示在表格中
+// driver 暴露的 fetch 方法可以用于重新获取数据，常见于手动刷新
 export function defineTableDataDriver<QueryKey>({ head, fetch, paging }: Option<QueryKey>): DataDriver<QueryKey> {
     return ({
         data: reactive({ tabledata: [] }),
@@ -204,8 +207,8 @@ const DataTable = defineComponent({
             return o2
         }
 
-        return driver.data.tabledata instanceof Array && <>
-            <BaseTable class={this.tableclass} head={driver.head} data={driver.data.tabledata.map(renderData)} />
+        return <>
+            <BaseTable class={this.tableclass} head={driver.head || []} data={(driver.data.tabledata || []).map(renderData)} />
             {driver.pagination.display && <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6 text-center"><div class="btn-group" style="max-width: 200px">

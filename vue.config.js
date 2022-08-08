@@ -1,3 +1,7 @@
+
+/**
+ * @type {import('@vue/cli-service').ProjectOptions}
+ */
 module.exports = {
   lintOnSave: false,
   runtimeCompiler: true,
@@ -16,5 +20,11 @@ module.exports = {
       .test(/\.ya?ml?$/)
       .use('yaml-loader')
       .loader('yaml-loader')
+    config.module.rule('vue').use('vue-loader').tap(options => ({
+      ...options,
+      compilerOptions: {
+        isCustomElement: tag => tag.startsWith('ion-')
+      },
+    }))
   },
 }

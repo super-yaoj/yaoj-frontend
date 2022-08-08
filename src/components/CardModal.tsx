@@ -1,9 +1,12 @@
 import { defineComponent } from "vue";
 import BaseModal from "./BaseModal";
 
-// provide #header, #body, #footer slots
-// provide @clickdialog event
-// provide "close" method in slot context
+/**
+ * - provide #header, #body, #footer slots
+ * - provide @clickdialog @close event
+ * - provide "close" method in slot context
+ * - auto close when click shadow
+ */
 export default defineComponent({
     props: {
         display: {

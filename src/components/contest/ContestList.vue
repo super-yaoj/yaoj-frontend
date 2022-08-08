@@ -79,6 +79,7 @@ export default {
                 <ion-icon name="people" style="vertical-align: middle; font-size: 1rem; margin-right: 2px;" />
                 <span style="vertical-align: middle">{o.registrants}</span>
               </RouterLink>
+              {/* @ts-ignore */}
               <ClickLike icon="thumbs-up-outline" number={o.like} target={{ name: "contest", id: o.contest_id }}
                 active={o.liked} />
             </div>

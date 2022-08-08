@@ -10,6 +10,7 @@ const BaseTable: FunctionalComponent<{
         title: string | VNode;
         columnClass?: string; // 应用于整个列的单元格样式
         class?: string; // 应用于 thead 单元格的样式
+        display?: boolean; // 控制这一列是否显示
     }>;
     data: Array<{
         id: string; // data row must have field "id".
@@ -19,13 +20,16 @@ const BaseTable: FunctionalComponent<{
 }, {}> = ({ head, data }) => {
     if (!(head instanceof Array)) {
         console.error('BaseTable: head is not array:', head)
+        head = []
     }
     if (!(data instanceof Array)) {
         console.error('BaseTable: data is not array:', data)
+        data = []
     }
     if (data.some(o => o.id === undefined)) {
         console.warn('BaseTable: data has no id', data)
     }
+    head = head.filter(o => o.display !== false)
     return <table>
         <thead><tr>
             {head.map(({ name, title, columnClass, ...restProps }) =>
