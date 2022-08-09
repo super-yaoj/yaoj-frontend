@@ -1,45 +1,39 @@
 <template>
-<div class="mt-4 container" style="">
-    <Table :row="getLine" :get="update" :pagination="false"></Table>
-</div>
+  <div class="mt-4 container-md">
+    <DataTable :dataprovider="option" />
+  </div>
 </template>
 
 <script>
 import { callAPI } from '@/utils'
-import { h } from 'vue'
-import Table from '@/models/Table'
+import DataTable from '../DataTable'
+
+import { UserListTable } from '../user/utils'
+import { noPaging } from '../DataTable'
+
 export default {
-    beforeCreate() {
-        if (this.$route.params.id == 1) {
-            this.$router.replace('/users')
-            return
-        }
-    },
-    components: {
-        Table,
-    },
-    methods: {
-        getLine(row) {
-            if (row == null) return [h('td', {style: "width:60px"}, h('strong', '#ID')),
-                h('td', {style: "text-align:left;padding-left:30px!important"}, h('strong', 'Username')), 
-                h('td', {}, h('strong', 'Motto')),
-                h('td', {style: "width: 10%"}, h('strong', 'Rating'))]
-            else return [h('td', row.user_id),
-                h('td', {style: "text-align:left;padding-left:30px!important"}, h(UserName, {id: row.user_id, name: row.user_name, rating: row.rating})),
-                h('td', row.motto),
-                h('td', row.rating)]
+  data() {
+    return {
+      option: {
+        head: UserListTable,
+        paging: noPaging(1000),
+        fetch: async () => {
+          try {
+            var res = await new Promise((res, rej) => {
+              callAPI('permission_users', 'get', {
+                permission_id: this.$route.params.id
+              }, res, rej)
+            })
+            return [res.data.data, res.data.isfull]
+          } catch (e) {
+            alert(e)
+          }
         },
-        async update(query) {
-            query.permission_id = this.$route.params.id
-            try {
-                var res = await new Promise(function(res, rej) {
-                    callAPI('user_permissions', 'get', query, res, rej)
-                })
-                return res.data
-            } catch (e) {
-                alert(e.data._error)
-            }
-        },
-    },
+      }
+    }
+  },
+  components: {
+    DataTable,
+  },
 }
 </script>

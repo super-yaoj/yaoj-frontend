@@ -1,22 +1,30 @@
-import { Option } from "../DataTable";
+import { DataHead, Option } from "../DataTable";
 import UserName from '@/models/UserName.vue'
 import { callAPI } from '@/utils'
 
 export interface UserListKey { rating: number, user_id: number }
 
+// 渲染对象：
+export const UserListTable: DataHead<{
+    user_id: number; 
+    user_name: string; 
+    rating: number;
+    [key: string | symbol]: any; // other props
+}>[] = [
+    { name: 'user_id', title: <strong>#ID</strong>, columnClass: "text-center ul-col-id" },
+    {
+        name: 'user_name', title: <strong>Username</strong>, renderer: (user_name, o) => {
+            // @ts-ignore
+            return <UserName id={o.user_id} name={user_name} rating={o.rating} />
+        }
+    },
+    { name: 'motto', title: <strong>Motto</strong>, columnClass: "text-center" },
+    { name: 'rating', title: <strong>Rating</strong>, columnClass: "ul-col-rating text-center" },
+]
+
 // 按照 rating 从大到小的顺序获取用户列表
 export const UserListData: Option<UserListKey> = {
-    head: [
-        { name: 'user_id', title: <strong>#ID</strong>, columnClass: "text-center ul-col-id" },
-        {
-            name: 'user_name', title: <strong>Username</strong>, renderer: (user_name, o) => {
-                // @ts-ignore
-                return <UserName id={o.user_id} name={user_name} rating={o.rating} />
-            }
-        },
-        { name: 'motto', title: <strong>Motto</strong>, columnClass: "text-center" },
-        { name: 'rating', title: <strong>Rating</strong>, columnClass: "ul-col-rating text-center" },
-    ],
+    head: UserListTable,
     paging: {
         beginKey: { rating: 9999, user_id: 0 },
         endKey: { rating: -9999, user_id: 0 },

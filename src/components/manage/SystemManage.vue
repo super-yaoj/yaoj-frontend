@@ -119,7 +119,7 @@
                         <input type="text" class="form-control" placeholder="Permission id" v-model="permission_id4">
                     </div>
                     <div class="col-lg-3 mt-2">
-                    <button class="btn btn-primary" style="width: 100%" @click="submit1('user_permissions', 'delete', { permission_id: permission_id4, user_id: user3 }, 2)">Submit</button>
+                    <button class="btn btn-primary" style="width: 100%" @click="submit1('permission_users', 'delete', { permission_id: permission_id4, user_id: user3 }, 2)">Submit</button>
                     </div>
                 </div>
                 <div class="text-success small mt-1" v-if="success[2]">
@@ -173,7 +173,7 @@ export default {
         },
         submit5() {
             this.success3 = this.fail3 = ""
-            callAPI('user_permissions', 'post', { permission_id: this.permission_id3, user_ids: this.user2.replace(/[\s]+/g, ',') },
+            callAPI('permission_users', 'post', { permission_id: this.permission_id3, user_ids: this.user2.replace(/[\s]+/g, ',') },
                 (res) => {
                     this.success3 = `Successfully added, ${res.data.affected} users affected.`
                     setTimeout(() => { this.success3 = "" }, 1000)

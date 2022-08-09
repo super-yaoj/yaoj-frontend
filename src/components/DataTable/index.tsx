@@ -37,12 +37,13 @@ interface Paging<QueryKey> {
     defaultsize: number;
     display?: boolean;
 }
-interface DataHead {
+// 表格数据 meta
+export interface DataHead<DataType = Record<string, any>> {
     name: string;
     title: string | VNode;
     columnClass?: string;
     class?: string;
-    renderer?: (o: any, target: any) => string | VNode;
+    renderer?: (o: any, target: DataType) => string | VNode;
     display?: boolean; // 控制这一列是否显示
 }
 export interface Option<QueryKey = {}> {
