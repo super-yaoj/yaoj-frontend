@@ -1,49 +1,64 @@
 <template>
-<div class="mt-4 container-md">
+  <div class="mt-4 container-md">
     <div class="h3 mb-3">Permission List</div>
-    <Table :row="getLine" :sizes="sizes" :get="update" :next="next" :pagination="true"></Table>
-</div>
+    <DataTable :dataprovider="permlist_option" tableclass="table table-hover table-bt-1" />
+  </div>
 </template>
 
-<script>
-import Table from '@/models/Table.vue'
+<script lang="tsx">
 import { callAPI } from '@/utils'
-import { h } from 'vue'
+import { RouterLink } from 'vue-router'
+import DataTable, { Option }  from '../DataTable'
+
+const permlist_option = {
+  head: [{
+    title: <strong>#ID</strong>, name: 'permission_id',
+    style: 'width: 60px',
+    columnClass: 'text-center',
+  }, {
+    title: <strong>Title</strong>, name: 'permission_name',
+    renderer: (title, o) => <RouterLink to={`/permission/${o.permission_id}`}>{title}</RouterLink>,
+  }, {
+    title: <strong>Users</strong>, name: 'count',
+  }],
+  paging: {
+    beginKey: { permission_id: 0 },
+    endKey: { permission_id: 1e9 },
+    prev: num => ({ permission_id: num.permission_id - 1}),
+    next: num => ({ permission_id: num.permission_id + 1}),
+    sizes: [20, 50, 100],
+    defaultsize: 20,
+  },
+  async fetch(ctxt) {
+    let qry: any = { pagesize: ctxt.pagesize }
+    if (ctxt.queryType === 'left') {
+      qry.left = ctxt.queryKey.permission_id
+    } else {
+      qry.right = ctxt.queryKey.permission_id
+    }
+
+    console.log('qry', qry)
+    try {
+      var res: any = await new Promise((res, rej) => {
+        callAPI('permissions', 'get', qry, res, rej)
+      })
+      console.log(res.data)
+      return [res.data.data, res.data.isfull]
+    } catch (e) {
+      alert(e.data._error)
+    }
+  },
+} as Option<{ permission_id: number }>;
+
 export default {
-    data() {
-        return { sizes: [10, 20, 50, 100] }
-    },
-    components: {
-        Table,
-    },
-    methods: {
-        getLine(row) {
-            if (row == null) return [h('td', {style: "width:60px"}, h('strong', '#ID')),
-                h('td', {style: "text-align:left;padding-left:30px!important"}, h('strong', 'Permission Name')),
-                h('td', {style: "width: 10%"}, h('strong', 'Users'))]
-            else return [h('td', row.permission_id),
-                h('td', {style: "text-align:left;padding-left:30px!important"}, h('a', {href: '#/permission/' + row.permission_id}, row.permission_name)),
-                h('td', row.count)]
-        },
-        async update(query) {
-            try {
-                var res = await new Promise(function(res, rej) {
-                    callAPI('permissions', 'get', query, res, rej)
-                })
-                return res.data
-            } catch (e) {
-                alert(e.data._error)
-            }
-        },
-        next(a, b) {
-            if (a == null) {
-                if (b < 0) return 0
-                else return 1 << 30
-            } else {
-                return a.permission_id + b
-            }
-        }
-    },
+  data() {
+    return {
+      permlist_option,
+    }
+  },
+  components: {
+    DataTable,
+  },
 }
 </script>
 
