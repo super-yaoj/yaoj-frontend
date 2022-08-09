@@ -1,41 +1,30 @@
 <template>
   <header ref="mainNav" class="navbar navbar-dark sticky-top bg-dark flex-nowrap p-0 shadow">
     <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">
-      <span class="d-inline d-md-none pe-1"><label role="button" for="sidebar-toggler-checkbox" style="vertical-align: middle;">
+      <span class="d-inline d-md-none pe-1"><label role="button" for="sidebar-toggler-checkbox"
+          style="vertical-align: middle;">
           <ion-icon name="list-outline"></ion-icon>
         </label></span>
       Yao Online Judge
     </a>
-    <form class="d-flex ms-2 me-2 mb-1 mt-1" action="/" @submit.prevent="showResult">
-      <input class="form-control form-control-dark" placeholder="Search User"
-        style="margin-right: 4px" v-model="user_name" />
+    <form class="d-flex ms-2 me-2 mb-1 mt-1" action="/" @submit.prevent="onSubmit">
+      <input class="form-control form-control-dark" placeholder="Search User" style="margin-right: 4px"
+        v-model="user_name" />
       <button type="submit" class="btn btn-outline-light px-2" v-t="'search'" style="min-width: 50px;" />
     </form>
   </header>
   <div class="container-lg h-100" v-if="activeNow">
     <div class="row h-100">
       <the-sidebar :servertime="server_time" :reload="myReload" :refreshed="refreshed" />
-      <div class="modal fade" id="userModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
-                Search result
-              </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" />
-            </div>
-            <div class="modal-body">
-              <Table :get="queryUsers" :row="getRow" :pagination="true" :next="getNext" v-if="reloadSearch"
-                :sizes="[20]" :nocache="true" />
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <CardModal class="modal-shadow" :display="searching" @close="searching = false">
+        <template #header="{ close }">
+          <h5 class="modal-title">Search result</h5>
+          <button type="button" class="btn-close" @click="close"></button>
+        </template>
+        <template #body>
+          <DataTable :dataprovider="userlist" ref="userlist" />
+        </template>
+      </CardModal>
       <main role="main" class="col-md-9 col-lg-10 ms-sm-auto px-md-4">
         <router-view v-slot="{ Component, route }">
           <keep-alive>
@@ -49,29 +38,62 @@
 </template>
 
 <script>
+import TheSidebar from './TheSidebar.vue';
+import DataTable from "./components/DataTable";
+import CardModal from "./components/CardModal";
+
 import { nextTick } from "vue";
 import { format } from "silly-datetime";
-import Table from "./models/Table.vue";
 import { callAPI, callRPC } from "./utils";
 import { UserGroup } from "./config";
-import { Modal } from "bootstrap";
-import TheSidebar from './TheSidebar.vue';
-import UserName from "./models/UserName.vue";
+import { UserListData } from "./components/user/utils";
 
 export default {
   data() {
     return {
+      searching: false,
       activeNow: true,
       user_name: "",
-      reloadSearch: false,
       myModal: null,
       refreshed: false,
       server_time: '',
+      userlist: {
+        ...UserListData,
+        paging: {
+          beginKey: { user_id: 0 },
+          endKey: { user_id: 1e9 },
+          next: key => ({ user_id: key.user_id + 1 }),
+          prev: key => ({ user_id: key.user_id - 1 }),
+          sizes: [10],
+          defaultsize: 10,
+        },
+        fetch: async ({ pagesize, queryType, queryKey }) => {
+          var q = {
+            pagesize,
+            user_name: this.user_name
+          }
+          if (queryType == 'left') {
+            q.left = queryKey.user_id;
+          } else {
+            q.right = queryKey.user_id;
+          }
+          try {
+            var res = await new Promise((res, rej) => {
+              callAPI("users", "get", q, res, rej);
+            });
+            console.log(res.data)
+            return [res.data.data, res.data.isfull];
+          } catch (e) {
+            alert(e.data._error);
+          }
+        }
+      }
     };
   },
   components: {
-    Table,
     TheSidebar,
+    DataTable,
+    CardModal,
   },
   created() {
     callRPC("GetTime", {}, (res) => {
@@ -99,47 +121,9 @@ export default {
       this.refreshed = true;
       setTimeout(() => (this.refreshed = false), 1000);
     },
-    showResult() {
-      this.myModal = Modal.getOrCreateInstance(
-        document.getElementById("userModal")
-      );
-      this.myModal.show();
-      this.reloadSearch = false;
-      nextTick(() => {
-        this.reloadSearch = true;
-      });
-    },
-    hideResult(event) {
-      this.myModal.dispose();
-      document.body.removeAttribute("class");
-      document.body.removeAttribute("style");
-    },
-    getRow(row) {
-      if (row == null)
-        return [
-          <td><strong>#ID</strong></td>,
-          <td><strong>Username</strong></td>,
-        ];
-      return [
-        <td>{row.user_id}</td>,
-        <td><UserName id={row.user_id} name={row.user_name} rating={row.rating} onClick={this.hideResult} /></td>,
-      ];
-    },
-    async queryUsers(query) {
-      query.user_name = this.user_name;
-      try {
-        var res = await new Promise((res, rej) => {
-          callAPI("users", "get", query, res, rej);
-        });
-        console.log(res.data)
-        return res.data;
-      } catch (e) {
-        alert(e.data._error);
-      }
-    },
-    getNext(a, b) {
-      if (a == null) return b > 0 ? 1 << 30 : 0;
-      return a.user_id + b;
+    async onSubmit() {
+      await this.$refs.userlist?.driver?.fetch()
+      this.searching = true
     },
   },
   provide() {

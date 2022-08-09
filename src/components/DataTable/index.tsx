@@ -220,11 +220,11 @@ const DataTable = defineComponent({
                     <PageItem f={driver.goEnd.bind(driver)} icon="play-skip-forward-outline" disable={driver.pagination.atEnd} />
                 </div></div>
                 <div class="col-md-3">
-                    <PageSize f={(val) => {
+                    {driver.pagination.sizes.length > 1 && <PageSize f={(val) => {
                         driver.pagination.size = parseInt(val)
                         console.log('change size to', val)
                         driver.fetch()
-                    }} sizes={driver.pagination.sizes} defaultsize={driver.pagination.size} />
+                    }} sizes={driver.pagination.sizes} defaultsize={driver.pagination.size} />}
                 </div>
             </div>}
         </>
