@@ -24,9 +24,8 @@
       <div class="card-header">
         <div class="d-flex justify-content-between my-1">
           <div class="mb-0 h5" v-t="'announcements'"></div>
-          <div v-if="isAdmin()" style="text-align:right; font-size:1.3rem; height:20px"
-            @click="adding_announcement = true">
-            <ion-icon name="add" style="--ionicon-stroke-width:50px;color:gray;" />
+          <div v-if="isAdmin()" style="font-size:1.3rem; height:20px" @click="adding_announcement = true">
+            <ion-icon name="add" style="--ionicon-stroke-width:50px; color:gray;" />
           </div>
         </div>
       </div>
@@ -38,10 +37,8 @@
     <div class="card mt-4">
       <div class="card-header">
         <div class="d-flex justify-content-between my-1">
-          <div class="mb-0 h5">Top Rating 10</div>
-          <router-link to="/users" style="text-align:right;margin-top:2px;">
-            view all
-          </router-link>
+          <div class="mb-0 h5" v-t="'top_rating'"></div>
+          <router-link to="/users" style="margin-top:2px;">view all</router-link>
         </div>
       </div>
       <div class="card-body pb-0">

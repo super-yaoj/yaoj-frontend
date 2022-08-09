@@ -97,12 +97,14 @@ export default {
 
 /* `md` applies to small devices (landscape phones, less than 768px) */
 @media (max-width: 767.98px) {
-  #sidebar-toggler-checkbox:not(:checked)~#sidebar-menu {
+  #sidebar-toggler-checkbox:not(:checked) ~ #sidebar-menu {
     transform: translateX(-100%);
+  }
+  #sidebar-toggler-checkbox:checked ~ #sidebar-menu {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
   }
 
   #sidebar-menu {
-    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
     transition: all .2s ease;
     width: 250px;
   }
