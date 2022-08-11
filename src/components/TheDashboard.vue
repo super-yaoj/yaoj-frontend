@@ -45,8 +45,6 @@
         <DataTable :dataprovider="userlist_option" tableclass="table table-hover table-bt-1" />
       </div>
     </div>
-
-    <hr />
   </div>
 </template>
 
@@ -60,6 +58,7 @@ import { format } from 'silly-datetime'
 import { Top10Paging, UserListData, UserListKey } from './user/utils'
 import { callAPI } from '@/utils'
 import { RouterLink } from 'vue-router'
+import TabPane from './TabPane.vue'
 
 export default {
   inject: ['isAdmin'],
@@ -118,7 +117,8 @@ export default {
     CardModal,
     DataTable,
     TabView,
-  },
+    TabPane
+},
   methods: {
     addAnouncement() {
       callAPI('announcements', 'post', { blog_id: this.blog_id, priority: this.priority }, (res) => {

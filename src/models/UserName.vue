@@ -1,18 +1,15 @@
 <template>
-<div v-if="this.name" :class="this.class" :style="style">
-    <router-link :to="'/user/' + id" @click="onClick">
-        <span :style="'color:' + colorHead">{{name[0]}}</span>
-        <span :style="'color:' + colorTail">{{name.substr(1)}}</span>
-    </router-link>
-</div>
+    <div v-if="this.name">
+        <router-link :to="'/user/' + id" @click="onClick">
+            <span :style="'color:' + colorHead">{{ name[0] }}</span>
+            <span :style="'color:' + colorTail">{{ name.substr(1) }}</span>
+        </router-link>
+    </div>
 </template>
 
 <script>
 export default {
-    props: ['id', 'name', 'rating', 'class', 'style', 'onClick'],
-    created() {
-        console.log(this)
-    },
+    props: ['id', 'name', 'rating', 'onClick'],
     computed: {
         colorHead() {
             if (this.rating < 3000) return this.colorTail
