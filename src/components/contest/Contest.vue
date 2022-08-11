@@ -6,85 +6,73 @@
       <ClickLike class="col-2 text-right" icon="thumbs-up-outline" :number="contest.like"
         :target="{ name: 'contest', id: id }" :active="contest.liked" />
     </div>
-    <ul class="nav nav-tabs mt-3">
-      <li class="nav-item">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#dashboard" :value="id">Dashboard</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#standing" :value="id">Standing</button>
-      </li>
-      <li class="nav-item" role="presentation" v-if="can_edit">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#manage" :value="id">Manage</button>
-      </li>
-    </ul>
-    <div class="tab-content">
-      <div class="tab-pane fade show active mt-3" id="dashboard">
-        <div class="row px-2">
-          <div class="col-md timeboard mb-3">
-            <ContestTimeboard 
-              :id="id" :remainingtime="contest.end_time - current_time"
-              :rule="rule"
-              :status="status"
-              :canedit="can_edit"
-              :finished="contest.finished"
-              @finish="contestEnd"
-              @finalize="endContest"
-            />
-          </div>
-          <div class="col-md">
-            <ContestProblemTable :id="id" />
-            <ContestAnnouncement :data="dashboard" @new="runtask" />
+    <TabView>
+      <TabPane name="Dashboard">
+        <div class="mt-3">
+          <div class="row px-2">
+            <div class="col-md timeboard mb-3">
+              <ContestTimeboard :id="id" :remainingtime="contest.end_time - current_time" :rule="rule" :status="status"
+                :canedit="can_edit" :finished="contest.finished" @finish="contestEnd" @finalize="endContest" />
+            </div>
+            <div class="col-md">
+              <ContestProblemTable :id="id" />
+              <ContestAnnouncement :data="dashboard" @new="fetchNotice" />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="tab-pane fade" id="standing">
+      </TabPane>
+      <TabPane name="standing">
         <ContestStanding />
-      </div>
-      <div class="tab-pane fade mt-3" id="manage" v-if="can_edit">
-        <div class="d-flex align-items-start">
-          <div class="nav flex-column nav-pills me-3">
-            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#v-pills-basic"
-              :value="id">Basic</button>
-            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-permissions"
-              :value="id">Permissions</button>
-            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-managers"
-              :value="id">Managers</button>
-          </div>
-          <div class="tab-content container">
-            <div class="tab-pane fade show active" id="v-pills-basic">
-              <label class="ml-1"><strong>Contest Name:</strong></label>
-              <input class="form-control info-input-form" placeholder="Contest Name" v-model="newcontest.title"
-                maxlength="80">
-              <hr />
-              <label class="ml-1"><strong>Start Time:</strong></label>
-              <input class="form-control info-input-form" placeholder="Start Time" v-model="newcontest.start_time"
-                :disabled="contest.finished">
-              <label class="ml-1"><strong>Last:</strong></label>
-              <input class="form-control info-input-form" placeholder="End Time" v-model="newcontest.last"
-                :disabled="contest.finished">
-              <hr />
-              <div class="btn-group" role="group">
-                <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" v-model="newcontest.pretest"
+      </TabPane>
+      <TabPane name="Manage">
+        <div class="mt-3" v-if="can_edit">
+          <div class="d-flex align-items-start">
+            <div class="nav flex-column nav-pills me-3">
+              <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#v-pills-basic"
+                :value="id">Basic</button>
+              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-permissions"
+                :value="id">Permissions</button>
+              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-managers"
+                :value="id">Managers</button>
+            </div>
+            <div class="tab-content container">
+              <div class="tab-pane fade show active" id="v-pills-basic">
+                <label class="ml-1"><strong>Contest Name:</strong></label>
+                <input class="form-control info-input-form" placeholder="Contest Name" v-model="newcontest.title"
+                  maxlength="80">
+                <hr />
+                <label class="ml-1"><strong>Start Time:</strong></label>
+                <input class="form-control info-input-form" placeholder="Start Time" v-model="newcontest.start_time"
                   :disabled="contest.finished">
-                <label class="btn btn-outline-secondary" style="border-right:0px;" for="btncheck1">Pretest Only</label>
-                <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off"
-                  v-model="newcontest.score_private" :disabled="contest.finished">
-                <label class="btn btn-outline-secondary" for="btncheck2">Score Private</label>
+                <label class="ml-1"><strong>Last:</strong></label>
+                <input class="form-control info-input-form" placeholder="End Time" v-model="newcontest.last"
+                  :disabled="contest.finished">
+                <hr />
+                <div class="btn-group" role="group">
+                  <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"
+                    v-model="newcontest.pretest" :disabled="contest.finished">
+                  <label class="btn btn-outline-secondary" style="border-right:0px;" for="btncheck1">Pretest
+                    Only</label>
+                  <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off"
+                    v-model="newcontest.score_private" :disabled="contest.finished">
+                  <label class="btn btn-outline-secondary" for="btncheck2">Score Private</label>
+                </div>
+                <div class="text-center mt-1" @click="modifyContest"><button class="btn btn-primary">Submit</button>
+                </div>
               </div>
-              <div class="text-center mt-1" @click="modifyContest"><button class="btn btn-primary">Submit</button></div>
-            </div>
-            <div class="tab-pane fade" id="v-pills-permissions">
-              <ManageTable url="contest_permissions" :data_name="['contest_id', 'permission_id', 'permission_name']"
-                title="Permission" name="permission" />
-            </div>
-            <div class="tab-pane fade" id="v-pills-managers">
-              <ManageTable url="contest_managers" :data_name="['contest_id', 'user_id', 'user_name']" title="Manager"
-                name="user" />
+              <div class="tab-pane fade" id="v-pills-permissions">
+                <ManageTable url="contest_permissions" :data_name="['contest_id', 'permission_id', 'permission_name']"
+                  title="Permission" name="permission" />
+              </div>
+              <div class="tab-pane fade" id="v-pills-managers">
+                <ManageTable url="contest_managers" :data_name="['contest_id', 'user_id', 'user_name']" title="Manager"
+                  name="user" />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </TabPane>
+    </TabView>
   </div>
 </template>
 
@@ -96,6 +84,8 @@ import ContestAnnouncement from './ContestAnnouncement.vue'
 import ContestProblemTable from './ContestProblemTable.vue'
 import ContestTimeboard from './ContestTimeboard.vue'
 import ContestList from './ContestList.vue'
+import TabView from '../TabView.vue'
+import TabPane from '../TabPane.vue'
 
 import { callAPI, callRPC } from '@/utils'
 import { getRule, getStatus } from './contest'
@@ -126,6 +116,8 @@ export default {
     ContestAnnouncement,
     ContestProblemTable,
     ContestTimeboard,
+    TabView,
+    TabPane,
   },
   methods: {
     fetchdata(route) {
@@ -151,8 +143,8 @@ export default {
           score_private: this.contest.score_private,
         }
       })
-      this.runtask()
-      this.tasks = setInterval(this.runtask, RefreshInterval)
+      this.fetchNotice()
+      this.tasks = setInterval(this.fetchNotice, RefreshInterval)
     },
     modifyContest() {
       var data = JSON.parse(JSON.stringify(this.newcontest))
@@ -172,7 +164,7 @@ export default {
         alert(res.data._error.message)
       })
     },
-    runtask() {
+    fetchNotice() {
       callAPI('contest_dashboard', 'get', { contest_id: this.id }, (res) => {
         if (res.data.data != null) {
           this.dashboard = res.data.data.sort((a, b) => b.id - a.id)
@@ -193,7 +185,7 @@ export default {
     },
     contestEnd() {
       alert("Contest Ended!")
-      this.runtask()
+      this.fetchNotice()
     },
   },
   beforeUnmount() {

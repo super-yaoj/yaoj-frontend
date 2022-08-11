@@ -1,6 +1,6 @@
 import request from 'axios'
 import qs from 'qs'
-import { BASE_URL } from './config.js'
+import { BASE_URL } from './config'
 //import { Tooltip } from "bootstrap"
 import { format } from 'silly-datetime'
 
@@ -126,23 +126,6 @@ function callRPC(name, data, success, failed) {
         }
     })
 }
-
-/*function tooltipInit() {
-    return
-    var tooltipTriggerList = Array.prototype.slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltips = []
-    tooltipTriggerList.forEach((tooltipTriggerEl) => {
-        var tooltip = new Tooltip(tooltipTriggerEl, { customClass: "limitation-icon" })
-        tooltips.push(tooltip)
-    })
-    return tooltips
-}
-
-function tooltipDispose(tooltips) {
-    tooltips.forEach((tooltip) => {
-        tooltip.dispose()
-    })
-}*/
 
 function validUsername(str) {
     return /^[\w_]{3,18}$/.test(str)

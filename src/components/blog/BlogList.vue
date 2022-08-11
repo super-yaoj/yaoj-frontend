@@ -42,7 +42,9 @@ const bloglist_option: Option<{ blog_id: number }> = {
     name: 'comments', title: <strong>Comments</strong>,
     style: 'width: 10%',
     renderer: (_, row) => <div class="d-flex justify-content-between">
+      {/* @ts-ignore */}
       <ClickLike icon="chatbox-outline" number={row.comments} />
+      {/* @ts-ignore */}
       <ClickLike
         icon="thumbs-up-outline" number={row.like}
         target={{ name: "blog", id: row.blog_id }}

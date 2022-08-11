@@ -34,8 +34,8 @@
 </template>
 
 <script>
-import { validUsername, validPassword, SHA256, callAPI } from '@/utils.js'
-import { BASE_URL } from '@/config.js'
+import { validUsername, validPassword, SHA256, callAPI } from '@/utils'
+import { BASE_URL } from '@/config'
 import { getCurrentInstance, onMounted } from 'vue'
 
 export default {

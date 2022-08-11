@@ -1,8 +1,8 @@
-import { createApp, reactive } from 'vue'
+import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
-import router from './Router.js'
+import router from './Router'
 import App from './App.vue'
-import { callRPC } from './utils.js'
+import { callRPC } from './utils'
 import { Tooltip } from "bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
