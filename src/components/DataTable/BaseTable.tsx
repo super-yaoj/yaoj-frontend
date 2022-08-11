@@ -1,7 +1,3 @@
-
-// head: Array, // Array<{ name: string; title: string|VNode; }>
-// data: Array, // Array<Record<string, string|VNode> >
-
 import { FunctionalComponent, VNode } from "vue";
 
 const BaseTable: FunctionalComponent<{

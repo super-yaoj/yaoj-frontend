@@ -1,7 +1,6 @@
-import Vue, { defineComponent, PropType, reactive, VNode } from "vue";
+import { defineComponent, PropType, reactive, VNode } from "vue";
 import BaseTable from "./BaseTable";
 import { deepEqual } from '@/utils'
-import { RouteLocation, Router } from "vue-router";
 
 class Pagination<Key> {
     size = 0;
@@ -45,6 +44,7 @@ export interface DataHead<DataType = Record<string, any>> {
     class?: string;
     renderer?: (o: any, target: DataType) => string | VNode;
     display?: boolean; // 控制这一列是否显示
+    [key: string | symbol]: any;
 }
 export interface Option<QueryKey = {}> {
     head: Array<DataHead>
