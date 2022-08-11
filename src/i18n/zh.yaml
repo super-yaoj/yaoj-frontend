@@ -38,3 +38,19 @@ contest:
   judging: 正在评测
 announcements: 公告
 top_rating: 排行榜
+sign:
+  signup_title: 请注册
+  login_title: 请登陆
+  signup: 注册
+  login: 登陆
+  username: 用户名
+  password: 密码
+  confirm_password: 再次输入密码
+  recaptcha: 验证码
+  remember: 记住我
+  msg:
+    valid_username: 用户名必须由3到18位的字母、数字、或下划线组成
+    duplicated_username: 该用户名已经被使用
+    valid_password: 密码必须由6到18位的字母、数字或者特殊字符组成
+    valid_confirm: 您再次输入的密码与设置的密码不一致
+    valid_recaptcha: 验证码错误

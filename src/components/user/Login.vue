@@ -1,9 +1,9 @@
 <template>
 <div class="text-center align-items-center d-flex h-100" style="padding-bottom:80px">
     <form class="form-signin" @submit.prevent="login">
-        <h1 class="h3 mb-3 font-weight-normal">Please Log In</h1>
-        <input type="username" class="form-control form-signin-top" placeholder="Username" v-model="user_name"/>
-        <input type="password" class="form-control form-signin-bottom" placeholder="Password" v-model="password"/>
+        <h1 class="h3 mb-3 font-weight-normal" v-t="'sign.login_title'"></h1>
+        <input type="username" class="form-control form-signin-top" :placeholder="$t('sign.username')" v-model="user_name"/>
+        <input type="password" class="form-control form-signin-bottom" :placeholder="$t('sign.password')" v-model="password"/>
         <div class="text-danger small mt-1" v-if="invalid_u">
             Username must be made up by letters or numbers or underline and contains at least 3 at most 18 characters.
         </div>
@@ -15,11 +15,9 @@
         </div>
         <div class="form-check mt-3 mb-3">
             <input class="form-check-input" type="checkbox" value="" id="remember_me" style="float:none" v-model="remember">
-            <label class="form-check-label ms-1" for="remember_me">
-                Remember me
-            </label>
+            <label class="form-check-label ms-1" for="remember_me" v-t="'sign.remember'"></label>
         </div>
-        <button class="btn btn btn-primary btn-block" type="submit" style="width:50%">Log In</button>
+        <button class="btn btn btn-primary btn-block" type="submit" style="width:50%" v-t="'sign.login'"></button>
     </form>
 </div>
 </template>

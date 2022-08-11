@@ -38,3 +38,19 @@ contest:
   judging: Judging
 announcements: Announcements
 top_rating: Top Rating 10
+sign:
+  signup_title: 'Please Sign Up'
+  login_title: 'Please Sign In'
+  signup: 'Sign Up'
+  login: 'Sign In'
+  username: Username
+  password: Password
+  confirm_password: 'Confirm Password'
+  recaptcha: 'Verification Code'
+  remember: 'Remember me'
+  msg:
+    valid_username: Username must be made up by letters or numbers or underline and contains at least 3 at most 18 characters.
+    duplicated_username: Username has been used by other users.
+    valid_password: Password must be made up by letters or numbers or any special characters and contains at least 6 at most 18 characters.
+    valid_confirm: Confirming password and password are different.
+    valid_recaptcha: Verify code is wrong.
