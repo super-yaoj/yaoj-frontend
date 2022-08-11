@@ -31,19 +31,19 @@
 </div>
 <div class="col-12 col-sm-7 col-lg-8">
     <ul class="nav nav-tabs" id="myTab" role="tablist" style="flex-wrap: none;">
-        <li class="nav-item" role="presentation">
+        <li class="nav-item">
             <button :class="'nav-link' + (tab == undefined || tab == 'rating' ? ' active' : '')" id="rating-tab"
                 data-bs-toggle="tab" data-bs-target="#rating" type="button" role="tab">Rating</button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li class="nav-item">
             <button :class="'nav-link' + (tab == 'accepted' ? ' active' : '')" id="accepted-tab"
                 data-bs-toggle="tab" data-bs-target="#accepted" type="button" role="tab">Accepted</button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li class="nav-item">
             <button :class="'nav-link' + (tab == 'blogs' ? ' active' : '')" id="blogs-tab"
                 data-bs-toggle="tab" data-bs-target="#blogs" type="button" role="tab">Blogs</button>
         </li>
-        <li class="nav-item" role="presentation" v-if="canSeePermission">
+        <li class="nav-item" v-if="canSeePermission">
             <button :class="'nav-link' + (tab == 'permissions' ? ' active' : '')" id="permission-tab"
                 data-bs-toggle="tab" data-bs-target="#permission" type="button" role="tab">Permissions</button>
         </li>

@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import TheSidebar from './TheSidebar.vue';
+import TheSidebar from './components/TheSidebar.vue';
 import DataTable from "./components/DataTable";
 import CardModal from "./components/CardModal";
 

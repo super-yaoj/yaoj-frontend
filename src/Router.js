@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
-    { path: '/', name: 'Dashboard', component: () => import(/* webpackChunkName: "router-all" */ './components/Dashboard.vue') },
+    { path: '/', name: 'TheDashboard', component: () => import(/* webpackChunkName: "router-all" */ './components/TheDashboard.vue') },
     { path: '/404NotFound', name: '404NotFound', component: () => import(/* webpackChunkName: "router-all" */ './components/404NotFound.vue') },
     { path: '/403Forbidden', name: '403Forbidden', component: () => import(/* webpackChunkName: "router-all" */ './components/403Forbidden.vue') },
     { path: '/judgerlog', name: 'JudgerLog', component: () => import(/* webpackChunkName: "router-all" */ './components/JudgerLog.vue') },

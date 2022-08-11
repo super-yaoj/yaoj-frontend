@@ -29,7 +29,7 @@
           </div>
         </div>
       </div>
-      <div class="card-body pb-0">
+      <div class="card-body pb-0" style="overflow-x: auto;">
         <DataTable ref="ancetable" :dataprovider="announcement_option" tableclass="table table-hover table-bt-1" />
       </div>
     </div>
@@ -41,10 +41,12 @@
           <router-link to="/users" style="margin-top:2px;">view all</router-link>
         </div>
       </div>
-      <div class="card-body pb-0">
+      <div class="card-body pb-0" style="overflow-x: auto;">
         <DataTable :dataprovider="userlist_option" tableclass="table table-hover table-bt-1" />
       </div>
     </div>
+
+    <hr />
   </div>
 </template>
 
@@ -52,6 +54,7 @@
 import ClickLike from '@/models/ClickLike.vue'
 import CardModal from './CardModal'
 import DataTable, { noPaging, Option } from './DataTable'
+import TabView from './TabView.vue'
 
 import { format } from 'silly-datetime'
 import { Top10Paging, UserListData, UserListKey } from './user/utils'
@@ -114,6 +117,7 @@ export default {
     ClickLike,
     CardModal,
     DataTable,
+    TabView,
   },
   methods: {
     addAnouncement() {
