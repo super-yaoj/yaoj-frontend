@@ -94,11 +94,6 @@ export default {
       return this.id == this.$store.user.user_id || this.isAdmin()
     },
   },
-  watch: {
-    canSeePermission() {
-      this.$refs.tabs.updatePane()
-    },
-  },
   methods: {
     fetchdata(route) {
       queryUser({ user_id: route.params.id }).then(data => {
@@ -106,6 +101,7 @@ export default {
       })
       console.log("fetch", route)
       this.id = route.params.id
+      this.$refs.tabs?.updatePane()
       this.timestamp = new Date().getTime()
     },
     permissionRow(row) {
