@@ -19,8 +19,8 @@
         </UserInfoMeta>
         <UserInfoMeta title="User Group" icon="people">{{ user.user_group }}</UserInfoMeta>
         <UserInfoMeta title="Register Time" icon="time">{{ user.register_time }}</UserInfoMeta>
-        <UserInfoMeta v-if="user.email != ''" title="Email" icon="mail">{{ user.email }}</UserInfoMeta>
-        <UserInfoMeta v-if="user.organization != ''" title="Organization" icon="briefcase">{{ user.organization }}
+        <UserInfoMeta v-if="user.email" title="Email" icon="mail">{{ user.email }}</UserInfoMeta>
+        <UserInfoMeta v-if="user.organization" title="Organization" icon="briefcase">{{ user.organization }}
         </UserInfoMeta>
       </ul>
     </div>
@@ -51,22 +51,12 @@ import ClickLike from '@/models/ClickLike.vue'
 import UserName from '@/models/UserName.vue'
 import { TabPane, TabView } from '@/core'
 import Rating from './Rating.vue'
+import UserInfoMeta from './UserInfoMeta.vue'
 
 import { callAPI, queryUser } from '@/utils'
-import { resolveDirective, withDirectives } from 'vue'
 import { h } from 'vue'
 import { format } from 'silly-datetime'
 import { removeDraft } from '../blog/blog'
-
-const UserInfoMeta = ({ title, icon }, context) => {
-  const tooltip = resolveDirective('tooltip')
-  return withDirectives(<li class="list-group-item info-item" title={title}>
-    <ion-icon name={icon} class="feather me-2" />
-    {context.slots.default()}
-  </li>, [
-    [tooltip, undefined, 'left', null]
-  ])
-}
 
 export default {
   name: "UserInfo",

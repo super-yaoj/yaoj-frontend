@@ -4,23 +4,23 @@
       <div class="h3 mb-0" v-t="'submissions.title'" />
     </div>
     <hr />
-    <form class="row mb-3 subm-list-form flex-column flex-lg-row" @submit.prevent="query">
-      <div class="input-group col flex-nowrap mb-1">
-        <span class="input-group-text" id="basic-addon1" v-t="'submissions.filter.problem'" />
-        <input type="text" class="form-control" placeholder="Problem id" v-model="problem_id">
+    <form class="d-flex mb-3 subm-list-form flex-column flex-lg-row" @submit.prevent="query">
+      <div class="input-group flex-nowrap mb-1 me-2">
+        <span class="input-group-text" id="basic-addon1" v-t="'submissions.filter.problem'"></span>
+        <input type="text" class="form-control" placeholder="Problem ID" v-model="problem_id">
       </div>
-      <div class="input-group col flex-nowrap mb-1">
-        <span class="input-group-text" id="basic-addon1" v-t="'submissions.filter.contest'" />
-        <input type="text" class="form-control" placeholder="Contest id" v-model="contest_id">
+      <div class="input-group flex-nowrap mb-1 me-2">
+        <span class="input-group-text" id="basic-addon1" v-t="'submissions.filter.contest'"></span>
+        <input type="text" class="form-control" placeholder="Contest ID" v-model="contest_id">
       </div>
-      <div class="input-group col flex-nowrap mb-1">
-        <span class="input-group-text" id="basic-addon1" v-t="'submissions.filter.user'" />
-        <input type="text" class="form-control" placeholder="User id" v-model="submitter">
+      <div class="input-group flex-nowrap mb-1 me-2">
+        <span class="input-group-text" id="basic-addon1" v-t="'submissions.filter.user'"></span>
+        <input type="text" class="form-control" placeholder="User ID" v-model="submitter">
       </div>
       <div class="btn-group col d-flex flex-row mb-1" style="text-align:right" v-if="$store.user.user_id > 0">
         <input type="checkbox" id="onlyme" class="btn-check" v-model="onlyme" style="display: none;">
-        <label class="btn btn-outline-warning" for="onlyme" v-t="'submissions.filter.onlyme'" />
-        <button class="btn btn-primary" type="submit" v-t="'search'" />
+        <label class="text-nowrap btn btn-outline-warning" for="onlyme" v-t="'submissions.filter.onlyme'"></label>
+        <button class="text-nowrap btn btn-primary" type="submit" v-t="'search'"></button>
       </div>
     </form>
     <DataTable :dataprovider="subm_option" ref="submlist" />
