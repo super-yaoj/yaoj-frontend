@@ -36,6 +36,16 @@ contest:
   remaining_time: 'Remaining Time:'
   ended: Ended
   judging: Judging
+  participants: Participants
+  my_submissions: My submissions
+  finalize: Finalize
+  dashboard: Dashboard
+  standing: Standing
+  manage: Manage
+  man:
+    setting: Setting
+    permissions: Permissions
+    managers: Managers
 announcements: Announcements
 top_rating: Top Rating 10
 sign:

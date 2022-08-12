@@ -15,16 +15,18 @@
       </div>
     </div>
   </div>
-  <router-link class="btn btn-secondary mt-3 w-100" :to="`/contest/${id}/participants`">
-    Participants</router-link>
-  <router-link class="btn btn-info mt-3 w-100" :to="`/submissions/?contest_id=${id}&submitter=${$store.user.user_id}`"
-    v-if="$store.user.user_id > 0">My submissions</router-link>
-  <button class="btn btn-danger mt-3 w-100" v-if="canedit && !finished" @click="$emit('finalize', null)">End
-    Contest</button>
+  <div class="d-grid gap-2 mt-2">
+    <router-link class="btn btn-secondary" :to="`/contest/${id}/participants`" v-t="'contest.participants'">
+    </router-link>
+    <router-link class="btn btn-info" :to="`/submissions/?contest_id=${id}&submitter=${$store.user.user_id}`"
+      v-if="$store.user.user_id > 0" v-t="'contest.my_submissions'"></router-link>
+    <button class="btn btn-danger" v-if="canedit && !finished" @click="$emit('finalize', null)"
+      v-t="'contest.finalize'"></button>
+  </div>
 </template>
 
 <script lang="tsx">
-import Clock from '@/models/Clock.vue'
+import Clock from './Clock.vue'
 
 export default {
   props: {

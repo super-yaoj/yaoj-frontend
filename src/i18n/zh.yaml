@@ -36,6 +36,16 @@ contest:
   remaining_time: '剩余时间'
   ended: 已结束
   judging: 正在评测
+  participants: 报名选手列表
+  my_submissions: 我的提交
+  finalize: 结束比赛
+  dashboard: 比赛主页
+  standing: 排行榜
+  manage: 比赛管理
+  man:
+    setting: 设置
+    permissions: 权限
+    managers: 管理员
 announcements: 公告
 top_rating: 排行榜
 sign:
