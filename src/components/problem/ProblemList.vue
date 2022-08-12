@@ -16,7 +16,7 @@
 </template>
 
 <script lang="tsx">
-import DataTable, { Option } from '@/components/DataTable'
+import DataTable, { Option } from '@/core/DataTable'
 import ClickLike from '@/models/ClickLike.vue'
 import { callAPI } from '@/utils'
 

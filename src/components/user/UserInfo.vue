@@ -49,8 +49,7 @@
 import Table from '@/models/Table.vue'
 import ClickLike from '@/models/ClickLike.vue'
 import UserName from '@/models/UserName.vue'
-import TabView from '../TabView'
-import TabPane from '../TabPane'
+import { TabPane, TabView } from '@/core'
 import Rating from './Rating.vue'
 
 import { callAPI, queryUser } from '@/utils'

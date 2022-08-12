@@ -39,8 +39,7 @@
 
 <script>
 import TheSidebar from './components/TheSidebar.vue';
-import DataTable from "./components/DataTable";
-import CardModal from "./components/CardModal";
+import { DataTable, CardModal } from "@/core";
 
 import { nextTick } from "vue";
 import { format } from "silly-datetime";

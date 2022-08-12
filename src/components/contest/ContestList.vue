@@ -18,13 +18,13 @@
 <script lang="tsx">
 import Table from '@/models/Table.vue'
 import ClickLike from '@/models/ClickLike.vue'
-import DataTable, { Option } from '../DataTable'
+import DataTable, { Option } from '@/core/DataTable'
 
 import { callAPI } from '@/utils'
 import { format } from 'silly-datetime'
 import { getRule, getRegisterStatus, getStatus } from './contest.js'
 import { RouterLink } from 'vue-router'
-import VIcon from '../VIcon.vue'
+import { VIcon } from '@/core'
 
 const StatusColor = {
   "Not started": "green",

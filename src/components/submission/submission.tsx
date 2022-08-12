@@ -3,7 +3,7 @@ import { format } from "silly-datetime"
 import Score from '@/models/Score.vue'
 import UserName from '@/models/UserName.vue'
 import { echoSize } from "@/utils"
-import { DataHead } from "../DataTable"
+import { DataHead } from "@/core/DataTable"
 import { RouterLink } from "vue-router"
 
 export function cutContent(str, len) {

@@ -95,8 +95,7 @@ import { BASE_URL, Language, FileTypeName } from '@/config'
 import ManageTable from '@/models/ManageTable.vue'
 import { callAPI, callRPC, upload } from '@/utils'
 import PMDataView from './PMDataView.vue'
-import TabView from '../TabView.vue'
-import TabPane from '../TabPane.vue'
+import { TabPane, TabView } from '@/core'
 
 export default {
   inject: ['reload'],

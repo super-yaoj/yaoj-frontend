@@ -18,7 +18,7 @@
 <script lang="tsx">
 import { RouterLink } from "vue-router";
 import ClickLike from "@/models/ClickLike.vue";
-import DataTable, { Option } from "../DataTable";
+import DataTable, { Option } from "@/core/DataTable";
 
 import { callAPI, randomString } from "@/utils";
 import { format } from "silly-datetime";

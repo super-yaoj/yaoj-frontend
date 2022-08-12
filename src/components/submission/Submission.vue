@@ -37,8 +37,8 @@
 import { callAPI, callRPC } from '@/utils'
 import { FileTypeName, LangModel, FileType } from '@/config'
 import SubtaskAccordion from './SubtaskAccordion.vue'
-import BaseTable from '../DataTable/BaseTable'
-import { RenderData } from '../DataTable'
+import { BaseTable } from '@/core'
+import { RenderData } from '@/core/DataTable'
 import { subm_table } from './submission'
 
 import Codemirror from 'codemirror-editor-vue3'

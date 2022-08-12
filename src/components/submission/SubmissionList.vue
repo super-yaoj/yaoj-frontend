@@ -28,7 +28,7 @@
 </template>
 
 <script lang="tsx">
-import DataTable from "../DataTable"
+import { DataTable } from "@/core"
 import Table from "@/models/Table.vue"
 import { callAPI } from '@/utils'
 import { subm_table } from "./submission"

@@ -48,8 +48,7 @@ import ProblemSubmit from './ProblemSubmit.vue'
 import ProblemBadge from './ProblemBadge.vue'
 import { callAPI } from '@/utils'
 import { BASE_URL } from '@/config'
-import TabView from '../TabView.vue'
-import TabPane from '../TabPane.vue'
+import { TabPane, TabView } from '@/core'
 
 export default {
   name: "Problem",

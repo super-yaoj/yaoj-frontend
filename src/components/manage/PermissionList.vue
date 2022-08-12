@@ -6,9 +6,10 @@
 </template>
 
 <script lang="tsx">
+import DataTable, { Option }  from '@/core/DataTable'
+
 import { callAPI } from '@/utils'
 import { RouterLink } from 'vue-router'
-import DataTable, { Option }  from '../DataTable'
 
 const permlist_option = {
   head: [{

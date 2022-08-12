@@ -50,15 +50,13 @@
 
 <script lang="tsx">
 import ClickLike from '@/models/ClickLike.vue'
-import CardModal from './CardModal'
-import DataTable, { noPaging, Option } from './DataTable'
-import TabView from './TabView.vue'
+import DataTable, { noPaging, Option } from '@/core/DataTable'
+import { CardModal, TabPane, TabView } from '@/core'
 
 import { format } from 'silly-datetime'
 import { Top10Paging, UserListData, UserListKey } from './user/utils'
 import { callAPI } from '@/utils'
 import { RouterLink } from 'vue-router'
-import TabPane from './TabPane.vue'
 
 export default {
   inject: ['isAdmin'],

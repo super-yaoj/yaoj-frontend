@@ -5,11 +5,10 @@
 </template>
 
 <script>
-import { callAPI } from '@/utils'
-import DataTable from '../DataTable'
+import DataTable, { noPaging } from '@/core/DataTable'
 
+import { callAPI } from '@/utils'
 import { UserListTable } from '../user/utils'
-import { noPaging } from '../DataTable'
 
 export default {
   data() {

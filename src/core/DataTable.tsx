@@ -1,7 +1,7 @@
 import { defineComponent, PropType, reactive, VNode } from "vue";
 import BaseTable from "./BaseTable";
 import { deepEqual } from '@/utils'
-import VIcon from '@/components/VIcon.vue'
+import VIcon from './VIcon.vue'
 
 class Pagination<Key> {
     size = 0;

@@ -1,4 +1,4 @@
-import { DataHead, Option } from "../DataTable";
+import { DataHead, Option } from "@/core/DataTable";
 import UserName from '@/models/UserName.vue'
 import { callAPI } from '@/utils'
 

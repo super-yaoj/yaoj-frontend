@@ -21,12 +21,12 @@
 </template>
 
 <script lang="tsx">
-import DataTableEditable from '../DataTableEditable'
-import CardModal from '../CardModal'
+import DataTableEditable from '../../core/DataTableEditable'
+import { CardModal } from '@/core'
 
 import { RouterLink } from 'vue-router'
 import { callAPI } from '@/utils'
-import { noPaging, Option } from '../DataTable'
+import { noPaging, Option } from '@/core/DataTable'
 
 export default {
   props: {

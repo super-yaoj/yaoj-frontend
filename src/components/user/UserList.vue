@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import DataTable from '@/components/DataTable'
+import { DataTable } from '@/core'
 import { UserListData } from './utils'
 
 export default {

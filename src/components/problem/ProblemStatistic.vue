@@ -40,7 +40,7 @@ import Table from '@/models/Table.vue'
 import { callAPI } from '@/utils';
 import { nextTick } from 'vue';
 import { subm_table } from '../submission/submission';
-import DataTable, { Option } from '../DataTable';
+import DataTable, { Option } from '@/core/DataTable';
 
 export default {
   data() {
