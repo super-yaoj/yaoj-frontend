@@ -30,7 +30,9 @@
           <VMdPreview :text="problem.tutorial_zh" />
         </TabPane>
         <TabPane name="Manage" v-if="can_edit">
-          <ProblemManage :problem="problem" :id="id" />
+          <div class="mt-3">
+            <ProblemManage :problem="problem" :id="id" />
+          </div>
         </TabPane>
         <TabPane name="Statistic" v-if="!in_contest" type="link" :href="`#/problem/${id}/statistic`" />
       </TabView>

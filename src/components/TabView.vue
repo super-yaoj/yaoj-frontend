@@ -1,28 +1,43 @@
 <template>
-  <div class="nav nav-tabs">
-    <template v-for="pane in panes" :key="pane.key">
-      <button v-if="pane.type === 'pane'" :class="['nav-link', activePaneName === pane.name && ' active']"
-        @click="activePaneName = pane.name">
-        {{ pane.name }}
-      </button>
-      <a v-else-if="pane.type === 'link'" :href="pane.href"
-        :class="['nav-link', activePaneName === pane.name && ' active']">
-        {{ pane.name }}
-      </a>
-    </template>
-  </div>
-  <div class="tab-content">
-    <template v-for="pane in panes" :key="pane.key">
-      <KeepAlive>
-        <component v-if="activePaneName === pane.name" :is="pane.node" @updatepane="updatePane"></component>
-      </KeepAlive>
-    </template>
+  <div :class="[
+    type === 'vertical' && 'd-flex',
+  ]">
+    <div :class="[
+      'nav',
+      type === 'tab' && 'nav-tabs',
+      type === 'vertical' && 'nav-pills flex-column',
+    ]">
+      <template v-for="pane in panes" :key="pane.key">
+        <button v-if="pane.type === 'pane'" :class="['nav-link', activePaneName === pane.name && ' active']"
+          @click="activePaneName = pane.name">
+          {{ pane.name }}
+        </button>
+        <a v-else-if="pane.type === 'link'" :href="pane.href"
+          :class="['nav-link', 'text-center', activePaneName === pane.name && ' active']">
+          {{ pane.name }}
+        </a>
+      </template>
+    </div>
+    <div class="tab-content">
+      <template v-for="pane in panes" :key="pane.key">
+        <KeepAlive>
+          <component v-if="activePaneName === pane.name" :is="pane.node" @updatepane="updatePane"></component>
+        </KeepAlive>
+      </template>
+    </div>
   </div>
 </template>
 
 <script setup>
 // assume that each tab has different name
 import { ref, useSlots, watchEffect } from 'vue';
+
+const props = defineProps({
+  type: {
+    type: String,
+    default: 'tab'
+  },
+})
 
 const slots = useSlots()
 
@@ -55,3 +70,9 @@ defineExpose({
   updatePane,
 })
 </script>
+
+<style>
+.nav~.tab-content {
+  width: 100%;
+}
+</style>
