@@ -11,7 +11,7 @@ sidebar:
   custom_test: 自定义测试
   system_manage: 系统管理
   permissions: 权限管理
-  login: 登陆
+  login: 登录
   logout: 登出
   signup: 注册
 problems:
@@ -50,9 +50,9 @@ announcements: 公告
 top_rating: 排行榜
 sign:
   signup_title: 请注册
-  login_title: 请登陆
+  login_title: 请登录
   signup: 注册
-  login: 登陆
+  login: 登录
   username: 用户名
   password: 密码
   confirm_password: 再次输入密码

@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="card-body">
-            <Codemirror :value="item.Content" :options="cmOptions(item.Language)" border v-if="item.Accepted == FileType.Code" />
+            <Codemirror :value="item.Content" :options="cmOptions(item.Language)" :border="true" v-if="item.Accepted == FileType.Code" />
             <div class="card text-dark bg-light mb-3 mt-1" v-else>
                 <div class="card-body">{{item}}</div>
             </div>

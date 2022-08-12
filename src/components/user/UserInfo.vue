@@ -10,8 +10,8 @@
         <UserName :id="user.user_id" :name="user.user_name" :rating="user.rating" />
       </div>
       <div class="small" style="color:gray;word-wrap:break-word">{{ user.motto }}</div>
-      <router-link v-if="user.user_id == $store.user.user_id" class="mt-2 mb-2 btn btn-sm btn-outline-secondary w-100"
-        role="button" :to="'/user/' + user.user_id + '/modify/'">Modify Information</router-link>
+      <router-link v-if="user.user_id == $store.user.user_id" class="mt-2 mb-2 btn btn-sm btn-outline-secondary d-block"
+        role="button" :to="`/user/${user.user_id}/modify/`">Edit Profile</router-link>
       <ul class="list-group list-group-flush" style="word-wrap:break-word">
         <UserInfoMeta title="User ID" icon="id-card">ID #{{ user.user_id }}</UserInfoMeta>
         <UserInfoMeta title="Rating" icon="bar-chart">
@@ -104,7 +104,7 @@ export default {
     async getPermission(query) {
       try {
         var id = this.id
-        var res = await new Promise(function (res, rej) {
+        var res = await new Promise((res, rej) => {
           callAPI('user_permissions', 'get', { user_id: id }, res, rej)
         })
         return res.data
@@ -149,10 +149,10 @@ export default {
         </td>
       ]
     },
-    async getBlog(query) {
+    async getBlog() {
       try {
         var id = this.id
-        var res = await new Promise(function (res, rej) {
+        var res = await new Promise((res, rej) => {
           callAPI('blogs', 'get', { user_id: id }, res, rej)
         })
         if (res.data.data == null) {
