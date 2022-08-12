@@ -23,7 +23,7 @@
         <button class="btn btn-primary" type="submit" v-t="'search'" />
       </div>
     </form>
-    <DataTable :dataprovider="subm_option" />
+    <DataTable :dataprovider="subm_option" ref="submlist" />
   </div>
 </template>
 
@@ -34,6 +34,7 @@ import { callAPI } from '@/utils'
 import { subm_table } from "./submission"
 
 export default {
+  name: 'SubmissionList',
   components: {
     Table,
     DataTable,
@@ -84,6 +85,10 @@ export default {
     }
   },
   methods: {
+    fetchdata() {
+      console.log('trigger')
+      this.$refs.submlist?.driver.fetch()
+    },
     query() {
       var q = {
         problem_id: this.problem_id == "" ? undefined : this.problem_id,

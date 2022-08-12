@@ -32,7 +32,7 @@ const bloglist_option: Option<{ blog_id: number }> = {
     </RouterLink>
   }, {
     name: 'author', title: <strong>Author</strong>,
-    style: 'text-align: right',
+    columnClass: 'text-end',
     renderer: (author, row) => <RouterLink to={'/user/' + author}>{row.author_name}</RouterLink>,
   }, {
     name: 'create_time', title: <strong>Create Date</strong>,
