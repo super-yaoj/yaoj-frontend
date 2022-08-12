@@ -8,13 +8,11 @@ const BaseModal = defineComponent({
         },
     },
     setup(props, ctx) {
-        return () => props.display && <>
-            <Teleport to="body">
-                <div class="modal" {...ctx.attrs} style="display: block;">
-                    {ctx.slots.default()}
-                </div>
-            </Teleport>
-        </>
+        return () => props.display && <Teleport to="body">
+            <div class="modal" {...ctx.attrs} style="display: block;">
+                {ctx.slots.default()}
+            </div>
+        </Teleport>
     },
 });
 

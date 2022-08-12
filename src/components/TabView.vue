@@ -1,6 +1,6 @@
 <template>
   <div class="nav nav-tabs">
-    <template v-for="pane in panes" :key="pane.name">
+    <template v-for="pane in panes" :key="pane.key">
       <button v-if="pane.type === 'pane'" :class="['nav-link', activePaneName === pane.name && ' active']"
         @click="activePaneName = pane.name">
         {{ pane.name }}
@@ -8,11 +8,11 @@
       <a v-else-if="pane.type === 'link'" :href="pane.href"
         :class="['nav-link', activePaneName === pane.name && ' active']">
         {{ pane.name }}
-        </a>
+      </a>
     </template>
   </div>
   <div class="tab-content">
-    <template v-for="pane in panes" :key="pane.name">
+    <template v-for="pane in panes" :key="pane.key">
       <KeepAlive>
         <component v-if="activePaneName === pane.name" :is="pane.node" @updatepane="updatePane"></component>
       </KeepAlive>
@@ -25,14 +25,18 @@
 import { ref, useSlots, watchEffect } from 'vue';
 
 const slots = useSlots()
-const panes = ref(slots.default()
+
+const getPanes = () => slots.default()
   .filter(node => node && node.props)
   .map(node => ({
     name: node.props.name || '',
     type: node.props.type || 'pane',
     href: node.props.href,
+    key: node.props.key || node.props.name,
     node: node,
-  })))
+  }))
+
+const panes = ref(getPanes())
 
 const activePaneName = ref(panes.value[0]?.name || '')
 
@@ -42,14 +46,7 @@ watchEffect(() => {
 
 const updatePane = () => {
   console.log('update pane!')
-  panes.value = slots.default()
-    .filter(node => node && node.props)
-    .map(node => ({
-      name: node.props.name || '',
-      type: node.props.type || 'pane',
-      href: node.props.href,
-      node: node,
-    }))
+  panes.value = getPanes()
   console.log(panes.value)
 }
 
