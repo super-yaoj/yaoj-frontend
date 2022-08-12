@@ -54,3 +54,23 @@ sign:
     valid_password: 密码必须由6到18位的字母、数字或者特殊字符组成
     valid_confirm: 您再次输入的密码与设置的密码不一致
     valid_recaptcha: 验证码错误
+problem:
+  timelimit: 时间限制
+  memorylimit: 空间限制
+  sourcelimit: 代码长度限制
+  statement: 题目描述
+  submit: 提交
+  static: 统计
+  uploadfile: 上传文件
+  manage: 管理
+  man:
+    setting: 设置
+    permissions: 权限
+    managers: 管理者
+    data: 数据
+    upload_data: 上传数据
+    title: 题目名称
+    allow_downloads: 下发文件
+    rejudge: 重测
+download: 下载
+submit: 提交

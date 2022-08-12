@@ -1,11 +1,11 @@
 <template>
   <TabView type="vertical">
-    <TabPane name="Setting">
+    <TabPane :name="$t('problem.man.setting')">
       <div class="mx-3">
-        <label class="form-label"><strong>Problem Title:</strong></label>
+        <label class="form-label"><strong v-t="'problem.man.title'"></strong></label>
         <input class="form-control" id="title" v-model="title">
 
-        <label class="form-label mt-5"><strong>Allowed Downloads:</strong></label>
+        <label class="form-label mt-5"><strong v-t="'problem.man.allow_downloads'"></strong></label>
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -22,32 +22,35 @@
             </tr>
           </tbody>
         </table>
-        <div class="text-center"><button class="btn btn-primary" @click="submitNormal">Submit</button></div>
+        <div class="text-center"><button class="btn btn-primary" @click="submitSetting">Submit</button></div>
       </div>
     </TabPane>
-    <TabPane name="Permissions">
+    <TabPane :name="$t('problem.man.permissions')">
       <div class="mx-3">
         <ManageTable url="problem_permissions" :data_name="['problem_id', 'permission_id', 'permission_name']"
           title="Permission" name="permission"></ManageTable>
       </div>
     </TabPane>
-    <TabPane name="Managers">
+    <TabPane :name="$t('problem.man.managers')">
       <div class="mx-3">
         <ManageTable url="problem_managers" :data_name="['problem_id', 'user_id', 'user_name']" title="Manager"
           name="user"></ManageTable>
       </div>
     </TabPane>
-    <TabPane name="Data">
+    <TabPane :name="$t('problem.man.data')">
       <div class="mx-3">
-        <div class="row align-items-end">
-          <div class="col" style="min-width:150px">
-            <label for="formFile" class="form-label"><strong>Upload Data</strong></label>
+        <label for="formFile" class="form-label"><strong v-t="'problem.man.upload_data'"></strong></label>
+        <div class="d-flex flex-column flex-md-row">
+          <div style="width: 100%" class="mb-1">
             <input class="form-control" type="file" id="formFile" accept=".zip" ref="dataFile">
           </div>
-          <button class="btn btn-primary col-2 me-2" style="min-width: 80px;" @click="uploadData">Submit</button>
-          <a class="btn btn-info col-2 me-2" style="min-width: 80px;" :href="downloadPath"
-            v-if="problem.data.Subtasks">Download</a>
-          <button class="btn btn-danger col-2" style="min-width: 80px;" @click="rejudge">Rejudge</button>
+          <div class="btn-group ms-md-2 mb-1 align-self-stretch" role="group">
+            <button class="btn btn-primary" style="min-width: 80px;" @click="uploadData" v-t="'submit'"></button>
+            <a class="btn btn-info" style="min-width: 80px;" :href="downloadPath" v-if="problem.data.Subtasks"
+              v-t="'download'"></a>
+            <button class="btn btn-danger" style="min-width: 80px;" @click="rejudge"
+              v-t="'problem.man.rejudge'"></button>
+          </div>
         </div>
         <template v-if="problem.data.Subtasks">
           <PMDataView :data="problem.data.Pretest" title="Pretest" class="mt-4"></PMDataView>
@@ -119,7 +122,7 @@ export default {
     TabPane
   },
   methods: {
-    submitNormal() {
+    submitSetting() {
       var str = ""
       for (var key in this.downs) str += this.downs[key] ? "1" : "0"
       callAPI('problem', 'patch', { problem_id: this.id, title: this.title, allow_down: str }, (res) => {

@@ -8,7 +8,7 @@
       type === 'vertical' && 'nav-pills flex-column',
     ]">
       <template v-for="pane in panes" :key="pane.key">
-        <button v-if="pane.type === 'pane'" :class="['nav-link', activePaneName === pane.name && ' active']"
+        <button v-if="pane.type === 'pane'" :class="['nav-link text-nowrap', activePaneName === pane.name && 'active']"
           @click="activePaneName = pane.name">
           {{ pane.name }}
         </button>

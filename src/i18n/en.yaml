@@ -54,3 +54,23 @@ sign:
     valid_password: Password must be made up by letters or numbers or any special characters and contains at least 6 at most 18 characters.
     valid_confirm: Confirming password and password are different.
     valid_recaptcha: Verify code is wrong.
+problem:
+  timelimit: Time Limit
+  memorylimit: Memory Limit
+  sourcelimit: SourceLimit
+  statement: Statement
+  submit: Submit
+  static: Static
+  uploadfile: Upload file
+  manage: Manage
+  man:
+    setting: Setting
+    permissions: Permissions
+    managers: Managers
+    data: Data
+    upload_data: Upload Data
+    title: Problem Title
+    allow_downloads: Allowed Downloads
+    rejudge: Rejudge
+download: Download
+submit: Submit

@@ -7,34 +7,34 @@
         :target="{ name: 'problem', id: id }" :active="problem.liked"></ClickLike>
     </div>
     <div class="text-center mt-2">
-      <ProblemBadge v-if="problem.time_limit > 0" icon="time" title="Time Limit" class="bg-success mx-1">
+      <ProblemBadge v-if="problem.time_limit > 0" icon="time" :title="$t('problem.timelimit')" class="bg-success mx-1">
         {{ problem.time_limit }} ms
       </ProblemBadge>
-      <ProblemBadge v-if="problem.memory_limit > 0" icon="hardware-chip" title="Memory Limit" class="bg-primary mx-1">
+      <ProblemBadge v-if="problem.memory_limit > 0" icon="hardware-chip" :title="$t('problem.memorylimit')" class="bg-primary mx-1">
         {{ problem.memory_limit }} MB
       </ProblemBadge>
-      <ProblemBadge v-if="maxSubmission !== '/'" icon="reader" title="Source Limit" class="bg-warning mx-1">
+      <ProblemBadge v-if="maxSubmission !== '/'" icon="reader" :title="$t('problem.sourcelimit')" class="bg-warning mx-1">
         {{ maxSubmission }}
       </ProblemBadge>
     </div>
     <div class="mt-1">
       <TabView ref="tabs">
-        <TabPane name="Statement">
+        <TabPane :name="$t('problem.statement')">
           <v-md-preview :text="problem.statement_zh" />
         </TabPane>
-        <TabPane name="Submit">
+        <TabPane :name="$t('submit')">
           <ProblemSubmit :submission="problem.subm_config" />
         </TabPane>
         <TabPane name="File Download" v-if="problem.has_sample" type="link" :href="download_path" />
         <TabPane name="Tutorial" v-if="problem.tutorial_zh">
           <v-md-preview :text="problem.tutorial_zh" />
         </TabPane>
-        <TabPane name="Manage" v-if="can_edit">
+        <TabPane :name="$t('problem.manage')" v-if="can_edit">
           <div class="mt-3">
             <ProblemManage :problem="problem" :id="id" />
           </div>
         </TabPane>
-        <TabPane name="Statistic" v-if="!in_contest" type="link" :href="`#/problem/${id}/statistic`" />
+        <TabPane :name="$t('problem.static')" v-if="!in_contest" type="link" :href="`#/problem/${id}/statistic`" />
       </TabView>
     </div>
   </div>
