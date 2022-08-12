@@ -29,7 +29,8 @@ const ProbListProvider: Option<{ problem_id: number }> = {
             <router-link to={"/problem/" + o.problem_id}>{title}</router-link>
     }, {
         name: 'like', title: <strong>Comments</strong>, columnClass: "pl-col-comment text-center", renderer: (_, o) =>
-            <click-like icon="thumbs-up-outline" number={o.like}
+            // @ts-ignore
+            <ClickLike icon="thumbs-up-outline" number={o.like}
                 target={{ name: "problem", id: o.problem_id }} active={o.liked} />
     }],
     // 提供分页信息

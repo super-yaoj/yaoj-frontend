@@ -1,10 +1,6 @@
 <template>
 <div class="px-0 px-md-4 mt-4 container-lg">
-    <table class="table text-center">
-        <tbody>
-            <tr><SubmissionRow :submission="submission" /></tr>
-        </tbody>
-    </table>
+    <BaseTable :head="subm_table" :data="[RenderData(subm_table, submission)]" />
     <div class="card" v-for="(item, index) in submission.details.content_preview" :key="index">
         <div class="card-header py-0">
             <div class="row align-items-center flex-column flex-md-row">
@@ -38,10 +34,12 @@
 </template>
 
 <script>
-import { submissionRow } from './submission.js'
 import { callAPI, callRPC } from '@/utils'
 import { FileTypeName, LangModel, FileType } from '@/config'
 import SubtaskAccordion from './SubtaskAccordion.vue'
+import BaseTable from '../DataTable/BaseTable'
+import { RenderData } from '../DataTable'
+import { subm_table } from './submission'
 
 import Codemirror from 'codemirror-editor-vue3'
 import "codemirror/mode/clike/clike.js"
@@ -53,12 +51,7 @@ export default {
     name: 'Submission',
     inject: ['reload'],
     components: {
-        SubmissionRow: {
-            props: ['submission'],
-            render() {
-                return submissionRow(this.submission)
-            },
-        },
+        BaseTable,
         SubtaskAccordion,
         Codemirror,
     },
@@ -66,7 +59,7 @@ export default {
         return {
             id: this.$route.params.id,
             submission: {
-                // submission_id: this.$route.params.id,
+                submission_id: this.$route.params.id,
                 problem_id: 0,
                 problem_name: "",
                 contest_id: 0,
@@ -83,9 +76,11 @@ export default {
             FileTypeName,
             FileType,
             can_edit: false,
+            subm_table,
         }
     },
     methods: {
+        RenderData,
         fetchdata(route){
             callAPI('submission', 'get', { submission_id: route.params.id }, (res) => {
                 this.id = route.params.id

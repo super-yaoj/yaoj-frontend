@@ -24,6 +24,7 @@ import { callAPI } from '@/utils'
 import { format } from 'silly-datetime'
 import { getRule, getRegisterStatus, getStatus } from './contest.js'
 import { RouterLink } from 'vue-router'
+import VIcon from '../VIcon.vue'
 
 const StatusColor = {
   "Not started": "green",
@@ -76,7 +77,8 @@ export default {
           renderer: (_, o) => {
             return <div class="d-flex justify-content-between">
               <RouterLink to={`/contest/${o.contest_id}/participants`}>
-                <ion-icon name="people" style="vertical-align: middle; font-size: 1rem; margin-right: 2px;" />
+                { /* @ts-ignore */}
+                <VIcon name="people" style="vertical-align: middle; font-size: 1rem; margin-right: 2px;" />
                 <span style="vertical-align: middle">{o.registrants}</span>
               </RouterLink>
               {/* @ts-ignore */}

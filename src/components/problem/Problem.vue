@@ -20,14 +20,14 @@
     <div class="mt-1">
       <TabView ref="tabs">
         <TabPane name="Statement">
-          <VMdPrewiew :text="problem.statement_zh" />
+          <v-md-preview :text="problem.statement_zh" />
         </TabPane>
         <TabPane name="Submit">
           <ProblemSubmit :submission="problem.subm_config" />
         </TabPane>
         <TabPane name="File Download" v-if="problem.has_sample" type="link" :href="download_path" />
         <TabPane name="Tutorial" v-if="problem.tutorial_zh">
-          <VMdPreview :text="problem.tutorial_zh" />
+          <v-md-preview :text="problem.tutorial_zh" />
         </TabPane>
         <TabPane name="Manage" v-if="can_edit">
           <div class="mt-3">

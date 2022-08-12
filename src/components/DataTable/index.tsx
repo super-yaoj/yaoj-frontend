@@ -1,6 +1,7 @@
 import { defineComponent, PropType, reactive, VNode } from "vue";
 import BaseTable from "./BaseTable";
 import { deepEqual } from '@/utils'
+import VIcon from '@/components/VIcon.vue'
 
 class Pagination<Key> {
     size = 0;
@@ -164,7 +165,8 @@ export const noPaging = (limit: number = 100) => ({
 
 const PageItem = ({ icon, f, disable }: { icon: string; f: (...o: any) => any; disable?: boolean }) =>
     <button class="btn page-link" onClick={f} disabled={disable}>
-        <ion-icon name={icon} />
+        { /* @ts-ignore */}
+        <VIcon name={icon} />
     </button>
 
 const PageSize = defineComponent({
@@ -175,6 +177,17 @@ const PageSize = defineComponent({
     </select>
     `,
 })
+
+export const RenderData = (head: DataHead[], o: any): any => {
+    var o2 = { ...o }
+    head.forEach(hd => {
+        if (hd.renderer instanceof Function) {
+            o2[hd.name] = hd.renderer(o[hd.name], o)
+        }
+    })
+    return o2
+}
+
 
 const DataTable = defineComponent({
     props: {
@@ -198,15 +211,7 @@ const DataTable = defineComponent({
     render() {
         const driver = this.driver as DataDriver<any>;
         // console.log('on datatable render', this.driver.pagination)
-        const renderData = (o: any) => {
-            var o2 = { ...o }
-            driver.head.forEach(hd => {
-                if (hd.renderer instanceof Function) {
-                    o2[hd.name] = hd.renderer(o2[hd.name], o2)
-                }
-            })
-            return o2
-        }
+        const renderData = (o: any) => RenderData(driver.head, o)
 
         return <>
             <BaseTable class={this.tableclass} head={driver.head || []} data={(driver.data.tabledata || []).map(renderData)} />
