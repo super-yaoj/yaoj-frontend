@@ -1,8 +1,7 @@
-import request from 'axios'
-import qs from 'qs'
-import { BASE_URL } from './config'
-//import { Tooltip } from "bootstrap"
 import { format } from 'silly-datetime'
+import { validEmail, validPassword, validUsername } from './validation'
+import { upload, callAPI, callRPC } from './fetch'
+import { call } from './call'
 
 export {
     echoSize,
@@ -17,9 +16,8 @@ export {
     validUsername,
     validEmail,
     deepEqual,
-    //tooltipInit,
     formatSeconds,
-    //tooltipDispose,
+    call
 }
 
 function echoSize(bytes) {
@@ -61,80 +59,6 @@ async function queryUser(data) {
         window.location.replace("#/404NotFound")
     }
     return user
-}
-
-function upload(name, method, formdata, success, failed) {
-    request({
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true,
-        url: BASE_URL + name,
-        method: method,
-        data: formdata,
-    }).then(
-        success, failed
-    )
-}
-
-function callAPI(name, method, data, success, failed) {
-    // data["_token"] = token
-    method = method.toUpperCase()
-    var requestConfig = {
-        withCredentials: true,
-        url: BASE_URL + name,
-        method: method
-    }
-    if (method == 'GET' || method == "DELETE") {
-        requestConfig.params = data
-    } else {
-        requestConfig.data = qs.stringify(data)
-    }
-    request(requestConfig).then(success, function(message) {
-        var response = message.response, flag = response.data == undefined || response.data._error == undefined
-        if (response.status == 401) {
-            window.location.replace('#/login')
-        } else if (response.status == 403) {
-            window.location.replace('#/403Forbidden')
-        } else if (response.status == 404) {
-            window.location.replace('#/404NotFound')
-        } else if (response.status != 400 || flag) {
-            alert(response.statusText + "\n" + (flag ? "" : "\n" + response.data._error))
-        } else failed(message.response)
-    })
-}
-
-function callRPC(name, data, success, failed) {
-    // data["_token"] = token
-    request({
-        withCredentials: true,
-        url: BASE_URL + name,
-        method: "POST",
-        data: qs.stringify(data)
-    }).then(success, function(message) {
-        var response = message.response, flag = response.data == undefined || response.data._error == undefined
-        if (!flag && response.data._error.code == -32600) {
-            if (response.status == 401) {
-                window.location.replace('#/login')
-            } else if (response.status == 403) {
-                window.location.replace('#/403Forbidden')
-            } else if (response.status == 404) {
-                window.location.replace('#/404NotFound')
-            } else if (response.status != 400) {
-                alert(response.statusMessage + "\n" + response.data._error.message)
-            } else failed(response)
-        } else {
-            alert(response.statusText + (flag ? "" : "\n" + response.data._error.message))
-        }
-    })
-}
-
-function validUsername(str) {
-    return /^[\w_]{3,18}$/.test(str)
-}
-function validPassword(str) {
-    return /^[\w`~!@#$%^&*()_+-=\\\[\]{}:";'<>,./?]{6,18}$/.test(str)
-}
-function validEmail(str) {
-    return /^[\w_-]+@[\w.]+$/.test(str)
 }
 
 function formatSeconds(seconds) {

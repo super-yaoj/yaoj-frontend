@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { validUsername, validPassword, SHA256, callRPC } from '@/utils.js'
+import { validUsername, validPassword, SHA256, callRPC } from '@/utils'
 
 export default {
     data() {

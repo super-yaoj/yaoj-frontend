@@ -55,7 +55,7 @@ import { CardModal, TabPane, TabView } from '@/core'
 
 import { format } from 'silly-datetime'
 import { Top10Paging, UserListData, UserListKey } from './user/utils'
-import { callAPI } from '@/utils'
+import { callAPI, call } from '@/utils'
 import { RouterLink } from 'vue-router'
 
 export default {
@@ -96,9 +96,7 @@ export default {
         paging: noPaging(),
         async fetch() {
           try {
-            var res: any = await new Promise((res, rej) => {
-              callAPI('announcements', 'get', {}, res, rej)
-            })
+            let res = await call("/announcements", "GET")
             if (res.data.data != null) {
               res.data.data.sort((a, b) => { return a.priority != b.priority ? b.priority - a.priority : b.id - a.id })
             }
@@ -119,11 +117,14 @@ export default {
 },
   methods: {
     addAnouncement() {
-      callAPI('announcements', 'post', { blog_id: this.blog_id, priority: this.priority }, (res) => {
+      call("/announcements", "POST", { body: {
+        blog_id: this.blog_id, 
+        priority: this.priority
+      }}).then(() => {
         this.adding_announcement = false
         this.$refs.ancetable?.driver?.fetch()
-      }, (res) => {
-        alert(res.data._error)
+      }).catch(e => {
+        alert(e.data._error)
       })
     },
     deleteAnnounce(id: any) {
