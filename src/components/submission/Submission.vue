@@ -1,6 +1,6 @@
 <template>
 <div class="px-0 px-md-4 mt-4 container-lg">
-    <BaseTable :head="subm_table" :data="[RenderData(subm_table, submission)]" />
+    <BaseTable :head="subm_table" :data="[RenderData(subm_table, submission)]" style="width:100%" />
     <div class="card" v-for="(item, index) in submission.details.content_preview" :key="index">
         <div class="card-header py-0">
             <div class="row align-items-center flex-column flex-md-row">

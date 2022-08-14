@@ -15,7 +15,7 @@
   <div class="tab-content mt-4 container">
     <div class="row">
       <div class="col">
-        <div class="progress" style="height:100%" v-tooltip:bottom :title="acnum + ' AC / ' + totnum + ' Total'">
+        <div class="progress" style="height:100%" v-tooltip:bottom :title="acnum + ' AC / ' + totnum + ' Total'" v-if="totnum != null">
           <div class="progress-bar bg-success" role="progressbar" :style="'width:' + acratio + '%;min-width:20px'">{{
               acratio
           }}%</div>
@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="tab-pane fade show active mt-3" id="ac">
-      <DataTable :dataprovider="subm_option" />
+      <DataTable :dataprovider="subm_option" ref="stattable"/>
     </div>
   </div>
 </template>
@@ -38,16 +38,17 @@
 <script lang="tsx">
 import Table from '@/models/Table.vue'
 import { callAPI } from '@/utils';
-import { nextTick } from 'vue';
 import { subm_table } from '../submission/submission';
 import DataTable, { Option } from '@/core/DataTable';
+import { nextTick } from 'vue';
 
 export default {
+  name: "ProblemStatistic",
   data() {
     return {
       id: this.$route.params.id,
-      acnum: 0,
-      totnum: 0,
+      acnum: null,
+      totnum: null,
       refresh: true,
       mode: "time",
       subm_option: {
@@ -77,9 +78,11 @@ export default {
             var res: any = await new Promise((res, rej) => {
               callAPI('problem_statistic', 'get', data, res, rej)
             })
-            this.acnum = res.data.acnum
-            this.totnum = res.data.totnum
-            console.log(res)
+            this.acnum = this.totnum = null
+            nextTick(() => {
+                this.acnum = res.data.acnum
+                this.totnum = res.data.totnum
+            })
             return [res.data.data, res.data.isfull]
           } catch (e) {
             console.log(e)
@@ -93,11 +96,15 @@ export default {
     DataTable,
   },
   methods: {
-    change() {
-      this.refresh = false
-      nextTick(() => this.refresh = true)
+    fetchdata(route) {
+      console.log("fetch problem statistic", route)
+      this.id = route.params.id
+      this.$refs.stattable?.driver.fetch()
     },
-  },
+    change(event) {
+      this.fetchdata(this.$route)
+    }
+   },
   computed: {
     acratio() {
       return this.totnum == 0 ? 0 : Math.round(this.acnum / this.totnum * 100)

@@ -12,7 +12,7 @@
       <div class="small" style="color:gray;word-wrap:break-word">{{ user.motto }}</div>
       <router-link v-if="user.user_id == $store.user.user_id" class="mt-2 mb-2 btn btn-sm btn-outline-secondary d-block"
         role="button" :to="`/user/${user.user_id}/modify/`">Edit Profile</router-link>
-      <ul class="list-group list-group-flush" style="word-wrap:break-word">
+      <ul v-if="user.user_id" class="list-group list-group-flush" style="word-wrap:break-word">
         <UserInfoMeta title="User ID" icon="id-card">ID #{{ user.user_id }}</UserInfoMeta>
         <UserInfoMeta title="Rating" icon="bar-chart">
           <UserName style="display: inline-block;" :id="user.user_id" :name="user.rating + ''" :rating="user.rating" />
@@ -29,7 +29,9 @@
         <TabPane name="Rating">
           <Rating :register_time="user.register_time" v-if="user.user_id" />
         </TabPane>
-        <TabPane name="Accepted">...</TabPane>
+        <TabPane name="Accepted">
+            
+        </TabPane>
         <TabPane name="Blogs">
           <div class="mt-3">
             <Table :timestamp="timestamp" :row="blogRow" :get="getBlog" :pagination="false" />

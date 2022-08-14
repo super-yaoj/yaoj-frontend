@@ -49,9 +49,9 @@ async function queryUser(data) {
     const user_group = ["Banned User", "Normal User", "Administrator", "Root"]
     var user
     try {
-        user = await new Promise(function(resolve, reject) {
+        user = await new Promise((resolve, reject) => {
             callAPI('user', 'get', data,
-                function(response) { resolve(response.data) }, function(response) { reject(response.data) })
+                res => { resolve(res.data.user) }, reject)
         })
         user.user_group = user_group[user.user_group]
         user.register_time = format(user.register_time)

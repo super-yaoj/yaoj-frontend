@@ -39,12 +39,6 @@ export default {
     Table,
     DataTable,
   },
-  created() {
-    console.log('created')
-  },
-  updated() {
-    console.log('updated')
-  },
   data() {
     return {
       problem_id: this.$route.query.problem_id || "",
@@ -86,7 +80,6 @@ export default {
   },
   methods: {
     fetchdata() {
-      console.log('trigger')
       this.$refs.submlist?.driver.fetch()
     },
     query() {
