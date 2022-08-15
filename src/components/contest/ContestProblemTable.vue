@@ -25,7 +25,7 @@ import DataTableEditable from '../../core/DataTableEditable'
 import { CardModal } from '@/core'
 
 import { RouterLink } from 'vue-router'
-import { callAPI } from '@/utils'
+import { call, callAPI } from '@/utils'
 import { noPaging, Option } from '@/core/DataTable'
 
 export default {
@@ -47,21 +47,17 @@ export default {
       prob_provider: {
         head: [{
           name: 'problem_id',
-          title: <strong>#ID</strong>,
+          title: '#ID',
           columnClass: "w-10",
         }, {
           name: 'title',
-          title: <strong>Problem</strong>,
+          title: 'Problem',
           renderer: (title, o) => <RouterLink to={`/problem/${o.problem_id}?contest_id=${this.id}`}>
             {title}
           </RouterLink>,
         }],
         fetch: async () => {
-          let q = { contest_id: this.id }
-          console.log(q)
-          let res: any = await new Promise((res, rej) => {
-            callAPI('contest_problems', 'get', q, res, rej)
-          })
+          let res = await call("/contest_problems", "GET", { param: { contest_id: this.id }})
           if (res.data.data != null) {
             res.data.data.sort((a, b) => a.problem_id - b.problem_id)
           } else res.data.data = []
