@@ -41,7 +41,12 @@
         </TabPane>
         <TabPane v-if="canSeePermission" name="Permissions">
           <div class="mt-3">
-            <Table :timestamp="timestamp" :row="permissionRow" :get="getPermission" :pagination="false" />
+            <ul class="list-group">
+              <li class="list-group-item" v-for="item in permission_list" :key="item.permission_id">
+                <span class="badge bg-secondary me-1">#{{ item.permission_id }}</span>
+                <span>{{ item.permission_name }}</span>
+              </li>
+            </ul>
           </div>
         </TabPane>
       </TabView>
@@ -58,8 +63,6 @@ import Rating from './Rating.vue'
 import UserInfoMeta from './UserInfoMeta.vue'
 
 import { call, callAPI, queryUser } from '@/utils'
-import { h } from 'vue'
-import { format } from 'silly-datetime'
 import { blog_table, removeDraft } from '../blog/blog'
 import { noPaging } from '@/core/DataTable'
 
@@ -69,6 +72,7 @@ export default {
   inject: ['isAdmin'],
   data() {
     return {
+      permission_list: [],
       user: {},
       id: this.$route.params.id,
       timestamp: 0,
@@ -137,6 +141,18 @@ export default {
       return this.id == this.$store.user.user_id || this.isAdmin()
     },
   },
+  async created() {
+    try {
+      var id = this.id
+      var res = await new Promise((res, rej) => {
+        callAPI('user_permissions', 'get', { user_id: id }, res, rej)
+      })
+      this.permission_list = res.data.data || []
+      return res.data
+    } catch (e) {
+      alert(e.data._error)
+    }
+  },
   methods: {
     fetchdata(route) {
       queryUser({ user_id: route.params.id }).then(data => {
@@ -147,25 +163,6 @@ export default {
       this.$refs.tabs?.updatePane()
       this.$refs.drafts?.driver.fetch()
       this.timestamp = new Date().getTime()
-    },
-    permissionRow(row) {
-      if (row == null) return [h('td', { style: "width:60px" }, h('strong', '#ID')),
-      h('td', { style: "text-align:left;padding-left:30px!important" }, h('strong', 'Permission Name')),
-      h('td', { style: "width: 10%" }, h('strong', 'Users'))]
-      else return [h('td', row.permission_id),
-      h('td', { style: "text-align:left;padding-left:30px!important" }, h('a', { href: '#/permission/' + row.permission_id }, row.permission_name)),
-      h('td', row.count)]
-    },
-    async getPermission(query) {
-      try {
-        var id = this.id
-        var res = await new Promise((res, rej) => {
-          callAPI('user_permissions', 'get', { user_id: id }, res, rej)
-        })
-        return res.data
-      } catch (e) {
-        alert(e.data._error)
-      }
     },
     deleteDraft(local) {
       return (event) => {

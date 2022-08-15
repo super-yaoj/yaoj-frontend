@@ -47,7 +47,7 @@ export default {
             let reg = getRegisterStatus(stat)
             return <a href="#" style={{
               color: reg.color,
-            }} onClick={() => this.register(o.contest_id, stat)}>{reg.val}</a>
+            }} onClick={this.register(o.contest_id, stat)}>{reg.val}</a>
           },
         }, {
           title: 'Title', name: 'title',
@@ -132,6 +132,7 @@ export default {
     register(id, status) {
       return (event) => {
         event.preventDefault()
+
         if (status == 0) return
         callAPI('contest_participants', status == 1 ? 'post' : 'delete', { contest_id: id }, (res) => {
           this.fetchdata()
