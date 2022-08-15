@@ -16,42 +16,13 @@
 </template>
 
 <script lang="tsx">
-import { RouterLink } from "vue-router";
-import ClickLike from "@/models/ClickLike.vue";
 import DataTable, { Option } from "@/core/DataTable";
 
 import { callAPI, randomString } from "@/utils";
-import { format } from "silly-datetime";
+import { blog_table } from "./blog";
 
 const bloglist_option: Option<{ blog_id: number }> = {
-  head: [{
-    name: 'title', title: <strong>Title</strong>,
-    renderer: (title, row) => <RouterLink to={'/blog/' + row.blog_id}>
-      {row.private ? <span style="color: gray">[Private] </span> : null}
-      {title}
-    </RouterLink>
-  }, {
-    name: 'author', title: <strong>Author</strong>,
-    columnClass: 'text-end',
-    renderer: (author, row) => <RouterLink to={'/user/' + author}>{row.author_name}</RouterLink>,
-  }, {
-    name: 'create_time', title: <strong>Create Date</strong>,
-    style: 'width: 15%',
-    renderer: create_time => format(create_time, "YYYY-MM-DD"),
-  }, {
-    name: 'comments', title: <strong>Comments</strong>,
-    style: 'width: 10%',
-    renderer: (_, row) => <div class="d-flex justify-content-between">
-      {/* @ts-ignore */}
-      <ClickLike icon="chatbox-outline" number={row.comments} />
-      {/* @ts-ignore */}
-      <ClickLike
-        icon="thumbs-up-outline" number={row.like}
-        target={{ name: "blog", id: row.blog_id }}
-        active={row.liked}
-      />
-    </div>
-  }],
+  head: blog_table,
   paging: {
     beginKey: { blog_id: 1e9 },
     endKey: { blog_id: 0 },

@@ -30,11 +30,13 @@
           <Rating :register_time="user.register_time" v-if="user.user_id" />
         </TabPane>
         <TabPane name="Accepted">
-            
         </TabPane>
         <TabPane name="Blogs">
           <div class="mt-3">
-            <Table :timestamp="timestamp" :row="blogRow" :get="getBlog" :pagination="false" />
+            <h5>Drafts</h5>
+            <DataTable :dataprovider="draft_option" tableclass="table table-hover" ref="drafts" />
+            <h5>Blogs</h5>
+            <DataTable :dataprovider="blog_option" tableclass="table table-hover" />
           </div>
         </TabPane>
         <TabPane v-if="canSeePermission" name="Permissions">
@@ -51,14 +53,16 @@
 import Table from '@/models/Table.vue'
 import ClickLike from '@/models/ClickLike.vue'
 import UserName from '@/models/UserName.vue'
-import { TabPane, TabView } from '@/core'
+import { DataTable, TabPane, TabView } from '@/core'
 import Rating from './Rating.vue'
 import UserInfoMeta from './UserInfoMeta.vue'
 
-import { callAPI, queryUser } from '@/utils'
+import { call, callAPI, queryUser } from '@/utils'
 import { h } from 'vue'
 import { format } from 'silly-datetime'
-import { removeDraft } from '../blog/blog'
+import { blog_table, removeDraft } from '../blog/blog'
+import { noPaging } from '@/core/DataTable'
+
 
 export default {
   name: "UserInfo",
@@ -68,6 +72,53 @@ export default {
       user: {},
       id: this.$route.params.id,
       timestamp: 0,
+      blog_option: {
+        head: blog_table.filter(col => col.name != 'author'),
+        paging: noPaging(),
+        fetch: async () => {
+          try {
+            let res = await call("/blogs", "GET", { param: { user_id: this.id } });
+            if (res.data.data == null) {
+              res.data.data = []
+            }
+            res.data.data = res.data.data.reverse()
+            return [res.data.data, res.data.isfull]
+          } catch (e) {
+            console.log(e)
+          }
+        },
+      },
+      draft_option: {
+        head: [{
+          name: 'title', title: 'Title',
+          renderer: (title, row) =>
+            <RouterLink to={'/editblog?local=' + row.local}>
+              <span style="color: red">[Draft] </span>
+              {title}
+            </RouterLink>
+        }, {
+          name: 'local', title: 'Operation',
+          renderer: local =>
+            <a onClick={this.deleteDraft(local)} href="#">delete</a>
+        }],
+        paging: noPaging(),
+        fetch: async () => {
+          let res = []
+          if (this.id == this.$store.user.user_id) {
+            for (var i = 0; i < localStorage.length; i++) {
+              let key = localStorage.key(i)
+              if (key.endsWith("_title")) {
+                let local = key.substring(0, 16)
+                res.push({
+                  title: localStorage.getItem(local + "_title"),
+                  local: local
+                })
+              }
+            }
+          }
+          return [res, false]
+        }
+      },
     }
   },
   components: {
@@ -78,7 +129,8 @@ export default {
     Rating,
     UserName,
     TabView,
-    TabPane
+    TabPane,
+    DataTable,
   },
   computed: {
     canSeePermission() {
@@ -93,6 +145,7 @@ export default {
       console.log("fetch", route)
       this.id = route.params.id
       this.$refs.tabs?.updatePane()
+      this.$refs.drafts?.driver.fetch()
       this.timestamp = new Date().getTime()
     },
     permissionRow(row) {
@@ -114,72 +167,12 @@ export default {
         alert(e.data._error)
       }
     },
-    blogRow(row) {
-      if (row == null) return [
-        <td style="text-align: left"><strong>Title</strong></td>,
-        <td style="width: 20%"><strong>Create Date</strong></td>,
-        <td style="width: 10%; text-align: right"><strong>Comments</strong></td>,
-      ]
-      else if (row.id < 0) {
-        return [
-          <td style="text-align: left">
-            <router-link to={'/editblog?local=' + row.local}>
-              <span style="color: red">[Draft] </span>
-              {row.title}
-            </router-link>
-          </td>,
-          <td></td>,
-          <td><a onClick={this.deleteDraft(row.local)} href="#">delete</a></td>
-        ]
-      } else return [
-        <td style="text-align: left">
-          <router-link to={'/blog/' + row.blog_id}>
-            {row.private ? <span style="color: gray">[Private] </span> : null}
-            {row.title}
-          </router-link>
-        </td>,
-        <td>{format(row.create_time, "YYYY-MM-DD")}</td>,
-        <td>
-          <div class="d-flex justify-content-between">
-            <ClickLike icon="chatbox-outline" number={row.comments} />
-            <ClickLike
-              icon="thumbs-up-outline" number={row.like}
-              target={{ name: "blog", id: row.blog_id }}
-              active={row.liked}
-            />
-          </div>
-        </td>
-      ]
-    },
-    async getBlog() {
-      try {
-        var id = this.id
-        var res = await new Promise((res, rej) => {
-          callAPI('blogs', 'get', { user_id: id }, res, rej)
-        })
-        if (res.data.data == null) {
-          res.data.data = []
-        }
-        if (id == this.$store.user.user_id) {
-          for (var i = 0; i < localStorage.length; i++) {
-            var key = localStorage.key(i)
-            if (key.endsWith("_title")) {
-              var local = key.substring(0, 16)
-              res.data.data.push({ id: -1, title: localStorage.getItem(local + "_title"), local: local })
-            }
-          }
-        }
-        res.data.data = res.data.data.reverse()
-        return res.data
-      } catch (e) {
-        console.log(e)
-      }
-    },
     deleteDraft(local) {
       return (event) => {
         event.preventDefault()
         removeDraft(local)
         this.timestamp = new Date().getTime()
+        this.$refs.drafts?.driver.fetch()
       }
     }
   }
