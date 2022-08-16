@@ -71,14 +71,14 @@ export default {
       } as Option<UserListKey>,
       announcement_option: {
         head: [{
-          name: 'title', title: <strong>Title</strong>,
+          name: 'title', title: 'Title',
           renderer: (title, o) => <RouterLink to={'/blog/' + o.blog_id}>{title}</RouterLink>,
         }, {
-          name: 'release_time', title: <strong>Release Date</strong>,
+          name: 'release_time', title: 'Released',
           style: "width:15%",
           renderer: time => format(time, 'YYYY-MM-DD'),
         }, {
-          name: 'comments', title: <strong>Comments</strong>,
+          name: 'comments', title: 'Comments',
           style: "width: 10%; text-align: right",
           renderer: (_, o) => <div class="d-flex justify-content-between">
             {/* @ts-ignore */}
@@ -89,7 +89,7 @@ export default {
         }, {
           display: this.isAdmin(),
           style: "width: 10%",
-          name: 'priority', title: <strong>Priority</strong>,
+          name: 'priority', title: 'Priority',
           renderer: (priority, o) => <>{priority + " "}
             <a href="#" onClick={this.deleteAnnounce(o.id)}>Delete</a></>
         }],

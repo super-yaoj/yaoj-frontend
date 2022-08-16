@@ -1,16 +1,17 @@
 <template>
 </template>
 
-<script>
-import { callRPC } from '@/utils'
+<script setup>
+import { call } from '@/utils'
 import { onBeforeMount } from 'vue'
 
-export default {
-    setup() {
-        onBeforeMount(() => callRPC("UserLogout", {}, function(response){ window.location.href = "/" }, function(response){}))
-    }
-}
-</script>
+onBeforeMount(async () => {
+  try {
+    await call("/UserLogout", "POST");
+    window.location.href = "/"
+  } catch (e) {
+    console.log(e)
+  }
+})
 
-<style>
-</style>
+</script>

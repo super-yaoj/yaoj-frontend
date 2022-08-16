@@ -75,7 +75,6 @@ export default {
       permission_list: [],
       user: {},
       id: this.$route.params.id,
-      timestamp: 0,
       blog_option: {
         head: blog_table.filter(col => col.name != 'author'),
         paging: noPaging(),
@@ -162,13 +161,11 @@ export default {
       this.id = route.params.id
       this.$refs.tabs?.updatePane()
       this.$refs.drafts?.driver.fetch()
-      this.timestamp = new Date().getTime()
     },
     deleteDraft(local) {
       return (event) => {
         event.preventDefault()
         removeDraft(local)
-        this.timestamp = new Date().getTime()
         this.$refs.drafts?.driver.fetch()
       }
     }
