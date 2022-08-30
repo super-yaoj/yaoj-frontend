@@ -10,8 +10,8 @@ import TabPane from './TabPane.vue'
 import DataTable from './DataTable'
 import BaseTable from './BaseTable'
 
-import BaseModal from './BaseModal'
-import CardModal from './CardModal'
+import BaseModal from './BaseModal.vue'
+import CardModal from './CardModal.vue'
 
 import VIcon from './VIcon.vue'
 
